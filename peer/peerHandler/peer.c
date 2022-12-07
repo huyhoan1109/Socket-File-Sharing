@@ -161,21 +161,19 @@ int main(int argc, char **argv){
 			print_help();
 			fflush(stdout);
 		}
-
 	}
-
 	return 0;
 }
 
 void print_help(){
 	printf("Commands:\n");
-	printf("\t\tls");
+	printf("\t\t/ls");
 	printf("\t\t\t\t- list files\n");
-	printf("\t\trm <filename>");
+	printf("\t\t/rm <filename>");
 	printf("\t\t\t- remove file\n");
-	printf("\t\tget <filename>");
+	printf("\t\t/download <filename>");
 	printf("\t\t\t- download file\n");
-	printf("\t\texit");
+	printf("\t\t/exit");
 	printf("\t\t\t\t- exit this program\n");
 	printf("\n");
 }

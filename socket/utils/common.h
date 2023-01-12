@@ -13,8 +13,12 @@
 #define BLUE			"\x1b[94m"
 #define RED				"\x1b[91"
 #define COLOR_RESET		"\x1b[0m"
-
+#define GREEN			"\x1b[32m"
+#define YELLOW			"\x1b[33m"
+#define BLUE			"\x1b[94m"
+#define RED				"\x1b[91"
 #define STORAGE "DB"
+#define print_center(x, space1, space2) printf("|%s %s %s|", space1, x, space2);
 
 /* request types */
 extern const uint8_t DATA_PORT_ANNOUNCEMENT;
@@ -40,5 +44,9 @@ void free_mem(void *arg);
 void mutex_unlock(void *arg);
 
 void cancel_thread(void *arg);
+
+char *multicopy(int time, char* str);
+
+int prettyprint(char *x, int dist, void *col);
 
 #endif

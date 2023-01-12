@@ -1,0 +1,1400 @@
+127.0.0.1:37018 > data_port: 34567
+127.0.0.1:37018 > file_list_update
+127.0.0.1:37018 > n_files: 1
+127.0.0.1:37018 > status: 0
+127.0.0.1:37018 > filename_length: 10
+127.0.0.1:37018 > filename: file1.zip
+127.0.0.1:37018 > filesize: 30169524
+[update_file_list] 127.0.0.1:37018 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:37018 > new_file->filename: file1.zip
+127.0.0.1:37018 > new_file->filesize: 30169524
+127.0.0.1:37018 > new_file->host_list: 0x7f3068001bf0
+127.0.0.1:37018 > new_file->host_list->head: 0x7f3068001ba0
+127.0.0.1:37018 > added a new file: file1.zip
+127.0.0.1:37018 > list_files_request
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+execute process_list_hosts_request
+[process_list_hosts_request]filesize: 30169524
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 30169524
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 34567
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:37018 > file_list_update
+127.0.0.1:37018 > n_files: 1
+127.0.0.1:37018 > status: 0
+127.0.0.1:37018 > filename_length: 10
+127.0.0.1:37018 > filename: file1.zip
+127.0.0.1:37018 > filesize: 30169524
+[update_file_list] 127.0.0.1:37018 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:37018 > added a new file: file1.zip
+execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 30169524
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 34567
+127.0.0.1:57752 > data_port: 43275
+127.0.0.1:57752 > file_list_update
+127.0.0.1:57752 > n_files: 1
+127.0.0.1:57752 > status: 0
+127.0.0.1:57752 > filename_length: 10
+127.0.0.1:57752 > filename: file1.zip
+127.0.0.1:57752 > filesize: 30169524
+[update_file_list] 127.0.0.1:57752 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:57752 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:57752 > file_list_update
+127.0.0.1:57752 > n_files: 2
+127.0.0.1:57752 > status: 1
+127.0.0.1:57752 > filename_length: 10
+127.0.0.1:57752 > filename: file1.zip
+127.0.0.1:57752 > filesize: 0
+[update_file_list] 127.0.0.1:57752 > 'file1.zip' deleted
+127.0.0.1:57752 > deleted a file: file1.zip
+127.0.0.1:57752 > status: 0
+127.0.0.1:57752 > filename_length: 10
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:57752 > filename: file2.zip
+127.0.0.1:57752 > filesize: 30169524
+[update_file_list] 127.0.0.1:57752 > new file 'file2.zip'[update_file_list] adding host
+add 'file2.zip' to file_list, add host to host_list
+127.0.0.1:57752 > new_file->filename: file2.zip
+127.0.0.1:57752 > new_file->filesize: 30169524
+127.0.0.1:57752 > new_file->host_list: 0x7f305c000bc0
+127.0.0.1:57752 > new_file->host_list->head: 0x7f305c000b70
+127.0.0.1:57752 > added a new file: file2.zip
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+function: removeNode/file
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:54992 > data_port: 52783
+127.0.0.1:54992 > file_list_update
+127.0.0.1:54992 > n_files: 1
+127.0.0.1:54992 > status: 0
+127.0.0.1:54992 > filename_length: 10
+127.0.0.1:54992 > filename: file2.zip
+127.0.0.1:54992 > filesize: 30169524
+[update_file_list] 127.0.0.1:54992 > new file 'file2.zip'[update_file_list] adding host
+add 'file2.zip' to file_list, add host to host_list
+127.0.0.1:5127.0.0.1:39274 > data_port: 56509
+127.0.0.1:39274 > file_list_update
+127.0.0.1:39274 > n_files: 1
+127.0.0.1:39274 > status: 0
+127.0.0.1:39274 > filename_length: 10
+127.0.0.1:39274 > filename: file2.zip
+127.0.0.1:39274 > filesize: 30169524
+[update_file_list] 127.0.0.1:39274 > new file 'file2.zip'[update_file_list] adding host
+add 'file2.zip' to file_list, add host to host_list
+127.0.0.1:39274 > new_file->filename: file2.zip
+127.0.0.1:39274 > new_file->filesize: 30169524
+127.0.0.1:39274 > new_file->host_list: 0x7fa374001bf0
+127.0.0.1:39274 > new_file->host_list->head: 0x7fa374001ba0
+127.0.0.1:39274 > added a new file: file2.zip
+127.0.0.1:39274 > list_files_request
+function: removeHost
+function: removeNode/host
+127.0.0.1:54388 > data_port: 54459
+127.0.0.1:54388 > file_list_update
+127.0.0.1:54388 > n_files: 1
+127.0.0.1:54388 > status: 0
+127.0.0.1:54388 > filename_length: 10
+127.0.0.1:54388 > filename: file2.zip
+127.0.0.1:54388 > filesize: 30169524
+[update_file_list] 127.0.0.1:54388 > new file 'file2.zip'[update_file_list] adding host
+add 'file2.zip' to file_list, add host to host_list
+127.0.0.1:54388 > new_file->filename: file2.zip
+127.0.0.1:54388 > new_file->filesize: 30169524
+127.0.0.1:54388 > new_file->host_list: 0x7fa374001bf0
+127.0.0.1:54388 > new_file->host_list->head: 0x7fa374002d40
+127.0.0.1:54388 > added a new file: file2.zip
+127.0.0.1:54388 > list_files_request
+list_hosts_request
+Filename_length: 10
+Filename: file2.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 30169524
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 30169524
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 54459
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:54388 > file_list_update
+127.0.0.1:54388 > n_files: 1
+127.0.0.1:54388 > status: 0
+127.0.0.1:54388 > filename_length: 10
+127.0.0.1:54388 > filename: file2.zip
+127.0.0.1:54388 > filesize: 30169524
+[update_file_list] 127.0.0.1:54388 > new file 'file2.zip'[update_file_list] adding host
+'file2.zip' existed, add host to the list
+127.0.0.1:54388 > added a new file: file2.zip
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 30169524
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 54459
+127.0.0.1:57178 > data_port: 39177
+127.0.0.1:57178 > file_list_update
+127.0.0.1:57178 > n_files: 1
+127.0.0.1:57178 > status: 0
+127.0.0.1:57178 > filename_length: 10
+127.0.0.1:57178 > filename: file2.zip
+127.0.0.1:57178 > filesize: 30169524
+[update_file_list] 127.0.0.1:57178 > new file 'file2.zip'[update_file_list] adding host
+'file2.zip' existed, add host to the list
+127.0.0.1:57178 > added a new file: file2.zip
+[process_list_hosts_request]'file2.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file2.zip' no update
+127.0.0.1:49914 > data_port: 60975
+127.0.0.1:49914 > file_list_update
+127.0.0.1:49914 > n_files: 1
+127.0.0.1:49914 > status: 0
+127.0.0.1:49914 > filename_length: 10
+127.0.0.1:49914 > filename: file1.zip
+127.0.0.1:49914 > filesize: 30169524
+[update_file_list] 127.0.0.1:49914 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:49914 > new_file->filename: file1.zip
+127.0.0.1:49914 > new_file->filesize: 30169524
+127.0.0.1:49914 > new_file->host_list: 0x7fa370000bc0
+127.0.0.1:49914 > new_file->host_list->head: 0x7fa370000b70
+127.0.0.1:49914 > added a new file: file1.zi127.0.0.1:50168 > data_port: 43357
+127.0.0.1:50168 > file_list_update
+127.0.0.1:50168 > n_files: 1
+127.0.0.1:50168 > status: 0
+127.0.0.1:50168 > filename_length: 10
+127.0.0.1:50168 > filename: file1.zip
+127.0.0.1:50168 > filesize: 51173819
+[update_file_list] 127.0.0.1:50168 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:50168 > new_file->filename: file1.zip
+127.0.0.1:50168 > new_file->filesize: 51173819
+127.0.0.1:50168 > new_file->host_list: 0x7fe9fc001bf0
+127.0.0.1:50168 > new_file->host_list->head: 0x7fe9fc001ba0
+127.0.0.1:50168 > added a new file: file1.zip
+127.0.0.1:50168 > list_files_request
+127.0.0.1:48012 > data_port: 38049
+127.0.0.1:48012 > file_list_update
+127.0.0.1:48012 > n_files: 1
+127.0.0.1:48012 > status: 0
+127.0.0.1:48012 > filename_length: 10
+127.0.0.1:48012 > filename: file1.zip
+127.0.0.1:48012 > filesize: 51173819
+[update_file_list] 127.0.0.1:48012 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:48012 > added a new file: file1.zip
+function: removeHost
+function: removeNode/host
+127.0.0.1:56740 > data_port: 36273
+127.0.0.1:56740 > list_files_request
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 43357
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:56740 > file_list_update
+127.0.0.1:56740 > n_files: 1
+127.0.0.1:56740 > status: 0
+127.0.0.1:56740 > filename_length: 10
+127.0.0.1:56740 > filename: file1.zip
+127.0.0.1:56740 > filesize: 51173819
+[update_file_list] 127.0.0.1:56740 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:56740 > added a new file: file1.zip
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 43357
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:33200 > data_port: 59991
+127.0.0.1:33200 > file_list_update
+127.0.0.1:33200 > n_files: 1
+127.0.0.1:33200 > status: 0
+127.0.0.1:33200 > filename_length: 10
+127.0.0.1:33200 > filename: file1.zip
+127.0.0.1:33200 > filesize: 51173819
+[update_file_list] 127.0.0.1:33200 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:33200 > new_file->filename: file1.zip
+127.0.0.1:33200 > new_file->filesize: 51173819
+127.0.0.1:33200 > new_file->host_list: 0x7fe9fc001bf0
+127.0.0.1:33200 > new_file->host_list->head: 0x7fe9fc001ba0
+127.0.0.1:33200 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:39842 > data_port: 57673
+127.0.0.1:39842 > file_list_update
+127.0.0.1:39842 > n_files: 1
+127.0.0.1:39842 > status: 0
+127.0.0.1:39842 > filename_length: 10
+127.0.0.1:39842 > filename: file1.zip
+127.0.0.1:39842 > filesize: 51173819
+[update_file_list] 127.0.0.1:39842 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:39842 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: remo127.0.0.1:41156 > data_port: 39695
+127.0.0.1:41156 > file_list_update
+127.0.0.1:41156 > n_files: 1
+127.0.0.1:41156 > status: 0
+127.0.0.1:41156 > filename_length: 10
+127.0.0.1:41156 > filename: file1.zip
+127.0.0.1:41156 > filesize: 51173819
+[update_file_list] 127.0.0.1:41156 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:41156 > new_file->filename: file1.zip
+127.0.0.1:41156 > new_file->filesize: 51173819
+127.0.0.1:41156 > new_file->host_list: 0x7f0fc4001bf0
+127.0.0.1:41156 > new_file->host_list->head: 0x7f0fc4001ba0
+127.0.0.1:41156 > added a new file: file1.zip
+function: removeHost
+function: removeNode/host
+127.0.0.1:37400 > data_port: 39783
+127.0.0.1:58912 > data_port: 48401
+127.0.0.1:58912 > file_list_update
+127.0.0.1:58912 > n_files: 1
+127.0.0.1:58912 > status: 0
+127.0.0.1:58912 > filename_length: 10
+127.0.0.1:58912 > filename: file1.zip
+127.0.0.1:58912 > filesize: 51173819
+[update_file_list] 127.0.0.1:58912 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:58912 > new_file->filename: file1.zip
+127.0.0.1:58912 > new_file->filesize: 51173819
+127.0.0.1:58912 > new_file->host_list: 0x7f0fbc000bc0
+127.0.0.1:58912 > new_file->host_list->head: 0x7f0fbc000b70
+127.0.0.1:58912 > added a new file: file1.zip
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 48401
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:37400 > file_list_update
+127.0.0.1:37400 > n_files: 1
+127.0.0.1:37400 > status: 0
+127.0.0.1:37400 > filename_length: 10
+127.0.0.1:37400 > filename: file1.zip
+127.0.0.1:37400 > filesize: 51173819
+[update_file_list] 127.0.0.1:37400 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:37400 > added a new file: file1.zip
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 48401
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:56878 > data_port: 59799
+127.0.0.1:56878 > file_list_update
+127.0.0.1:56878 > n_files: 1
+127.0.0.1:56878 > status: 0
+127.0.0.1:56878 > filename_length: 10
+127.0.0.1:56878 > filename: file1.zip
+127.0.0.1:56878 > filesize: 51173819
+[update_file_list] 127.0.0.1:56878 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:56878 > new_file->filename: file1.zip
+127.0.0.1:56878 > new_file->filesize: 51173819
+127.0.0.1:56878 > new_file->host_list: 0x7f0fbc000bc0
+127.0.0.1:56878 > new_file->host_list->head: 0x7f0fbc000b70
+127.0.0.1:56878 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:41414 > data_port: 58919
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 59799
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:41414 > file_list_update
+127.0.0.1:41414 > n_files: 1
+127.0.0.1:41414 > status: 0
+127.0.0.1:41414 > filename_length: 10
+127.0.0.1:41414 > filename: file1.zip
+127.0.0.1:41414 > filesize: 51173819
+[update_file_list] 127.0.0.1:41414 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:41414 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 59799
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:55928 > data_port: 48369
+127.0.0.1:55928 > file_list_update
+127.0.0.1:55928 > n_files: 1
+127.0.0.1:55928 > status: 0
+127.0.0.1:55928 > filename_length: 10
+127.0.0.1:55928 > filename: file1.zip
+127.0.0.1:55928 > filesize: 51173819
+[update_file_list] 127.0.0.1:55928 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:55928 > new_file->filename: file1.zip
+127.0.0.1:55928 > new_file->filesize: 51173819
+127.0.0.1:55928 > new_file->host_list: 0x7f0fbc000bc0
+127.0.0.1:55928 > new_file->host_list->head: 0x7f0fbc000b70
+127.0.0.1:55928 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:55938 > data_port: 53895
+127.0.0.1:55938 > file_list_update
+127.0.0.1:55938 > n_files: 1
+127.0.0.1:55938 > status: 0
+127.0.0.1:55938 > filename_length: 10
+127.0.0.1:55938 > filename: file1.zip
+127.0.0.1:55938 > filesize: 51173819
+[update_file_list] 127.0.0.1:55938 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:55938 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:34988 > data_port: 56967
+127.0.0.1:34988 > list_files_request
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 53895
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:34988 > file_list_update
+127.0.0.1:34988 > n_files: 1
+127.0.0.1:34988 > status: 0
+127.0.0.1:34988 > filename_length: 10
+127.0.0.1:34988 > filename: file1.zip
+127.0.0.1:34988 > filesize: 51173819
+[update_file_list] 127.0.0.1:34988 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:34988 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 53895
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:59584 > data_port: 37663
+127.0.0.1:59594 > data_port: 43607
+127.0.0.1:59594 > file_list_update
+127.0.0.1:59594 > n_files: 1
+127.0.0.1:59594 > status: 0
+127.0.0.1:59594 > filename_length: 10
+127.0.0.1:59594 > filename: file1.zip
+127.0.0.1:59594 > filesize: 51173819
+[update_file_list] 127.0.0.1:59594 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:59594 > new_file->filename: file1.zip
+127.0.0.1:59594 > new_file->filesize: 51173819
+127.0.0.1:59594 > new_file->host_list: 0x7f0fbc000ba0
+127.0.0.1:59594 > new_file->host_list->head: 0x7f0fbc000be0
+127.0.0.1:59594 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 43607
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:59584 > file_list_update
+127.0.0.1:59584 > n_files: 1
+127.0.0.1:59584 > status: 0
+127.0.0.1:59584 > filename_length: 10
+127.0.0.1:59584 > filename: file1.zip
+127.0.0.1:59584 > filesize: 51173819
+[update_file_list] 127.0.0.1:59584 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:59584 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 43607
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:45542 > data_port: 34185
+127.0.0.1:45542 > file_list_update
+127.0.0.1:45542 > n_files: 1
+127.0.0.1:45542 > status: 0
+127.0.0.1:45542 > filename_length: 10
+127.0.0.1:45542 > filename: file1.zip
+127.0.0.1:45542 > filesize: 51173819
+[update_file_list] 127.0.0.1:45542 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:45542 > new_file->filename: file1.zip
+127.0.0.1:45542 > new_file->filesize: 51173819
+127.0.0.1:45542 > new_file->host_list: 0x7f0fbc000ba0
+127.0.0.1:45542 > new_file->host_list->head: 0x7f0fbc000be0
+127.0.0.1:45542 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:43938 > data_port: 46327
+127.0.0.1:43938 > file_list_update
+127.0.0.1:43938 > n_files: 1
+127.0.0.1:43938 > status: 0
+127.0.0.1:43938 > filename_length: 10
+127.0.0.1:43938 > filename: file1.zip
+127.0.0.1:43938 > filesize: 51173819
+[update_file_list] 127.0.0.1:43938 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:43938 > new_file->filename: file1.zip
+127.0.0.1:43938 > new_file->filesize: 51173819
+127.0.0.1:43938 > new_file->host_list: 0x7f0fbc000ba0
+127.0.0.1:43938 > new_file->host_list->head: 0x7f0fbc000be0
+127.0.0.1:43938 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:45464 > data_port: 49513
+127.0.0.1:42534 > data_port: 34123
+127.0.0.1:42534 > file_list_update
+127.0.0.1:42534 > n_files: 1
+127.0.0.1:42534 > status: 0
+127.0.0.1:42534 > filename_length: 10
+127.0.0.1:42534 > filename: file1.zip
+127.0.0.1:42534 > filesize: 51173819
+[update_file_list] 127.0.0.1:42534 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:42534 > new_file->filename: file1.zip
+127.0.0.1:42534 > new_file->filesize: 51173819
+127.0.0.1:42534 > new_file->host_list: 0x7f0fc4001bf0
+127.0.0.1:42534 > new_file->host_list->head: 0x7f0fc4002e60
+127.0.0.1:42534 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 34123
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:45464 > file_list_update
+127.0.0.1:45464 > n_files: 1
+127.0.0.1:45464 > status: 0
+127.0.0.1:45464 > filename_length: 10
+127.0.0.1:45464 > filename: file1.zip
+127.0.0.1:45464 > filesize: 51173819
+[update_file_list] 127.0.0.1:45464 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:45464 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 34123
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:47434 > data_port: 51687
+127.0.0.1:47434 > file_list_update
+127.0.0.1:47434 > n_files: 1
+127.0.0.1:47434 > status: 0
+127.0.0.1:47434 > filename_length: 10
+127.0.0.1:47434 > filename: file1.zip
+127.0.0.1:47434 > filesize: 51173819
+[update_file_list] 127.0.0.1:47434 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:47434 > new_file->filename: file1.zip
+127.0.0.1:47434 > new_file->filesize: 51173819
+127.0.0.1:47434 > new_file->host_list: 0x7f0fc4001bf0
+127.0.0.1:47434 > new_file->host_list->head: 0x7f0fc4002e60
+127.0.0.1:47434 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:56348 > data_port: 56521
+127.0.0.1:56348 > file_list_update
+127.0.0.1:56348 > n_files: 1
+127.0.0.1:56348 > status: 0
+127.0.0.1:56348 > filename_length: 10
+127.0.0.1:56348 > filename: file1.zip
+127.0.0.1:56348 > filesize: 51173819
+[update_file_list] 127.0.0.1:56348 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:56348 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:36522 > data_port: 32999
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 51687
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:36522 > file_list_update
+127.0.0.1:36522 > n_files: 1
+127.0.0.1:36522 > status: 0
+127.0.0.1:36522 > filename_length: 10
+127.0.0.1:36522 > filename: file1.zip
+127.0.0.1:36522 > filesize: 51173819
+[update_file_list] 127.0.0.1:36522 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:36522 > added a new file: file1.zip
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[process_list_hosts_request]'file1.zip' no update
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 51687
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:44260 > data_port: 57459
+127.0.0.1:44260 > file_list_update
+127.0.0.1:44260 > n_files: 1
+127.0.0.1:44260 > status: 0
+127.0.0.1:44260 > filename_length: 10
+127.0.0.1:44260 > filename: file1.zip
+127.0.0.1:44260 > filesize: 51173819
+[update_file_list] 127.0.0.1:44260 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:44260 > new_file->filename: file1.zip
+127.0.0.1:44260 > new_file->filesize: 51173819
+127.0.0.1:44260 > new_file->host_list: 0x7f0fc4001bf0
+127.0.0.1:44260 > new_file->host_list->head: 0x7f0fc4002e60
+127.0.0.1:44260 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:44272 > data_port: 53951
+127.0.0.1:44272 > file_list_update
+127.0.0.1:44272 > n_files: 1
+127.0.0.1:44272 > status: 0
+127.0.0.1:44272 > filename_length: 10
+127.0.0.1:44272 > filename: file1.zip
+127.0.0.1:44272 > filesize: 51173819
+[update_file_list] 127.0.0.1:44272 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:44272 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:44640 > data_port: 41425
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 57459
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:44640 > file_list_update
+127.0.0.1:44640 > n_files: 1
+127.0.0.1:44640 > status: 0
+127.0.0.1:44640 > filename_length: 10
+127.0.0.1:44640 > filename: file1.zip
+127.0.0.1:44640 > filesize: 51173819
+[update_file_list] 127.0.0.1:44640 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:44640 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 57459
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:43190 > data_port: 60121
+127.0.0.1:43190 > file_list_update
+127.0.0.1:43190 > n_files: 1
+127.0.0.1:43190 > status: 0
+127.0.0.1:43190 > filename_length: 10
+127.0.0.1:43190 > filename: file1.zip
+127.0.0.1:43190 > filesize: 51173819
+[update_file_list] 127.0.0.1:43190 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:43190 > new_file->filename: file1.zip
+127.0.0.1:43190 > new_file->filesize: 51173819
+127.0.0.1:43190 > new_file->host_list: 0x7f0fc4001bf0
+127.0.0.1:43190 > new_file->host_list->head: 0x7f0fc4002e60
+127.0.0.1:43190 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:54572 > data_port: 50611
+127.0.0.1:48684 > data_port: 34229
+127.0.0.1:48684 > file_list_update
+127.0.0.1:48684 > n_files: 1
+127.0.0.1:48684 > status: 0
+127.0.0.1:48684 > filename_length: 10
+127.0.0.1:48684 > filename: file1.zip
+127.0.0.1:48684 > filesize: 51173819
+[update_file_list] 127.0.0.1:48684 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:48684 > new_file->filename: file1.zip
+127.0.0.1:48684 > new_file->filesize: 51173819
+127.0.0.1:48684 > new_file->host_list: 0x7f0fbc000bc0
+127.0.0.1:48684 > new_file->host_list->head: 0x7f0fbc000b70
+127.0.0.1:48684 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 34229
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:54572 > file_list_update
+127.0.0.1:54572 > n_files: 1
+127.0.0.1:54572 > status: 0
+127.0.0.1:54572 > filename_length: 10
+127.0.0.1:54572 > filename: file1.zip
+127.0.0.1:54572 > filesize: 51173819
+[update_file_list] 127.0.0.1:54572 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:54572 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 34229
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:52976 > data_port: 55601
+127.0.0.1:52976 > file_list_update
+127.0.0.1:52976 > n_files: 1
+127.0.0.1:52976 > status: 0
+127.0.0.1:52976 > filename_length: 10
+127.0.0.1:52976 > filename: file1.zip
+127.0.0.1:52976 > filesize: 51173819
+[update_file_list] 127.0.0.1:52976 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:52976 > new_file->filename: file1.zip
+127.0.0.1:52976 > new_file->filesize: 51173819
+127.0.0.1:52976 > new_file->host_list: 0x7f0fbc000bc0
+127.0.0.1:52976 > new_file->host_list->head: 0x7f0fbc000b70
+127.0.0.1:52976 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:37114 > data_port: 51049
+127.0.0.1:49470 > data_port: 57399
+127.0.0.1:49470 > file_list_update
+127.0.0.1:49470 > n_files: 1
+127.0.0.1:49470 > status: 0
+127.0.0.1:49470 > filename_length: 10
+127.0.0.1:49470 > filename: file1.zip
+127.0.0.1:49470 > filesize: 51173819
+[update_file_list] 127.0.0.1:49470 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:49470 > new_file->filename: file1.zip
+127.0.0.1:49470 > new_file->filesize: 51173819
+127.0.0.1:49470 > new_file->host_list: 0x7f0fc4001bd0
+127.0.0.1:49470 > new_file->host_list->head: 0x7f0fc40030d0
+127.0.0.1:49470 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 57399
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:37114 > file_list_update
+127.0.0.1:37114 > n_files: 1
+127.0.0.1:37114 > status: 0
+127.0.0.1:37114 > filename_length: 10
+127.0.0.1:37114 > filename: file1.zip
+127.0.0.1:37114 > filesize: 51173819
+[update_file_list] 127.0.0.1:37114 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:37114 > added a new file: file1.zip
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 57399
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_r127.0.0.1:37934 > data_port: 60275
+127.0.0.1:37934 > file_list_update
+127.0.0.1:37934 > n_files: 1
+127.0.0.1:37934 > status: 0
+127.0.0.1:37934 > filename_length: 10
+127.0.0.1:37934 > filename: file1.zip
+127.0.0.1:37934 > filesize: 51173819
+[update_file_list] 127.0.0.1:37934 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:37934 > new_file->filename: file1.zip
+127.0.0.1:37934 > new_file->filesize: 51173819
+127.0.0.1:37934 > new_file->host_list: 0x7fc26c001bf0
+127.0.0.1:37934 > new_file->host_list->head: 0x7fc26c001ba0
+127.0.0.1:37934 > added a new file: file1.zip
+127.0.0.1:58008 > data_port: 60117
+127.0.0.1:37934 > list_files_request
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 60275
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:58008 > file_list_update
+127.0.0.1:58008 > n_files: 1
+127.0.0.1:58008 > status: 0
+127.0.0.1:58008 > filename_length: 10
+127.0.0.1:58008 > filename: file1.zip
+127.0.0.1:58008 > filesize: 51173819
+[update_file_list] 127.0.0.1:58008 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:58008 > added a new file: file1.zip
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 60275
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:33604 > data_port: 55717
+127.0.0.1:33616 > data_port: 32883
+127.0.0.1:33616 > file_list_update
+127.0.0.1:33616 > n_files: 1
+127.0.0.1:33616 > status: 0
+127.0.0.1:33616 > filename_length: 10
+127.0.0.1:33616 > filename: file1.zip
+127.0.0.1:33616 > filesize: 51173819
+[update_file_list] 127.0.0.1:33616 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:33616 > new_file->filename: file1.zip
+127.0.0.1:33616 > new_file->filesize: 51173819
+127.0.0.1:33616 > new_file->host_list: 0x7fc264001d20
+127.0.0.1:33616 > new_file->host_list->head: 0x7fc264001cf0
+127.0.0.1:33616 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 32883
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:33604 > file_list_update
+127.0.0.1:33604 > n_files: 1
+127.0.0.1:33604 > status: 0
+127.0.0.1:33604 > filename_length: 10
+127.0.0.1:33604 > filename: file1.zip
+127.0.0.1:33604 > filesize: 51173819
+[update_file_list] 127.0.0.1:33604 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:33604 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 32883
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:35166 > data_port: 60049
+127.0.0.1:35166 > file_list_update
+127.0.0.1:35166 > n_files: 1
+127.0.0.1:35166 > status: 0
+127.0.0.1:35166 > filename_length: 10
+127.0.0.1:35166 > filename: file1.zip
+127.0.0.1:35166 > filesize: 51173819
+[update_file_list] 127.0.0.1:35166 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:35166 > new_file->filename: file1.zip
+127.0.0.1:35166 > new_file->filesize: 51173819
+127.0.0.1:35166 > new_file->host_list: 0x7fc264001d20
+127.0.0.1:35166 > new_file->host_list->head: 0x7fc264001cf0
+127.0.0.1:35166 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+function: removeHost
+function: removeNode/host
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+127.0.0.1:59810 > data_port: 49433
+127.0.0.1:44794 > data_port: 42063
+127.0.0.1:44794 > file_list_update
+127.0.0.1:44794 > n_files: 1
+127.0.0.1:44794 > status: 0
+127.0.0.1:44794 > filename_length: 10
+127.0.0.1:44794 > filename: file1.zip
+127.0.0.1:44794 > filesize: 51173819
+[update_file_list] 127.0.0.1:44794 > new file 'file1.zip'[update_file_list] adding host
+add 'file1.zip' to file_list, add host to host_list
+127.0.0.1:44794 > new_file->filename: file1.zip
+127.0.0.1:44794 > new_file->filesize: 51173819
+127.0.0.1:44794 > new_file->host_list: 0x7fc26c001bd0
+127.0.0.1:44794 > new_file->host_list->head: 0x7fc26c001c10
+127.0.0.1:44794 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+list_hosts_request
+Filename_length: 10
+Filename: file1.zip
+Create new thread to process list_hosts_request
+Execute process_list_hosts_request
+[process_list_hosts_request]filesize: 51173819
+initialize check
+[process_list_hosts_request] detect new/deleted hosts
+[process_list_hosts_request] check for deleted hosts
+[process_list_hosts_request] check for new hosts
+[process_list_hosts_request] free(check)
+[process_list_hosts_request] destruct old_ll
+[process_list_hosts_request] copy to old_ll
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 0
+[send_host_list] send ip: 2130706433
+[send_host_list] send data port: 42063
+list_hosts_request
+Filename_length: 0
+[LIST_HOSTS_REQUEST]filename_length = 0
+127.0.0.1:59810 > file_list_update
+127.0.0.1:59810 > n_files: 1
+127.0.0.1:59810 > status: 0
+127.0.0.1:59810 > filename_length: 10
+127.0.0.1:59810 > filename: file1.zip
+127.0.0.1:59810 > filesize: 51173819
+[update_file_list] 127.0.0.1:59810 > new file 'file1.zip'[update_file_list] adding host
+'file1.zip' existed, add host to the list
+127.0.0.1:59810 > added a new file: file1.zip
+[process_list_hosts_request]'file1.zip' no update
+[process_list_hosts_request]'file1.zip' no update
+Execute send_host_list
+[send_host_list] send LIST_HOSTS_RESPONSE
+[send_host_list] send sequence number
+[send_host_list] send filesize: 51173819
+[send_host_list]n_hosts: 1
+[send_host_list] send status: 1
+[send_host_list] send ip

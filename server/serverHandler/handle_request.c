@@ -23,7 +23,7 @@ static void displayFileListFromHost(uint32_t ip_addr, uint16_t port){
 	pthread_mutex_lock(&lock_file_list);
 	pthread_cleanup_push(mutex_unlock, &lock_file_list);
 	printf("%s\n", delim);
-	printf("%-4s | %-21s | %-25s | %-10s\n", "No", "Host", "Filename", "Filesize (byte)");
+	printf("%-4s | %-21s | %-25s | %-10s\n", "No", "Host", "Filename", "Filesize (bytes)");
 	struct Node *it = file_list->head;
 	int k = 0;
 	for (; it != NULL; it = it->next){
@@ -91,9 +91,9 @@ void handleSocketError(struct net_info cli_info, char *mess){
 	host.port = cli_info.data_port;
 	removeHost(host);
 
-	fprintf(stderr, "closing connection from %s:%u\n", cli_info.ip_add, cli_info.port);
+	fprintf(stderr, "Closing connection from %s:%u\n", cli_info.ip_add, cli_info.port);
 	close(cli_info.sockfd);
-	fprintf(stderr, "connection from %s:%u closed\n", cli_info.ip_add, cli_info.port);
+	fprintf(stderr, "Connection from %s:%u closed\n", cli_info.ip_add, cli_info.port);
 
 	/* display file list */
 	fprintf(stdout, "Full file list after removing the host: \n");
@@ -116,7 +116,6 @@ void removeHost(struct DataHost host){
 		if (host_node){
 			fprintf(stream, "function: removeNode/host\n");
 			removeNode(tmp->host_list, host_node);
-			//fprintf(stream, "removeNode/host done\n");
 			/* if the host_list is empty, also remove the file from file_list */
 			if (tmp->host_list->n_nodes <= 0){
 				if (it == file_list->head){
@@ -354,7 +353,7 @@ void process_list_files_request(struct net_info cli_info){
 }
 
 static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hosts){
-	fprintf(stream, "execute send_host_list\n");
+	fprintf(stream, "Execute send_host_list\n");
 	pthread_mutex_lock(thrdt->cli_info.lock_sockfd);
 	//pthread_cleanup_push(mutex_unlock, thrdt->cli_info.lock_sockfd);
 	
@@ -462,7 +461,7 @@ static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hos
 }
 
 void* process_list_hosts_request(void *arg){
-	fprintf(stream, "execute process_list_hosts_request\n");
+	fprintf(stream, "Execute process_list_hosts_request\n");
 	pthread_detach(pthread_self());
 	struct thread_data *thrdt = (struct thread_data*)arg;
 	char filename[256];

@@ -126,13 +126,11 @@ int llistContain(struct LinkedList ll, struct Node *node){
 	if (ll.n_nodes == 0){
 		return 0;
 	}
-
 	struct Node *it = ll.head;
 	for ( ; it != NULL; it = it->next){
 		if (it == node)
 			return 1;
 	}
-
 	return 0;
 }
 

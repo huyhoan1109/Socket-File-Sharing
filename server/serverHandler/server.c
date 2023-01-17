@@ -25,7 +25,7 @@ int main(int argc, char **argv){
 		printf("Usage: ./server <port>");
 		exit(1);
 	}
-	stream = fopen("history.log", "a+");
+	stream = fopen("history.log", "w");
 	int servsock = socket(AF_INET, SOCK_STREAM, 0);
 	if (servsock < 0){
 		perror("socket");

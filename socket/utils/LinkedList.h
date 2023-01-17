@@ -28,8 +28,8 @@ struct FileOwner{
 
 struct Segment{
 	uint32_t offset;			//position in the file
-	uint32_t n_bytes;			//number of bytes Received
-	uint32_t seg_size;			//this segment size (number of bytes need to Received)
+	uint32_t n_bytes;			//number of bytes received
+	uint32_t seg_size;			//this segment size (number of bytes need to received)
 	pthread_mutex_t lock_seg;
 	int downloading;			//is this segment being downloaded by a thread?
 };

@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <dirent.h> 
 
 #include "../../socket/utils/common.h"
 #include "connect_index_server.h"
@@ -23,7 +24,7 @@ const char EXIT_CMD[] = "/exit";
 void print_help();
 
 int main(int argc, char **argv){
-	stream = fopen("history.log", "a+");
+	stream = fopen("history.log", "w");
 	if (argc != 3){
 		printf("Usage: ./peer <host> <port>\n");
 		exit(1);
@@ -91,7 +92,7 @@ int main(int argc, char **argv){
 		close(servsock);
 		exit(1);
 	}
-
+	char path[100];
 	mkdir(tmp_dir, 0700);
 	while(1){
 		char input[400];
@@ -104,10 +105,26 @@ int main(int argc, char **argv){
 		}
 		if (strcmp(command, "/ls") == 0){
 			send_list_files_request();
+		} else if (strcmp(command, "/avail") == 0){
+			DIR *d;
+			struct dirent *dir;
+			d = opendir(STORAGE);
+			if (d){
+				while ((dir = readdir(d)) != NULL){
+					//Condition to check regular file.
+					if(dir->d_type==DT_REG && dir->d_name[0] != '.'){
+						printf("%s\n", dir->d_name);
+					}
+				}
+				closedir(d);
+			}
 		} else if (strcmp(command, "/rm") == 0) {
 			char *filename = strtok(NULL, " \n\t");
 			if (filename){
-				int ret = remove(filename);
+				strcpy(path, STORAGE);
+				strcat(path, "/");
+				strcat(path, filename);
+				int ret = remove(path);
 				if (ret != 0){
 					print_error("remove file");
 				}
@@ -118,7 +135,10 @@ int main(int argc, char **argv){
 		} else if (strcmp(command, "/get") == 0){
 			char *filename = strtok(NULL, " \n\t");
 			if (filename){
-				if (access(filename, F_OK) != -1){
+				strcpy(path, STORAGE);
+				strcat(path, "/");
+				strcat(path, filename);
+				if (access(path, F_OK) != -1){
 					fprintf(stdout, "\'%s\' existed\n", filename);
 				} else {
 					pthread_mutex_lock(&lock_the_file);
@@ -171,6 +191,9 @@ void print_help(){
 	printf("\n");
 	prettyprint("/ls", 0, "Command");
 	prettyprint("list files", 0, "Feature");
+	printf("\n");
+	prettyprint("/avail", 0, "Command");
+	prettyprint("has files", 0, "Feature");
 	printf("\n");
 	prettyprint("/rm <file>", 0, "Command");
 	prettyprint("remove file", 0, "Feature");

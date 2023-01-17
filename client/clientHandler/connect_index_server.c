@@ -43,7 +43,6 @@ int connect_to_index_server(char *servip, uint16_t index_port){
 void* process_response(void *arg){
 	pthread_detach(pthread_self());
 	int servsock = *(int*)arg;
-
 	/* process responses from the index server */
 	uint8_t packet_type;
 	while (readBytes(servsock, &packet_type, sizeof(packet_type)) > 0){

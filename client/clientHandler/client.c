@@ -106,6 +106,8 @@ int main(int argc, char **argv){
 		if (strcmp(command, "/ls") == 0){
 			send_list_files_request();
 		} else if (strcmp(command, "/avail") == 0){
+			printf("You have: ");
+			int h_f = 0;
 			DIR *d;
 			struct dirent *dir;
 			d = opendir(STORAGE);
@@ -113,11 +115,14 @@ int main(int argc, char **argv){
 				while ((dir = readdir(d)) != NULL){
 					//Condition to check regular file.
 					if(dir->d_type==DT_REG && dir->d_name[0] != '.'){
-						printf("%s\n", dir->d_name);
+						printf("\'%s\' ", dir->d_name);
+						h_f = 1;
 					}
 				}
 				closedir(d);
 			}
+			if (!h_f) printf("no files in database.\n");
+			else printf("\n");
 		} else if (strcmp(command, "/rm") == 0) {
 			char *filename = strtok(NULL, " \n\t");
 			if (filename){
@@ -127,6 +132,8 @@ int main(int argc, char **argv){
 				int ret = remove(path);
 				if (ret != 0){
 					print_error("remove file");
+				} else {
+					printf("Delete %s successfully\n", filename);
 				}
 			} else {
 				printf("help: /rm <filename>\n");

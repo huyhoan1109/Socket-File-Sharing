@@ -6,6 +6,7 @@ RM = rm -rf
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS  = -Wall -pthread
+CRYPTO = -lssl -lcrypto
 
 # Include library directories
 LIBDIR = serverHandler
@@ -23,7 +24,7 @@ BIN = server
 all: $(BIN)
 
 $(OBJDIR)/%.o:$(LIBDIR)/%.c
-	$(CC) -c $(CFLAGS) -o $@ $< 
+	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO)
 
 $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(INCOBJ)

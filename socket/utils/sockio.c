@@ -8,6 +8,8 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 #include "sockio.h"
 
 /** readBytes - read a number of bytes from the socket buffer.
@@ -50,12 +52,12 @@ int writeBytes(int sock, void* buf, unsigned int nbytes){
 	unsigned int total = 0;
 	while (1) {
 		wrote_bytes = write(sock, buf, nbytes);
-		if (wrote_bytes <= 0)
+		if (wrote_bytes <= 0){
 			//return error code
 			return wrote_bytes;
+		}
 		total += wrote_bytes;
-		if (wrote_bytes >= nbytes)
-			break;
+		if (wrote_bytes >= nbytes) break;
 		nbytes -= wrote_bytes;
 		buf += wrote_bytes;
 	}	

@@ -24,7 +24,7 @@ const char EXIT_CMD[] = "/exit";
 void print_help();
 
 int main(int argc, char **argv){
-	stream = fopen("history.log", "w");
+	stream = fopen("history.log", "a+");
 	if (argc != 3){
 		printf("Usage: ./peer <host> <port>\n");
 		exit(1);
@@ -34,7 +34,7 @@ int main(int argc, char **argv){
 
 	int dataSock = socket(AF_INET, SOCK_STREAM, 0);
 	if (dataSock < 0){
-		print_error("create dataSock");
+		print_error("create socket");
 		exit(1);
 	}
 	struct sockaddr_in dataSockIn;
@@ -44,12 +44,12 @@ int main(int argc, char **argv){
 	dataSockIn.sin_port = 0;	//let the OS chooses the port
 	
 	if ((bind(dataSock, (struct sockaddr*) &dataSockIn, sizeof(dataSockIn))) < 0){
-		print_error("bind dataSock");
+		print_error("bind socket");
 		exit(1);
 	}
 
 	if ((listen(dataSock, 20)) < 0){
-		print_error("listen on dataSock");
+		print_error("listen on socket");
 		exit(1);
 	}
 	
@@ -69,7 +69,7 @@ int main(int argc, char **argv){
 	pthread_t download_tid;
 	int thr = pthread_create(&download_tid, NULL, waitForDownloadRequest, &dataSock);
 	if (thr != 0){
-		print_error("new thread to handle download file request");
+		print_error("New thread to handle download file request");
 		exit(1);
 	}
 	
@@ -80,7 +80,7 @@ int main(int argc, char **argv){
 	pthread_t tid;
 	thr = pthread_create(&tid, NULL, &update_file_list, STORAGE);
 	if (thr != 0){
-		print_error("new thread to update file list to the index server");
+		print_error("New thread to update file list to the index server");
 		exit(1);
 	}
 
@@ -88,7 +88,7 @@ int main(int argc, char **argv){
 	pthread_t process_response_tid;
 	thr = pthread_create(&process_response_tid, NULL, &process_response, (void*)&servsock);
 	if (thr != 0){
-		print_error("new thread to process response from the index server");
+		print_error("New thread to process response from the index server");
 		close(servsock);
 		exit(1);
 	}
@@ -167,7 +167,7 @@ int main(int argc, char **argv){
 					clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
 
 					send_list_hosts_request(filename);
-
+					
 					download_done();
 
 					clock_gettime(CLOCK_MONOTONIC_RAW, &end);

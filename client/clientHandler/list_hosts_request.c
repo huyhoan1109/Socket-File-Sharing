@@ -13,7 +13,6 @@
 struct FileOwner *the_file = NULL;
 uint8_t seq_no = 0;
 pthread_mutex_t lock_the_file = PTHREAD_MUTEX_INITIALIZER;
-//pthread_cond_t cond_the_file = PTHREAD_COND_INITIALIZER;
 
 void send_list_hosts_request(char *filename){
 	pthread_mutex_lock(&lock_servsock);
@@ -21,7 +20,7 @@ void send_list_hosts_request(char *filename){
 
 	int n_bytes = writeBytes(servsock, (void*)&LIST_HOSTS_REQUEST, sizeof(LIST_HOSTS_REQUEST));
 	if (n_bytes <= 0){
-		print_error("send LIST_HOSTS_REQUEST to index server");
+		print_error("Send LIST_HOSTS_REQUEST to index server");
 		exit(1);
 	}
 

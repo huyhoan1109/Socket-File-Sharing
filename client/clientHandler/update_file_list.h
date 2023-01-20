@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 struct FileStatus{
-	char filename[256];
+	char filename[200];
 	uint8_t status;
 	uint32_t filesize;
 };

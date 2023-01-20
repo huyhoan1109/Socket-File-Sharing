@@ -21,7 +21,7 @@ struct net_info{
 
 struct thread_data{
 	struct net_info cli_info;
-	char filename[256];
+	char filename[200];
 	uint32_t filesize;
 	uint8_t seq_no;
 };

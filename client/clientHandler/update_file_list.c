@@ -25,17 +25,13 @@ void announceDataPort(int sockfd){
 	 * from different types */
 	pthread_mutex_lock(&lock_servsock);
 
-	int n_bytes = writeBytes(sockfd, 
-							(void*)&DATA_PORT_ANNOUNCEMENT, 
-							sizeof(DATA_PORT_ANNOUNCEMENT));
+	int n_bytes = writeBytes(sockfd, (void*)&DATA_PORT_ANNOUNCEMENT, sizeof(DATA_PORT_ANNOUNCEMENT));
 	if (n_bytes <= 0){
 		print_error("Send DATA_PORT_ANNOUNCEMENT to index server");
 		exit(1);
 	}
-	fprintf(stream, "update_file_list.c > dataPort = %u\n", ntohs(dataPort));
-	n_bytes = writeBytes(sockfd,
-						(void*)&dataPort,
-						sizeof(dataPort));
+	fprintf(stream, "update_file_list.c > socket = %u\n", ntohs(dataPort));
+	n_bytes = writeBytes(sockfd, (void*)&dataPort, sizeof(dataPort));
 	if (n_bytes <= 0){
 		print_error("Send data port to index server");
 		exit(1);
@@ -53,7 +49,7 @@ static void send_file_list(int sockfd, struct FileStatus *fs, uint8_t n_fs){
 	int n_bytes = writeBytes(sockfd, (void*)&FILE_LIST_UPDATE, sizeof(FILE_LIST_UPDATE));
 
 	if (n_bytes <= 0){
-		print_error("send FILE_LIST_UPDATE to index server");
+		print_error("Send FILE_LIST_UPDATE to index server");
 		exit(1);
 	}
 	
@@ -118,7 +114,7 @@ void* update_file_list(void *arg){
 		while ((ent = readdir(dir)) != NULL){
 			if (ent->d_name[0] == '.')
 				continue;			
-			fprintf(stream, "new file: %s\n", ent->d_name);
+			fprintf(stream, "New file: %s\n", ent->d_name);
 			strcpy(fs[n_fs].filename, ent->d_name);
 			fprintf(stream, "fs[n_fs].filename: %s\n", fs[n_fs].filename);
 			uint32_t sz = getFileSize(dir_name, ent->d_name);

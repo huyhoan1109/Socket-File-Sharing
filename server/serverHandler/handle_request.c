@@ -169,7 +169,7 @@ void update_file_list(struct net_info cli_info){
 		if (n_bytes <= 0){
 			handleSocketError(cli_info, "read status from socket");
 		}
-		fprintf(stream, "%s > status: %u\n", cli_addr, status);
+		fprintf(stream, "%s > Status: %u\n", cli_addr, status);
 
 		//filename length
 		uint16_t filename_length;
@@ -210,7 +210,7 @@ void update_file_list(struct net_info cli_info){
 			/* add the host to the list */
 			struct Node *host_node = newNode(&host, DATA_HOST_TYPE);
 
-			fprintf(stream, "[update_file_list] adding host\n");
+			fprintf(stream, "[update_file_list] Adding host\n");
 
 			//check if the file has already been in the list
 			struct Node *file_node = getNodeByFilename(file_list, filename);
@@ -226,7 +226,7 @@ void update_file_list(struct net_info cli_info){
 				if (!llContainHost(file->host_list, host))
 					push(file->host_list, host_node);
 			} else {
-				fprintf(stream, "add \'%s\' to file_list, add host to host_list\n", filename);
+				fprintf(stream, "Add \'%s\' to file_list, add host to host_list\n", filename);
 				//create a new node to store file's info
 				struct FileOwner new_file;
 				strcpy(new_file.filename, filename);
@@ -236,14 +236,13 @@ void update_file_list(struct net_info cli_info){
 				new_file.host_list = newLinkedList();
 				fprintf(stream, "%s > new_file->host_list: %p\n", cli_addr, new_file.host_list);
 				push(new_file.host_list, host_node);
-				fprintf(stream, "%s > new_file->host_list->head: %p\n", 
-						cli_addr, new_file.host_list->head);
+				fprintf(stream, "%s > new_file->host_list->head: %p\n", cli_addr, new_file.host_list->head);
 				file_node = newNode(&new_file, FILE_OWNER_TYPE);
 				push(file_list, file_node);
 			}
 			//pthread_cond_broadcast(&cond_file_list);
 
-			fprintf(stream, "%s > added a new file: %s\n", 
+			fprintf(stream, "%s > Added a new file: %s\n", 
 					cli_addr, filename);
 		} else if (status == FILE_DELETED){
 			fprintf(stream, "[update_file_list] %s > \'%s\' deleted\n", cli_addr, filename);
@@ -262,7 +261,7 @@ void update_file_list(struct net_info cli_info){
 				if (file->host_list->n_nodes <= 0){
 					removeNode(file_list, file_node);
 				}
-				fprintf(stream, "%s > deleted a file: %s\n", cli_addr, filename);
+				fprintf(stream, "%s > Deleted a file: %s\n", cli_addr, filename);
 			}
 		}
 		pthread_cond_broadcast(&cond_file_list);
@@ -292,14 +291,11 @@ void process_list_files_request(struct net_info cli_info){
 	//pthread_cleanup_push(mutex_unlock, cli_info.lock_sockfd);
 	//pthread_cleanup_push(mutex_unlock, &lock_file_list);
 
-	n_bytes = writeBytes(cli_info.sockfd, 
-						(void*)&LIST_FILES_RESPONSE, 
-						sizeof(LIST_FILES_RESPONSE));
+	n_bytes = writeBytes(cli_info.sockfd, (void*)&LIST_FILES_RESPONSE, sizeof(LIST_FILES_RESPONSE));
 	if (n_bytes <= 0){
 		pthread_mutex_unlock(cli_info.lock_sockfd);
-		handleSocketError(cli_info, "send LIST_FILES_RESPONSE message");
+		handleSocketError(cli_info, "Send LIST_FILES_RESPONSE message");
 	}
-	
 
 	pthread_mutex_lock(&lock_file_list);
 
@@ -315,7 +311,7 @@ void process_list_files_request(struct net_info cli_info){
 	if (n_bytes <= 0){
 		pthread_mutex_unlock(&lock_file_list);
 		pthread_mutex_unlock(cli_info.lock_sockfd);
-		handleSocketError(cli_info, "send n_files");
+		handleSocketError(cli_info, "Send n_files");
 	}
 
 	//pthread_cleanup_pop(0);		//lock_sockfd
@@ -337,14 +333,14 @@ void process_list_files_request(struct net_info cli_info){
 		if (n_bytes <= 0){
 			pthread_mutex_unlock(&lock_file_list);
 			pthread_mutex_unlock(cli_info.lock_sockfd);
-			handleSocketError(cli_info, "send filename_length");
+			handleSocketError(cli_info, "Send filename_length");
 		}
 		
 		n_bytes = writeBytes(cli_info.sockfd, file->filename, ntohs(filename_length));
 		if (n_bytes <= 0){
 			pthread_mutex_unlock(&lock_file_list);
 			pthread_mutex_unlock(cli_info.lock_sockfd);
-			handleSocketError(cli_info, "send filename");
+			handleSocketError(cli_info, "Send filename");
 		}
 	}
 	pthread_mutex_unlock(&lock_file_list);
@@ -355,106 +351,80 @@ void process_list_files_request(struct net_info cli_info){
 static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hosts){
 	fprintf(stream, "Execute send_host_list\n");
 	pthread_mutex_lock(thrdt->cli_info.lock_sockfd);
-	//pthread_cleanup_push(mutex_unlock, thrdt->cli_info.lock_sockfd);
 	
 	//send header
-	fprintf(stream, "[send_host_list] send LIST_HOSTS_RESPONSE\n");
-	long n_bytes = writeBytes(thrdt->cli_info.sockfd, 
-							(void*)&LIST_HOSTS_RESPONSE, 
-							sizeof(LIST_HOSTS_RESPONSE));
+	fprintf(stream, "[send_host_list] Send LIST_HOSTS_RESPONSE\n");
+	long n_bytes = writeBytes(thrdt->cli_info.sockfd, (void*)&LIST_HOSTS_RESPONSE, sizeof(LIST_HOSTS_RESPONSE));
 	if (n_bytes <= 0){
 		pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-		handleSocketError(thrdt->cli_info, "send LIST_HOSTS_RESPONSE message");
+		handleSocketError(thrdt->cli_info, "Send LIST_HOSTS_RESPONSE message");
 	}
 
 	//send sequence number
-	fprintf(stream, "[send_host_list] send sequence number\n");
-	n_bytes = writeBytes(thrdt->cli_info.sockfd,
-						&thrdt->seq_no,
-						sizeof(thrdt->seq_no));
+	fprintf(stream, "[send_host_list] Send sequence number\n");
+	n_bytes = writeBytes(thrdt->cli_info.sockfd, &thrdt->seq_no, sizeof(thrdt->seq_no));
 	if (n_bytes <= 0){
 		pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-		handleSocketError(thrdt->cli_info, "[send_host_list] send sequence number");
+		handleSocketError(thrdt->cli_info, "[send_host_list] Send sequence number");
 	}
-	
-	//send filename length
-	//uint16_t filename_length = strlen(thrdt->filename) + 1;
-	//fprintf(stream, "[send_host_list]send filename_length: %u\n", filename_length);
-	//filename_length = htons(filename_length);
-
-	//n_bytes = writeBytes(thrdt->cli_info.sockfd, &filename_length, sizeof(filename_length));
-	//if (n_bytes <= 0){
-	//	handleSocketError(thrdt->cli_info, "send filename_length");
-	//}
-	//
-	////send filename
-	//fprintf(stream, "[send_host_list] send filename: %s\n", thrdt->filename);
-	//n_bytes = writeBytes(thrdt->cli_info.sockfd, thrdt->filename, ntohs(filename_length));
-	//if (n_bytes <= 0){
-	//	handleSocketError(thrdt->cli_info, "send filename");
-	//}
 
 	//send filesize
-	fprintf(stream, "[send_host_list] send filesize: %u\n", thrdt->filesize);
+	fprintf(stream, "[send_host_list] Send filesize: %u\n", thrdt->filesize);
 	uint32_t filesize = htonl(thrdt->filesize);
 	n_bytes = writeBytes(thrdt->cli_info.sockfd, &filesize, sizeof(filesize));
 	if (n_bytes <= 0){
 		pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-		handleSocketError(thrdt->cli_info, "send filesize");
+		handleSocketError(thrdt->cli_info, "Send filesize");
 	}
 
 	//send n_hosts
 	if (chg_hosts == NULL){
 		uint8_t n_nodes = 0;
-		fprintf(stream, "[send_host_list]n_hosts: %u\n", n_nodes);
+		fprintf(stream, "[send_host_list] n_hosts: %u\n", n_nodes);
 
-		n_bytes = writeBytes(thrdt->cli_info.sockfd, 
-							&(n_nodes), 
-							sizeof(n_nodes));
+		n_bytes = writeBytes(thrdt->cli_info.sockfd, &(n_nodes), sizeof(n_nodes));
 		if (n_bytes <= 0){
 			pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-			handleSocketError(thrdt->cli_info, "send n_hosts");
+			handleSocketError(thrdt->cli_info, "Send n_hosts");
 		}
 		pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
 		return;
 	}
 
-	fprintf(stream, "[send_host_list]n_hosts: %u\n", chg_hosts->n_nodes);
-	n_bytes = writeBytes(thrdt->cli_info.sockfd, 
-						&(chg_hosts->n_nodes), 
-						sizeof(chg_hosts->n_nodes));
+	fprintf(stream, "[send_host_list] n_hosts: %u\n", chg_hosts->n_nodes);
+	n_bytes = writeBytes(thrdt->cli_info.sockfd, &(chg_hosts->n_nodes), sizeof(chg_hosts->n_nodes));
 	if (n_bytes <= 0){
 		pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-		handleSocketError(thrdt->cli_info, "send n_hosts");
+		handleSocketError(thrdt->cli_info, "Send n_hosts");
 	}
 
 	struct Node *it = chg_hosts->head;
 	for (; it != NULL; it = it->next){
 		struct DataHost *host = (struct DataHost*)(it->data);
 		//send status
-		fprintf(stream, "[send_host_list] send status: %u\n", host->status);
+		fprintf(stream, "[send_host_list] Send status: %u\n", host->status);
 		n_bytes = writeBytes(thrdt->cli_info.sockfd, &(host->status), sizeof(host->status));
 		if (n_bytes <= 0){
 			pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-			handleSocketError(thrdt->cli_info, "send status");
+			handleSocketError(thrdt->cli_info, "Send status");
 		}
 
 		//send ip
-		fprintf(stream, "[send_host_list] send ip: %u\n", host->ip_addr);
+		fprintf(stream, "[send_host_list] Send ip: %u\n", host->ip_addr);
 		uint32_t ip_addr = htonl(host->ip_addr);
 		n_bytes = writeBytes(thrdt->cli_info.sockfd, &ip_addr, sizeof(ip_addr));
 		if (n_bytes <= 0){
 			pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-			handleSocketError(thrdt->cli_info, "send ip addr");
+			handleSocketError(thrdt->cli_info, "Send ip addr");
 		}
 
 		//send data port
-		fprintf(stream, "[send_host_list] send data port: %u\n", host->port);
+		fprintf(stream, "[send_host_list] Send data port: %u\n", host->port);
 		uint16_t data_port = htons(host->port);
 		n_bytes = writeBytes(thrdt->cli_info.sockfd, &data_port, sizeof(data_port));
 		if (n_bytes <= 0){
 			pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-			handleSocketError(thrdt->cli_info, "send data port");
+			handleSocketError(thrdt->cli_info, "Send data port");
 		}
 	}
 	pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
@@ -492,7 +462,7 @@ void* process_list_hosts_request(void *arg){
 			pthread_mutex_unlock(&lock_file_list);
 			destructLinkedList(old_ll);
 			/* terminate this thread */
-			fprintf(stream, "[process_list_hosts_request] terminate thread due to the difference of sequence number\n");
+			fprintf(stream, "[process_list_hosts_request] Terminate thread due to the difference of sequence number\n");
 			int ret = 100;
 			pthread_exit(&ret);
 		}
@@ -502,7 +472,7 @@ void* process_list_hosts_request(void *arg){
 			chg_hosts = newLinkedList();
 			struct FileOwner *file = (struct FileOwner*)(file_node->data);
 			thrdt->filesize = file->filesize;
-			fprintf(stream, "[process_list_hosts_request]filesize: %u\n", file->filesize);
+			fprintf(stream, "[process_list_hosts_request] filesize: %u\n", file->filesize);
 
 			/* check if the i-th host of the file->host_list is the new host:
 			 * check[i]: the number of comparison performed with the i-th host,
@@ -512,21 +482,20 @@ void* process_list_hosts_request(void *arg){
 			fprintf(stream, "initialize check\n");
 			bzero(check, file->host_list->n_nodes);
 
-			fprintf(stream, "[process_list_hosts_request] detect new/deleted hosts\n");
+			fprintf(stream, "[process_list_hosts_request] Detect new/deleted hosts\n");
 
 			struct Node *it1 = old_ll->head;
-			fprintf(stream, "[process_list_hosts_request] check for deleted hosts\n");
+			fprintf(stream, "[process_list_hosts_request] Check for deleted hosts\n");
 			for (; it1 != NULL; it1 = it1->next){
 				struct DataHost *host1 = (struct DataHost*)(it1->data);
-				fprintf(stream, "[process_list_hosts_request]\'%s\' compare host (%u:%u) with\n", 
+				fprintf(stream, "[process_list_hosts_request] \'%s\' compare host (%u:%u) with\n", 
 						filename, host1->ip_addr, host1->port);
 				struct Node *it2 = file->host_list->head;
 				int same = 0;
 				uint8_t i = 0;
 				for (; it2 != NULL; it2 = it2->next){
 					struct DataHost *host2 = (struct DataHost*)(it2->data);
-					fprintf(stream, "[process_list_hosts_request]host (%u:%u)\n", 
-							host2->ip_addr, host2->port);
+					fprintf(stream, "[process_list_hosts_request] Host (%u:%u)\n", host2->ip_addr, host2->port);
 					if(host1->ip_addr == host2->ip_addr && host1->port == host2->port){
 						same = 1;
 						break;
@@ -547,7 +516,7 @@ void* process_list_hosts_request(void *arg){
 			}
 			uint8_t i = 0;
 			struct Node *it = file->host_list->head;
-			fprintf(stream, "[process_list_hosts_request] check for new hosts\n");
+			fprintf(stream, "[process_list_hosts_request] Check for new hosts\n");
 			for (; it != NULL; it = it->next){
 				/* new host */
 				if (check[i] == old_ll->n_nodes){
@@ -559,11 +528,11 @@ void* process_list_hosts_request(void *arg){
 				i++;
 			}
 
-			fprintf(stream, "[process_list_hosts_request] free(check)\n");
+			fprintf(stream, "[process_list_hosts_request] Free(check)\n");
 			free(check);
-			fprintf(stream, "[process_list_hosts_request] destruct old_ll\n");
+			fprintf(stream, "[process_list_hosts_request] Destruct old_ll\n");
 			destructLinkedList(old_ll);
-			fprintf(stream, "[process_list_hosts_request] copy to old_ll\n");
+			fprintf(stream, "[process_list_hosts_request] Copy to old_ll\n");
 			old_ll = copyLinkedList(file->host_list);
 		} else {
 			/* there is no host that own the file */
@@ -579,19 +548,11 @@ void* process_list_hosts_request(void *arg){
 
 		pthread_mutex_unlock(&lock_file_list);
 
-		//int old_state;
-		//prevent thread exiting, avoid sending incomplete message
-		//pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &old_state);
-
 		if (chg_hosts->n_nodes == 0){
-			fprintf(stream, "[process_list_hosts_request]\'%s\' no update\n", filename);
+			fprintf(stream, "[process_list_hosts_request] \'%s\' no update\n", filename);
 		} else {
 			send_host_list(thrdt, chg_hosts);
 		}
-
-		//allow this thread to exit
-		//pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &old_state);
-		//pthread_testcancel();	//thread cancelation point
 
 		destructLinkedList(chg_hosts);
 		chg_hosts = NULL;

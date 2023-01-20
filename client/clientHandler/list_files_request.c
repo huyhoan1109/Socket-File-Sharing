@@ -21,16 +21,16 @@ void send_list_files_request(){
 }
 
 void process_list_files_response(){
-	fprintf(stream, "index server > list_files_response\n");
+	fprintf(stream, "Index server > list_files_response\n");
 
 	long n_bytes = 0;
 	uint8_t n_files = 0;
 	n_bytes = readBytes(servsock, &n_files, sizeof(n_files));
 	if (n_bytes <= 0){
-		print_error("index server > read n_files");
+		print_error("Index server > read n_files");
 		exit(1);
 	}
-	fprintf(stream, "index server > n_files: %u\n", n_files);
+	fprintf(stream, "Index server > n_files: %u\n", n_files);
 
 	char delim[30];
 	memset(delim, '-', 30);
@@ -43,18 +43,18 @@ void process_list_files_response(){
 		uint16_t filename_length;
 		n_bytes = readBytes(servsock, &filename_length, sizeof(filename_length));
 		if (n_bytes <= 0){
-			print_error("index server > read filename_length");
+			print_error("Index server > Read filename_length");
 			exit(1);
 		}
 		filename_length = ntohs(filename_length);
-		fprintf(stream, "index server > filename_length: %u\n", filename_length);
+		fprintf(stream, "Index server > filename_length: %u\n", filename_length);
 		char filename[256];
 		n_bytes = readBytes(servsock, filename, filename_length);
 		if (n_bytes <= 0){
-			print_error("index server > read filename");
+			print_error("Index server > Read filename");
 			exit(1);
 		}
-		fprintf(stream, "index server > filename: %s\n", filename);
+		fprintf(stream, "Index server > filename: %s\n", filename);
 		printf("%-4u | %-25s\n", i + 1, filename);
 	}
 	printf("%s\n", delim);

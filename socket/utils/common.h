@@ -19,7 +19,7 @@
 #define RED				"\x1b[91"
 #define STORAGE "DB"
 #define print_center(x, space1, space2) printf("|%s %s %s|", space1, x, space2);
-
+// header
 /* request types */
 extern const uint8_t DATA_PORT_ANNOUNCEMENT;
 extern const uint8_t FILE_LIST_UPDATE;
@@ -33,6 +33,7 @@ extern const uint8_t READY_TO_SEND_DATA;
 extern const uint8_t FILE_NOT_FOUND;
 extern const uint8_t OPENING_FILE_ERROR;
 
+// history log file stream
 extern FILE *stream;
 
 uint32_t getFileSize(char* dir, char *filename);

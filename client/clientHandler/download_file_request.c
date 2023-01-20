@@ -25,12 +25,7 @@ pthread_mutex_t lock_n_threads = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_n_threads = PTHREAD_COND_INITIALIZER;
 const char tmp_dir[] = "./.temp/";
 
-static void prepare_segment(struct Segment *seg, 
-							uint32_t offset, 
-							uint32_t size, 
-							uint32_t n_bytes, 
-							uint32_t downloading)
-{
+static void prepare_segment(struct Segment *seg, uint32_t offset, uint32_t size, uint32_t n_bytes, uint32_t downloading){
 	seg->offset = offset;
 	seg->seg_size = size;
 	seg->n_bytes = n_bytes;
@@ -49,7 +44,7 @@ static struct Segment* create_segment(uint8_t sequence){
 	struct Segment *segment = NULL;
 	
 	pthread_mutex_lock(&lock_segment_list);
-	fprintf(stream, "[create_segment] wait to access segment_list\n");
+	fprintf(stream, "[create_segment] Wait to access segment_list\n");
 	pthread_cleanup_push(mutex_unlock, &lock_segment_list);
 	if (segment_list->n_nodes == 0){
 		struct Segment *seg = malloc(sizeof(struct Segment));
@@ -118,16 +113,16 @@ static struct Segment* create_segment(uint8_t sequence){
 static void terminate_thread(struct Segment *seg){
 	if (seg){
 		pthread_mutex_lock(&seg->lock_seg);
-		fprintf(stream, "[terminate_thread] complete segment\n");
+		fprintf(stream, "[terminate_thread] Complete segment\n");
 		seg->downloading = 0;
 		pthread_mutex_unlock(&seg->lock_seg);
 	}
 	pthread_mutex_lock(&lock_n_threads);
-	fprintf(stream, "[terminate_thread] decrease n_threads\n");
+	fprintf(stream, "[terminate_thread] Decrease n_threads\n");
 	n_threads --;
 	pthread_cond_signal(&cond_n_threads);
 	pthread_mutex_unlock(&lock_n_threads);
-	fprintf(stream, "[terminate_thread] decreased n_threads\n");
+	fprintf(stream, "[terminate_thread] Decreased n_threads\n");
 	int ret = 100;
 	pthread_exit(&ret);
 }
@@ -154,10 +149,8 @@ static int connect_peer(struct DataHost dthost, char *addr_str){
 	}
 
 	int conn = connect(sockfd, (struct sockaddr*)&sin, sizeof(sin));
-	if (conn < 0)
-		return conn;
+	if (conn < 0) return conn;
 
-	//fprintf(stdout, "connected to %s\n", addr_str);
 	return sockfd;
 }
 
@@ -205,18 +198,18 @@ void* download_file(void *arg){
 		filename_length = htons(filename_length);
 		n_bytes = writeBytes(sockfd, &filename_length, sizeof(filename_length));
 		if (n_bytes <= 0){
-			handle_error(segment, addr_str, "send filename_length");
+			handle_error(segment, addr_str, "Send filename_length");
 		}
 
 		n_bytes = writeBytes(sockfd, the_file->filename, ntohs(filename_length));
 		if (n_bytes <= 0){
-			handle_error(segment, addr_str, "send filename");
+			handle_error(segment, addr_str, "Send filename");
 		}
 
 		uint32_t offset = htonl(segment->offset);
 		n_bytes = writeBytes(sockfd, &offset, sizeof(offset));
 		if (n_bytes <= 0){
-			handle_error(segment, addr_str, "send offset");
+			handle_error(segment, addr_str, "Send offset");
 		}
 
 		/* receive file status message */
@@ -227,7 +220,7 @@ void* download_file(void *arg){
 		}
 		
 		if (file_status == FILE_NOT_FOUND){
-			fprintf(stdout, "%s > file not found\n", addr_str);
+			fprintf(stdout, "%s > File not found\n", addr_str);
 			close(sockfd);
 			terminate_thread(segment);
 		} else if (file_status == OPENING_FILE_ERROR){
@@ -267,9 +260,6 @@ void* download_file(void *arg){
 				segment->n_bytes += n_write;
 				if (n_write < 0){
 					/* error */
-					//fflush(file);
-					//fclose(file);
-					//fclose(bak);
 					close(filefd);
 					close(sockfd);
 					pthread_mutex_unlock(&segment->lock_seg);
@@ -277,8 +267,6 @@ void* download_file(void *arg){
 				}
 				if (segment->n_bytes >= segment->seg_size){
 					/* got enough data */
-					//fclose(file);
-					//fclose(bak);
 					close(filefd);
 					segment->downloading = 0;
 					uint32_t left_size = segment->n_bytes - i * MAX_BUFF_SIZE;
@@ -336,7 +324,7 @@ int download_done(){
 
 	pthread_mutex_lock(&lock_the_file);
 	if (file_not_found){
-		fprintf(stdout, "index server > \'%s\' not found\n", the_file->filename);
+		fprintf(stdout, "Index server > \'%s\' not found\n", the_file->filename);
 	} else {
 		fprintf(stdout, "Received \'%s\' successfully\n", the_file->filename);
 	}
@@ -364,12 +352,12 @@ int download_done(){
 	/* destruct the_file and segment_list */
 	fprintf(stream, "[download_done] Destruct the_file\n");
 	if (!the_file){
-		fprintf(stream, "thefile == NULL\n");
+		fprintf(stream, "file == NULL\n");
 	}
 	destructLinkedList(the_file->host_list);
 	free(path);
 	free(the_file);
-	fprintf(stream, "assign the_file=NULL\n");
+	fprintf(stream, "assigned file = NULL\n");
 	the_file = NULL;
 	pthread_mutex_unlock(&lock_the_file);
 

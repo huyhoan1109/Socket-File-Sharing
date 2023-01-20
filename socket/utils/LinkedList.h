@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <pthread.h>
 
+// message body {message type, message content}
 #define INSERT_NODE_SUCCESS 1
 #define INSERT_NODE_NOT_IN_LL -2 
 #define INSERT_NODE_ARGS_NULL -1
@@ -20,7 +21,7 @@
 #define STRING_TYPE 5
 
 struct FileOwner{
-	char filename[256];
+	char filename[200];
 	uint32_t filesize;
 	struct LinkedList *host_list;	// LinkedList with data type DataHost
 };
@@ -53,8 +54,6 @@ struct LinkedList{
 	struct Node *head;
 	struct Node *tail;
 	uint8_t n_nodes;	//number of nodes in the LL
-	//pthread_mutex_t lock_ll;
-	//pthread_cond_t cond_ll;
 };
 
 struct Node* newNode(void *data, int data_type);

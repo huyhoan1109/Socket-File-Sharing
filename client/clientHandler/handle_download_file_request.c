@@ -32,12 +32,12 @@ static void* handleDownloadFileReq(void *arg){
 	sprintf(cli_addr, "%s:%u", cli_info.ip_add, cli_info.port);
 	
 	uint16_t filename_length;
-	char filename[256];
+	char filename[200];
 	uint32_t offset = 0;
 
 	int n_bytes = readBytes(cli_info.sockfd, &filename_length, sizeof(filename_length));
 	if (n_bytes <= 0){
-		sprintf(err_mess, "%s > read filename_length", cli_addr);
+		sprintf(err_mess, "%s > Read filename_length", cli_addr);
 		print_error(err_mess);
 		close_connection(cli_info);
 		return NULL;
@@ -47,7 +47,7 @@ static void* handleDownloadFileReq(void *arg){
 
 	n_bytes = readBytes(cli_info.sockfd, &filename, filename_length);
 	if (n_bytes <= 0){
-		sprintf(err_mess, "%s > read filename", cli_addr);
+		sprintf(err_mess, "%s > Read filename", cli_addr);
 		print_error(err_mess);
 		close_connection(cli_info);
 		return NULL;
@@ -55,14 +55,14 @@ static void* handleDownloadFileReq(void *arg){
 	
 	n_bytes = readBytes(cli_info.sockfd, &offset, sizeof(offset));
 	if (n_bytes <=0){
-		sprintf(err_mess, "%s > read offset", cli_addr);
+		sprintf(err_mess, "%s > Read offset", cli_addr);
 		print_error(err_mess);
 		close_connection(cli_info);
 		return NULL;
 	}
 	offset = ntohl(offset);
 
-	fprintf(stdout, "%s > required file \'%s\', offset=%u\n", cli_addr, filename, offset);
+	fprintf(stdout, "%s > Required file \'%s\', offset=%u\n", cli_addr, filename, offset);
 	char *path = calloc(100, sizeof(char));
 	strcpy(path, STORAGE);
 	strcat(path, "/");
@@ -70,7 +70,7 @@ static void* handleDownloadFileReq(void *arg){
 	FILE *file = fopen(path, "rb");
 	free(path);
 	if (file == NULL){
-		sprintf(err_mess, "%s > open \'%s\'", cli_addr, filename);
+		sprintf(err_mess, "%s > Open \'%s\'", cli_addr, filename);
 		int errnum = print_error(err_mess);
 		uint8_t state;
 		if (errnum == ENOENT){
@@ -80,7 +80,7 @@ static void* handleDownloadFileReq(void *arg){
 		}
 		n_bytes = writeBytes(cli_info.sockfd, (void*)&state, sizeof(state));
 		if (n_bytes <= 0){
-			sprintf(err_mess, "%s > send file_error message", cli_addr);
+			sprintf(err_mess, "%s > Send file_error message", cli_addr);
 			print_error(err_mess);
 			close_connection(cli_info);
 			return NULL;
@@ -89,7 +89,7 @@ static void* handleDownloadFileReq(void *arg){
 	
 	n_bytes = writeBytes(cli_info.sockfd, (void*)&READY_TO_SEND_DATA, sizeof(READY_TO_SEND_DATA));
 	if (n_bytes <= 0){
-		sprintf(err_mess, "%s > send READY_TO_SEND_DATA message", cli_addr);
+		sprintf(err_mess, "%s > Send READY_TO_SEND_DATA message", cli_addr);
 		print_error(err_mess);
 		close_connection(cli_info);
 		return NULL;
@@ -108,7 +108,7 @@ static void* handleDownloadFileReq(void *arg){
 			if (feof(file)){
 				done = 1;
 			} else {
-				sprintf(err_mess, "%s > read \'%s\'", cli_addr, filename);
+				sprintf(err_mess, "%s > Read \'%s\'", cli_addr, filename);
 				print_error(err_mess);
 			}
 			n_bytes = writeBytes(cli_info.sockfd, buff, buf_len);
@@ -120,13 +120,13 @@ static void* handleDownloadFileReq(void *arg){
 	}
 	fclose(file);
 	if (n_bytes <= 0){
-		sprintf(err_mess, "%s > send content of \'%s\'", cli_addr, filename);
+		sprintf(err_mess, "%s > Send content of \'%s\'", cli_addr, filename);
 		print_error(err_mess);
 		close_connection(cli_info);
 		return NULL;
 	} else {
 		if (done){
-			fprintf(stream, "%s > sending \'%s\' done\n", cli_addr, filename);
+			fprintf(stream, "%s > Sending \'%s\' done\n", cli_addr, filename);
 		}
 	}
 	close_connection(cli_info);

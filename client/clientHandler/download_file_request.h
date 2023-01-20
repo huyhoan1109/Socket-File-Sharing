@@ -24,5 +24,4 @@ void* download_file(void *arg);
 
 int download_done();
 
-
 #endif

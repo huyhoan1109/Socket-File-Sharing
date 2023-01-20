@@ -30,7 +30,7 @@ uint32_t getFileSize(char* dir, char *filename){
 	char err_mess[256];
 	if (!file){
 		strerror_r(errno, err_mess, sizeof(err_mess));
-		fprintf(stderr, "open file %s: %s\n", filename, err_mess);
+		fprintf(stderr, "Open file %s: %s\n", filename, err_mess);
 		return -1;
 	}
 	fseeko(file, 0, SEEK_END);

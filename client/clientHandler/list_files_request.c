@@ -11,7 +11,7 @@
 
 void send_list_files_request(){
 	pthread_mutex_lock(&lock_servsock);
-	//send header
+	//send header to server
 	int n_bytes = writeBytes(servsock, (void*)&LIST_FILES_REQUEST, sizeof(LIST_FILES_REQUEST));
 	if (n_bytes <= 0){
 		print_error("Send LIST_FILES_REQUEST to index server");
@@ -22,9 +22,9 @@ void send_list_files_request(){
 
 void process_list_files_response(){
 	fprintf(stream, "Index server > list_files_response\n");
-
 	long n_bytes = 0;
 	uint8_t n_files = 0;
+	//receive info from server
 	n_bytes = readBytes(servsock, &n_files, sizeof(n_files));
 	if (n_bytes <= 0){
 		print_error("Index server > read n_files");
@@ -48,7 +48,7 @@ void process_list_files_response(){
 		}
 		filename_length = ntohs(filename_length);
 		fprintf(stream, "Index server > filename_length: %u\n", filename_length);
-		char filename[256];
+		char filename[200];
 		n_bytes = readBytes(servsock, filename, filename_length);
 		if (n_bytes <= 0){
 			print_error("Index server > Read filename");

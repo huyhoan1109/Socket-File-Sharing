@@ -13,6 +13,7 @@
 pthread_mutex_t lock_servsock = PTHREAD_MUTEX_INITIALIZER;
 
 int servsock = 0;
+WINDOW *win;
 
 int connect_to_index_server(char *servip, uint16_t index_port){
 	/* connect to index server */
@@ -47,7 +48,7 @@ void* process_response(void *arg){
 	uint8_t packet_type;
 	while (readBytes(servsock, &packet_type, sizeof(packet_type)) > 0){
 		if (packet_type == LIST_FILES_RESPONSE){
-			process_list_files_response(servsock);
+			process_list_files_response();
 			fflush(stdout);
 		} else if (packet_type == LIST_HOSTS_RESPONSE){
 			fprintf(stream, "list_hosts_response\n");

@@ -24,10 +24,10 @@ BIN = client
 all: $(BIN)
 
 $(OBJDIR)/%.o:$(LIBDIR)/%.c
-	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO)
+	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO) -lncurses
 
 $(BIN): $(OBJ)
-	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(INCOBJ) 
+	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(INCOBJ) -lncurses
 
 # Clean old compilation
 clean:

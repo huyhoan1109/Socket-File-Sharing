@@ -1,0 +1,93 @@
+update_file_list.c > socket = 35549
+Directory DB is empty
+Exec monitor_directory
+update_file_list.c > socket = 57451
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: text.txt
+update_file_list.c > socket = 42347
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: text.txt
+The file text2.txt was created.
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Index server > list_files_response
+Index server > n_files: 2
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > filename_length: 10
+Index server > filename: text2.txt
+Index server > list_files_response
+Index server > n_files: 2
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > filename_length: 10
+Index server > filename: text2.txt
+Index server > list_files_response
+Index server > n_files: 2
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > filename_length: 10
+Index server > filename: text2.txt
+update_file_list.c > socket = 43355
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 0
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 5
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 0
+filesize: 0 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 5
+filesize: 83886080 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 2
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > filename_length: 10
+Index server > filename: text2.txt

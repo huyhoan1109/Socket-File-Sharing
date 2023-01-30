@@ -31,7 +31,7 @@ void drawmenu(WINDOW *win, int item)
 	int c;
 	char menu[MENUMAX][21] = {
 			"1. List file",
-			"2. Has file",
+			"2. Availabel file",
 			"3. Remove file",
 			"4. Download file",
 			"5. Exit Program"};
@@ -105,9 +105,9 @@ void initMenu(WINDOW *win)
 		drawmenu(win, menuitem);
 	} while (key != '1');
 }
-void initListFile(WINDOW *win)
+void initScreen(WINDOW *win, char title[])
 {
-	mvwprintw(win, 0, 2, "List File Screen");
+	mvwprintw(win, 0, 2, title);
 	int key;
 	menuitem = 0;
 	mvwaddstr(win, 13, 2, "Enter B back menu");
@@ -217,11 +217,39 @@ int main(int argc, char **argv)
 		{
 			wrefresh(win);
 			send_list_files_request();
-			initListFile(win);
+			initScreen(win, "List File Screen");
+		}
+		else if (menuitem == 1)
+		{
+			int h_f = 0;
+			DIR *d;
+			struct dirent *dir;
+			d = opendir(STORAGE);
+			if (d)
+			{
+				int item = 0;
+				while ((dir = readdir(d)) != NULL)
+				{
+					// Condition to check regular file.
+					if (dir->d_type == DT_REG && dir->d_name[0] != '.')
+					{
+						mvwaddstr(win, 2 + (item * 2), 12, dir->d_name);
+						mvwaddstr(win, 2 + (item * 2), 6, itoa(item + 1));
+						wrefresh(win);
+						item++;
+						h_f = 1;
+					}
+				}
+				closedir(d);
+			}
+			if (!h_f)
+				mvwaddstr(win, 2, 4, "No files in database");
+			initScreen(win, "Availabel file screen");
 		}
 	}
 	echo(); // re-enable echo
 	endwin();
+	return 0;
 
 	char path[100];
 	mkdir(tmp_dir, 0700);
@@ -242,7 +270,7 @@ int main(int argc, char **argv)
 		}
 		else if (strcmp(command, "/avail") == 0)
 		{
-			printf("You have: ");
+			// printf("You have: ");
 			int h_f = 0;
 			DIR *d;
 			struct dirent *dir;

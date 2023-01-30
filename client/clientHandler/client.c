@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 	box(win, 0, 0);
 	/* listen for and process responses from the index server */
 	pthread_t process_response_tid;
-	thr = pthread_create(&process_response_tid, NULL, &process_response, (void*)&servsock);
+	thr = pthread_create(&process_response_tid, NULL, &process_response, (void *)&servsock);
 	if (thr != 0)
 	{
 		print_error("New thread to process response from the index server");
@@ -215,6 +215,7 @@ int main(int argc, char **argv)
 		initMenu(win);
 		if (menuitem == 0)
 		{
+			wrefresh(win);
 			send_list_files_request();
 			initListFile(win);
 		}

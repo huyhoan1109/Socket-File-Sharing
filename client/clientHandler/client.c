@@ -174,7 +174,94 @@ void initRemoveScreen(WINDOW *win, char title[], char noti[])
 		}
 	} while (1);
 }
-
+void initDownloadScreen(WINDOW *win, char title[], char noti[])
+{
+	wclear(win);
+	box(win, 0, 0);
+	mvwprintw(win, 0, 2, title);
+	int key;
+	char fileName[30] = {0};
+	menuitem = 0;
+	char path[100];
+	mvwaddstr(win, 13, 2, "Press esc to go back menu");
+	mvwaddstr(win, 2, 4, "File name to download:");
+	mvwaddstr(win, 6, 4, noti);
+	keypad(stdscr, TRUE);
+	int temp = 0;
+	do
+	{
+		key = wgetch(win);
+		if (key == 27)
+		{
+			wclear(win);
+			box(win, 0, 0);
+			return;
+		}
+		if (key == 127 || key == 8)
+		{
+			if (temp != 0)
+			{
+				fileName[temp] = 0;
+				temp--;
+				wclear(win);
+				box(win, 0, 0);
+				mvwprintw(win, 0, 2, title);
+				mvwaddstr(win, 13, 2, "Press esc to go back menu");
+				mvwaddstr(win, 2, 4, "File name to download:");
+				mvwaddstr(win, 4, 4, fileName);
+				wrefresh(win);
+			}
+		}
+		else if (key != '\n')
+		{
+			fileName[temp] = key;
+			temp++;
+			mvwaddstr(win, 4, 4, fileName);
+		}
+		else if (key == '\n')
+		{
+			strcpy(path, STORAGE);
+			strcat(path, "/");
+			strcat(path, fileName);
+			if (access(path, F_OK) != -1)
+			{
+				char notiExist[30];
+				strcat(notiExist, fileName);
+				strcat(notiExist, " ");
+				strcat(notiExist, "existed");
+				mvwaddstr(win, 6, 4, notiExist);
+				initDownloadScreen(win, "Download file screen", notiExist);
+			}
+			else
+			{
+				pthread_mutex_lock(&lock_the_file);
+				the_file = malloc(sizeof(struct FileOwner));
+				the_file->host_list = newLinkedList();
+				strcpy(the_file->filename, fileName);
+				the_file->filesize = 0;
+				pthread_mutex_unlock(&lock_the_file);
+				pthread_mutex_lock(&lock_segment_list);
+				segment_list = newLinkedList();
+				pthread_mutex_unlock(&lock_segment_list);
+				pthread_mutex_lock(&lock_n_threads);
+				n_threads = 0;
+				pthread_mutex_unlock(&lock_n_threads);
+				struct timespec begin, end;
+				clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+				send_list_hosts_request(fileName);
+				download_done();
+				clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+				long duration = (end.tv_sec - begin.tv_sec) * 1e3 + (end.tv_nsec - begin.tv_nsec) / 1e6;
+				// printf("Elapsed time: %ld miliseconds\n", duration);
+				char notiTime[100] = {0};
+				strcat(notiTime, "Elapsed time: ");
+				strcat(notiTime, itoa(duration));
+				strcat(notiTime, " miliseconds");
+				mvwaddstr(win, 8, 4, notiTime);
+			}
+		}
+	} while (1);
+}
 int main(int argc, char **argv)
 {
 
@@ -299,6 +386,10 @@ int main(int argc, char **argv)
 		else if (menuitem == 2)
 		{
 			initRemoveScreen(win, "Remove file screen", "");
+		}
+		else if (menuitem == 3)
+		{
+			initDownloadScreen(win, "Download file screen", "");
 		}
 	}
 	echo(); // re-enable echo

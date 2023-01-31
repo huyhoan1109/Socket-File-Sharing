@@ -381,3 +381,257 @@ Index server > filename_length: 9
 Index server > filename: text.txt
 Index server > filename_length: 10
 Index server > filename: text2.txt
+update_file_list.c > socket = 44503
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 58063
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 2
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > filename_length: 10
+Index server > filename: text2.txt
+update_file_list.c > socket = 40091
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 2
+Index server > filename_length: 9
+Index server > filename: text.txt
+Index server > filename_length: 10
+Index server > filename: text2.txt
+update_file_list.c > socket = 48029
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 43693
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 51839
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 59953
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 43927
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 50019
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 43443
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 55347
+New file: text.txt
+fs[n_fs].filename: text.txt
+filesize: 3
+New file: text2.txt
+fs[n_fs].filename: text2.txt
+filesize: 0
+Sending info of 'text.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'text.txt'
+filesize: 3
+filesize: 50331648 (big endian)
+Sending info of 'text2.txt'
+Status: 0
+filename_length: 10
+filename_length: 2560 (big endian)
+filename: 'text2.txt'
+filesize: 0
+filesize: 0 (big endian)
+Exec monitor_directory

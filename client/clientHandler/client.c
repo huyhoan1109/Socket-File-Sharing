@@ -47,29 +47,6 @@ void drawmenu(WINDOW *win, int item)
 	mvwaddstr(win, 13, 2, "Enter to select");
 	wrefresh(win);
 }
-
-char *int2str(int nb)
-{
-	int i = 0;
-	int div = 1;
-	int cmp = nb;
-	char *nbr = malloc(sizeof(char) * 12);
-
-	if (!nbr)
-		return (NULL);
-	if (nb < 0)
-		nbr[i++] = '-';
-	while ((cmp /= 10) != 0)
-		div = div * 10;
-	while (div > 0)
-	{
-		nbr[i++] = abs(nb / div) + 48;
-		nb = nb % div;
-		div /= 10;
-	}
-	nbr[i] = '\0';
-	return (nbr);
-}
 void initMenu(WINDOW *win)
 {
 	mvwprintw(win, 0, 2, "Main Menu");
@@ -110,19 +87,89 @@ void initScreen(WINDOW *win, char title[])
 	mvwprintw(win, 0, 2, title);
 	int key;
 	menuitem = 0;
-	mvwaddstr(win, 13, 2, "Enter B back menu");
+	mvwaddstr(win, 13, 2, "Press esc to go back menu");
 	keypad(stdscr, TRUE);
 	noecho(); // disable echo
 	do
 	{
 		key = wgetch(win);
-		if (key == 'b')
+		if (key == 27)
 		{
 			wclear(win);
 			box(win, 0, 0);
 			return;
 		}
 	} while (key != '1');
+}
+void initRemoveScreen(WINDOW *win, char title[])
+{
+	mvwprintw(win, 0, 2, title);
+	int key;
+	char fileName[30] = {0};
+	menuitem = 0;
+	char path[100];
+	mvwaddstr(win, 13, 2, "Press esc to go back menu");
+	mvwaddstr(win, 2, 4, "File name to remove:");
+	keypad(stdscr, TRUE);
+	int temp = 0;
+	do
+	{
+		key = wgetch(win);
+		if (key == 27)
+		{
+			wclear(win);
+			box(win, 0, 0);
+			return;
+		}
+		if (key == 127 || key == 8)
+		{
+			if (temp != 0)
+			{
+				fileName[temp] = 0;
+				temp--;
+				wclear(win);
+				box(win, 0, 0);
+				mvwprintw(win, 0, 2, title);
+				mvwaddstr(win, 13, 2, "Press esc to go back menu");
+				mvwaddstr(win, 2, 4, "File name to remove:");
+				mvwaddstr(win, 4, 4, fileName);
+				wrefresh(win);
+			}
+		}
+		else if (key != '\n')
+		{
+			fileName[temp] = key;
+			temp++;
+			mvwaddstr(win, 4, 4, fileName);
+		}
+		else if (key == '\n')
+		{
+			// fileName[temp - 1] = 0;
+			strcpy(path, STORAGE);
+			strcat(path, "/");
+			strcat(path, fileName);
+			int ret = remove(path);
+			if (ret != 0)
+			{
+				char noti[100] = {0};
+				strcat(noti, "ERROR:");
+				strcat(noti, fileName);
+				strcat(noti, " ");
+				strcat(noti, "is not a file");
+				mvwaddstr(win, 6, 4, noti);
+			}
+			else
+			{
+				char notiSuccess[100] = {0};
+				strcat(notiSuccess, "Delete");
+				strcat(notiSuccess, " ");
+				strcat(notiSuccess, fileName);
+				strcat(notiSuccess, " ");
+				strcat(notiSuccess, "successfully");
+				mvwaddstr(win, 6, 4, notiSuccess);
+			}
+		}
+	} while (1);
 }
 
 int main(int argc, char **argv)
@@ -246,11 +293,14 @@ int main(int argc, char **argv)
 				mvwaddstr(win, 2, 4, "No files in database");
 			initScreen(win, "Availabel file screen");
 		}
+		else if (menuitem == 2)
+		{
+			initRemoveScreen(win, "Remove file screen");
+		}
 	}
 	echo(); // re-enable echo
 	endwin();
-	return 0;
-
+	// return 0;
 	char path[100];
 	mkdir(tmp_dir, 0700);
 	while (1)

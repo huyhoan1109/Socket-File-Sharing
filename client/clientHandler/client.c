@@ -101,8 +101,10 @@ void initScreen(WINDOW *win, char title[])
 		}
 	} while (key != '1');
 }
-void initRemoveScreen(WINDOW *win, char title[])
+void initRemoveScreen(WINDOW *win, char title[], char noti[])
 {
+	wclear(win);
+	box(win, 0, 0);
 	mvwprintw(win, 0, 2, title);
 	int key;
 	char fileName[30] = {0};
@@ -110,6 +112,7 @@ void initRemoveScreen(WINDOW *win, char title[])
 	char path[100];
 	mvwaddstr(win, 13, 2, "Press esc to go back menu");
 	mvwaddstr(win, 2, 4, "File name to remove:");
+	mvwaddstr(win, 6, 4, noti);
 	keypad(stdscr, TRUE);
 	int temp = 0;
 	do
@@ -151,12 +154,12 @@ void initRemoveScreen(WINDOW *win, char title[])
 			int ret = remove(path);
 			if (ret != 0)
 			{
-				char noti[100] = {0};
-				strcat(noti, "ERROR:");
-				strcat(noti, fileName);
-				strcat(noti, " ");
-				strcat(noti, "is not a file");
-				mvwaddstr(win, 6, 4, noti);
+				char notiFail[100] = {0};
+				strcat(notiFail, "ERROR:");
+				strcat(notiFail, fileName);
+				strcat(notiFail, " ");
+				strcat(notiFail, "is not a file");
+				initRemoveScreen(win, "Remove file screen", notiFail);
 			}
 			else
 			{
@@ -295,7 +298,7 @@ int main(int argc, char **argv)
 		}
 		else if (menuitem == 2)
 		{
-			initRemoveScreen(win, "Remove file screen");
+			initRemoveScreen(win, "Remove file screen", "");
 		}
 	}
 	echo(); // re-enable echo

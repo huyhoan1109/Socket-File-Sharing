@@ -3,5 +3,6 @@
 
 void send_list_files_request();
 void process_list_files_response();
+char *itoa(int n);
 
 #endif

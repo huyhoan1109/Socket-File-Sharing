@@ -56,7 +56,7 @@ void send_list_hosts_request(char *filename){
 }
 
 static void display_host_list(){
-	printf("%-3s | %-22s\n", "No", "Host (ip:data_port)");
+	// printf("%-3s | %-22s\n", "No", "Host (ip:data_port)");
 	char delim[29];
 	memset(delim, '.', 28);
 	delim[28] = 0;
@@ -69,9 +69,9 @@ static void display_host_list(){
 		addr.s_addr = htonl(dthost->ip_addr);
 		char *ip_addr = inet_ntoa(addr);
 		char addr_full[22];
-		sprintf(addr_full, "%s:%u", ip_addr, dthost->port);
-		printf("%s\n", delim);
-		printf("%-3d | %-22s\n", i, addr_full);
+		// sprintf(addr_full, "%s:%u", ip_addr, dthost->port);
+		// printf("%s\n", delim);
+		// printf("%-3d | %-22s\n", i, addr_full);
 	}
 }
 

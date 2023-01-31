@@ -16,9 +16,9 @@
 static void close_connection(struct NetInfo cli_info){
 	char cli_addr[22];
 	sprintf(cli_addr, "%s:%u", cli_info.ip_add, cli_info.port);
-	printf("Closing connection from %s\n", cli_addr);
+//	printf("Closing connection from %s\n", cli_addr);
 	close(cli_info.sockfd);
-	printf("Connection from %s closed\n", cli_addr);
+//	printf("Connection from %s closed\n", cli_addr);
 }
 
 static void* handleDownloadFileReq(void *arg){
@@ -62,7 +62,7 @@ static void* handleDownloadFileReq(void *arg){
 	}
 	offset = ntohl(offset);
 
-	fprintf(stdout, "%s > Required file \'%s\', offset=%u\n", cli_addr, filename, offset);
+//	fprintf(stdout, "%s > Required file \'%s\', offset=%u\n", cli_addr, filename, offset);
 	char *path = calloc(100, sizeof(char));
 	strcpy(path, STORAGE);
 	strcat(path, "/");
@@ -151,7 +151,7 @@ void* waitForDownloadRequest(void *arg){
 		inet_ntop(AF_INET, &(clisin.sin_addr), cli_info->ip_add, sizeof(cli_info->ip_add));
 		cli_info->port = ntohs(clisin.sin_port);
 
-		fprintf(stderr, "Connection from %s:%u\n", cli_info->ip_add, cli_info->port);
+		//fprintf(stderr, "Connection from %s:%u\n", cli_info->ip_add, cli_info->port);
 
 		/* create a new thread for each client */
 		pthread_t tid;

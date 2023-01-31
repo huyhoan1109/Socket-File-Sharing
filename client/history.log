@@ -635,3 +635,728 @@ filename: 'text2.txt'
 filesize: 0
 filesize: 0 (big endian)
 Exec monitor_directory
+update_file_list.c > socket = 54927
+New file: file.txt
+fs[n_fs].filename: file.txt
+filesize: 17
+Sending info of 'file.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'file.txt'
+filesize: 17
+filesize: 285212672 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 59995
+New file: file.txt
+fs[n_fs].filename: file.txt
+filesize: 17
+Sending info of 'file.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'file.txt'
+filesize: 17
+filesize: 285212672 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 39463
+New file: file.txt
+fs[n_fs].filename: file.txt
+filesize: 17
+Sending info of 'file.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'file.txt'
+filesize: 17
+filesize: 285212672 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 38539
+New file: file.txt
+fs[n_fs].filename: file.txt
+filesize: 17
+Sending info of 'file.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'file.txt'
+filesize: 17
+filesize: 285212672 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 60491
+New file: file.txt
+fs[n_fs].filename: file.txt
+filesize: 17
+Sending info of 'file.txt'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'file.txt'
+filesize: 17
+filesize: 285212672 (big endian)
+Exec monitor_directory
+127.0.0.1:54160 > filename_length: 9
+127.0.0.1:54160 > Sending 'file.txt' done
+The file file.txt was deleted.
+Sending info of 'file.txt'
+Status: 1
+update_file_list.c > socket = 51959
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 39383
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:55164 > filename_length: 9
+127.0.0.1:55164 > Sending 'game.apk' done
+update_file_list.c > socket = 52989
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:34640 > filename_length: 9
+127.0.0.1:34640 > Sending 'game.apk' done
+127.0.0.1:41556 > filename_length: 9
+127.0.0.1:41556 > Sending 'game.apk' done
+127.0.0.1:37936 > filename_length: 9
+127.0.0.1:37936 > Sending 'game.apk' done
+127.0.0.1:35658 > filename_length: 9
+127.0.0.1:35658 > Sending 'game.apk' done
+127.0.0.1:41286 > filename_length: 9
+127.0.0.1:41286 > Sending 'game.apk' done
+update_file_list.c > socket = 36997
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:33684 > filename_length: 9
+127.0.0.1:33684 > Sending 'game.apk' done
+127.0.0.1:52312 > filename_length: 9
+127.0.0.1:52312 > Sending 'game.apk' done
+127.0.0.1:59542 > filename_length: 9
+127.0.0.1:59542 > Sending 'game.apk' done
+127.0.0.1:49714 > filename_length: 9
+127.0.0.1:49714 > Sending 'game.apk' done
+127.0.0.1:46836 > filename_length: 9
+127.0.0.1:46836 > Sending 'game.apk' done
+update_file_list.c > socket = 52751
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:48994 > filename_length: 9
+127.0.0.1:48994 > Sending 'game.apk' done
+update_file_list.c > socket = 56045
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:58878 > filename_length: 9
+127.0.0.1:58878 > Sending 'game.apk' done
+update_file_list.c > socket = 43017
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:35500 > filename_length: 9
+127.0.0.1:35500 > Sending 'game.apk' done
+update_file_list.c > socket = 50379
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:34412 > filename_length: 9
+127.0.0.1:34412 > Sending 'game.apk' done
+127.0.0.1:40932 > filename_length: 9
+127.0.0.1:40932 > Sending 'game.apk' done
+update_file_list.c > socket = 38009
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:47060 > filename_length: 9
+127.0.0.1:47060 > Sending 'game.apk' done
+127.0.0.1:50066 > filename_length: 9
+127.0.0.1:50066 > Sending 'game.apk' done
+127.0.0.1:43380 > filename_length: 9
+127.0.0.1:43380 > Sending 'game.apk' done
+127.0.0.1:54218 > filename_length: 9
+127.0.0.1:54218 > Sending 'game.apk' done
+127.0.0.1:33088 > filename_length: 9
+127.0.0.1:33088 > Sending 'game.apk' done
+127.0.0.1:51882 > filename_length: 9
+127.0.0.1:51882 > Sending 'game.apk' done
+127.0.0.1:44940 > filename_length: 9
+127.0.0.1:44940 > Sending 'game.apk' done
+update_file_list.c > socket = 44249
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+127.0.0.1:38266 > filename_length: 9
+127.0.0.1:38266 > Sending 'game.apk' done
+update_file_list.c > socket = 53317
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 46291
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 35043
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 47581
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 36313
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 45669
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 33031
+Directory DB is empty
+Exec monitor_directory
+update_file_list.c > socket = 46153
+Directory DB is empty
+Exec monitor_directory
+update_file_list.c > socket = 57165
+Directory DB is empty
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 0
+update_file_list.c > socket = 46873
+Directory DB is empty
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 0
+Index server > list_files_response
+Index server > n_files: 0
+update_file_list.c > socket = 38081
+Directory DB is empty
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 0
+update_file_list.c > socket = 57293
+Directory DB is empty
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 0
+update_file_list.c > socket = 43319
+Directory DB is empty
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 0
+The file game.apk was created.
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 38687
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+The file game.apk was deleted.
+Sending info of 'game.apk'
+Status: 1
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 0
+filesize: 0 (big endian)
+Index server > list_files_response
+Index server > n_files: 0
+update_file_list.c > socket = 45875
+Directory DB is empty
+Exec monitor_directory
+update_file_list.c > socket = 57361
+Directory DB is empty
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 0
+The file game.apk was created.
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+update_file_list.c > socket = 33333
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 36211
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+Index server > list_files_response
+Index server > n_files: 1
+Index server > filename_length: 9
+Index server > filename: game.apk
+update_file_list.c > socket = 56897
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+The file game.apk was deleted.
+Sending info of 'game.apk'
+Status: 1
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 0
+filesize: 0 (big endian)
+[send_list_hosts_request] filename: 'game.apk'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 131129310
+[process_list_hosts_response] n_hosts: 1
+[process_list_hosts_response] Status: 0
+[process_list_hosts_response] IP: 2130706433
+[process_list_hosts_response] Port: 56367
+[process_list_hosts_response] New host, add to the list
+[process_list_hosts_response] Created new thread to download file
+function download_file
+[create_segment] Wait to access segment_list
+[create_segment] Wait to access segment_list
+no more segment need to be downloaded
+[download_file] Emit signal
+[download_file] Terminate thread
+[terminate_thread] Decrease n_threads
+[terminate_thread] Decreased n_threads
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+The file game.apk was created.
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 131129310
+[process_list_hosts_response] n_hosts: 1
+[process_list_hosts_response] Status: 1
+[process_list_hosts_response] IP: 2130706433
+[process_list_hosts_response] Port: 56367
+update_file_list.c > socket = 33895
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 55123
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+[send_list_hosts_request] filename: 'fame'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+[send_list_hosts_request] filename: 'fame'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 1
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+[send_list_hosts_request] filename: 'fame'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 2
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+[send_list_hosts_request] filename: 'fame'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 3
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+update_file_list.c > socket = 57401
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 48321
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+[send_list_hosts_request] filename: 'fa'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+update_file_list.c > socket = 54137
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 44481
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+update_file_list.c > socket = 35773
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+[send_list_hosts_request] filename: 'game'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+[send_list_hosts_request] filename: 'game'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 1
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+[send_list_hosts_request] filename: 'game'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 2
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+[send_list_hosts_request] filename: 'hello'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 3
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+update_file_list.c > socket = 48881
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory
+[send_list_hosts_request] filename: 'game'
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+[send_list_hosts_request] filename: ''
+[download_done] Increase sequence number
+[download_done] Move the file from .temp/ to DB
+[download_done] Destruct the_file
+assigned file = NULL
+[download_done] Destruct segment_list
+update_file_list.c > socket = 45293
+New file: game.apk
+fs[n_fs].filename: game.apk
+filesize: 131129310
+Sending info of 'game.apk'
+Status: 0
+filename_length: 9
+filename_length: 2304 (big endian)
+filename: 'game.apk'
+filesize: 131129310
+filesize: 3739209735 (big endian)
+Exec monitor_directory

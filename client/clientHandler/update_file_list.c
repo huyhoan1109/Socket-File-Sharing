@@ -210,12 +210,12 @@ void monitor_directory(char *dir, int socketfd){
 							fs[n_fs].status = FILE_NEW;
 							strcpy(fs[n_fs].filename, event->name);
 							uint32_t sz = getFileSize(dir, event->name);
-							printf("filesize: %u\n", sz);
+						//	printf("filesize: %u\n", sz);
 							if (sz < 0)
 								continue;
 							fs[n_fs].filesize = sz;
 							n_fs ++;
-							printf("n_fs: %d\n", n_fs);
+						//	printf("n_fs: %d\n", n_fs);
 							removeNode(monitor_files, file_node);
 						}
 					} else if (event->mask & IN_DELETE || event->mask & IN_MOVED_FROM){

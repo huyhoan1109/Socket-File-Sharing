@@ -25,17 +25,16 @@
 const char EXIT_CMD[] = "/exit";
 int menuitem = 0;
 
-void print_help();
 void drawmenu(WINDOW *win, int item)
 {
 	int c;
 	char menu[MENUMAX][21] = {
-			"1. List file",
-			"2. Availabel file",
-			"3. Remove file",
-			"4. Download file",
-			"5. Exit Program"};
-
+		"1. List file",
+		"2. Available file",
+		"3. Remove file",
+		"4. Download file",
+		"5. Exit Program"
+	};
 	clear();
 	for (c = 0; c < MENUMAX; c++)
 	{
@@ -44,12 +43,12 @@ void drawmenu(WINDOW *win, int item)
 		mvwaddstr(win, 2 + (c * 2), 12, menu[c]);
 		wattroff(win, A_REVERSE); // remove highlight
 	}
-	mvwaddstr(win, 13, 2, "Enter to select");
+	mvwaddstr(win, 13, 12, "Enter to select");
 	wrefresh(win);
 }
 void initMenu(WINDOW *win)
 {
-	mvwprintw(win, 0, 2, "Main Menu");
+	mvwprintw(win, 0, 2, " Main Menu ");
 	int key;
 	menuitem = 0;
 	drawmenu(win, menuitem);
@@ -61,15 +60,17 @@ void initMenu(WINDOW *win)
 		key = wgetch(win);
 		switch (key)
 		{
-		case 's':
-			menuitem++;
-			if (menuitem > MENUMAX - 1)
-				menuitem = 0;
-			break;
+		case 65:
 		case 'w':
 			menuitem--;
 			if (menuitem < 0)
 				menuitem = MENUMAX - 1;
+			break;
+		case 66:
+		case 's':
+			menuitem++;
+			if (menuitem > MENUMAX - 1)
+				menuitem = 0;
 			break;
 		case '\n':
 			wclear(win);
@@ -87,7 +88,7 @@ void initScreen(WINDOW *win, char title[])
 	mvwprintw(win, 0, 2, title);
 	int key;
 	menuitem = 0;
-	mvwaddstr(win, 13, 2, "Press esc to go back menu");
+	mvwaddstr(win, 13, 4, "Press esc to go back menu");
 	keypad(stdscr, TRUE);
 	noecho(); // disable echo
 	do
@@ -101,7 +102,7 @@ void initScreen(WINDOW *win, char title[])
 		}
 	} while (key != '1');
 }
-void initRemoveScreen(WINDOW *win, char title[], char noti[])
+void initRemoveScreen(WINDOW *win, char *title, char noti[])
 {
 	wclear(win);
 	box(win, 0, 0);
@@ -110,7 +111,7 @@ void initRemoveScreen(WINDOW *win, char title[], char noti[])
 	char fileName[30] = {0};
 	menuitem = 0;
 	char path[100];
-	mvwaddstr(win, 13, 2, "Press esc to go back menu");
+	mvwaddstr(win, 13, 4, "Press esc to go back menu");
 	mvwaddstr(win, 2, 4, "File name to remove:");
 	mvwaddstr(win, 6, 4, noti);
 	keypad(stdscr, TRUE);
@@ -126,14 +127,14 @@ void initRemoveScreen(WINDOW *win, char title[], char noti[])
 		}
 		if (key == 127 || key == 8)
 		{
-			if (temp != 0)
+			if (temp > -1)
 			{
 				fileName[temp] = 0;
-				temp--;
+				if (temp > 0) temp --; 
 				wclear(win);
 				box(win, 0, 0);
 				mvwprintw(win, 0, 2, title);
-				mvwaddstr(win, 13, 2, "Press esc to go back menu");
+				mvwaddstr(win, 13, 4, "Press esc to go back menu");
 				mvwaddstr(win, 2, 4, "File name to remove:");
 				mvwaddstr(win, 4, 4, fileName);
 				wrefresh(win);
@@ -155,11 +156,12 @@ void initRemoveScreen(WINDOW *win, char title[], char noti[])
 			if (ret != 0)
 			{
 				char notiFail[100] = {0};
-				strcat(notiFail, "ERROR:");
+				strcat(notiFail, "ERROR: ");
 				strcat(notiFail, fileName);
 				strcat(notiFail, " ");
-				strcat(notiFail, "is not a file");
-				initRemoveScreen(win, "Remove file screen", notiFail);
+				strcat(notiFail, "isn't available");
+				if (strlen(fileName) == 0) strcpy(notiFail, "No input available");
+				mvwaddstr(win, 6, 4, notiFail);
 			}
 			else
 			{
@@ -174,7 +176,7 @@ void initRemoveScreen(WINDOW *win, char title[], char noti[])
 		}
 	} while (1);
 }
-void initDownloadScreen(WINDOW *win, char title[], char noti[])
+void initDownloadScreen(WINDOW *win, char *title, char noti[])
 {
 	wclear(win);
 	box(win, 0, 0);
@@ -183,7 +185,7 @@ void initDownloadScreen(WINDOW *win, char title[], char noti[])
 	char fileName[30] = {0};
 	menuitem = 0;
 	char path[100];
-	mvwaddstr(win, 13, 2, "Press esc to go back menu");
+	mvwaddstr(win, 13, 4, "Press esc to go back menu");
 	mvwaddstr(win, 2, 4, "File name to download:");
 	mvwaddstr(win, 6, 4, noti);
 	keypad(stdscr, TRUE);
@@ -199,14 +201,14 @@ void initDownloadScreen(WINDOW *win, char title[], char noti[])
 		}
 		if (key == 127 || key == 8)
 		{
-			if (temp != 0)
+			if (temp > -1)
 			{
 				fileName[temp] = 0;
-				temp--;
+				if (temp > 0) temp--;
 				wclear(win);
 				box(win, 0, 0);
 				mvwprintw(win, 0, 2, title);
-				mvwaddstr(win, 13, 2, "Press esc to go back menu");
+				mvwaddstr(win, 13, 4, "Press esc to go back menu");
 				mvwaddstr(win, 2, 4, "File name to download:");
 				mvwaddstr(win, 4, 4, fileName);
 				wrefresh(win);
@@ -220,17 +222,18 @@ void initDownloadScreen(WINDOW *win, char title[], char noti[])
 		}
 		else if (key == '\n')
 		{
+
 			strcpy(path, STORAGE);
 			strcat(path, "/");
 			strcat(path, fileName);
 			if (access(path, F_OK) != -1)
 			{
-				char notiExist[30];
-				strcat(notiExist, fileName);
-				strcat(notiExist, " ");
-				strcat(notiExist, "existed");
-				mvwaddstr(win, 6, 4, notiExist);
-				initDownloadScreen(win, "Download file screen", notiExist);
+				char notify[30] = {0};
+				strcat(notify, fileName);
+				strcat(notify, " ");
+				strcat(notify, "existed");
+				if (strlen(fileName) == 0) strcpy(notify, "No input available");
+				mvwaddstr(win, 6, 4, notify);
 			}
 			else
 			{
@@ -252,12 +255,11 @@ void initDownloadScreen(WINDOW *win, char title[], char noti[])
 				download_done();
 				clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 				long duration = (end.tv_sec - begin.tv_sec) * 1e3 + (end.tv_nsec - begin.tv_nsec) / 1e6;
-				// printf("Elapsed time: %ld miliseconds\n", duration);
 				char notiTime[100] = {0};
 				strcat(notiTime, "Elapsed time: ");
 				strcat(notiTime, itoa(duration));
 				strcat(notiTime, " miliseconds");
-				mvwaddstr(win, 8, 4, notiTime);
+				mvwaddstr(win, 10, 4, notiTime);
 			}
 		}
 	} while (1);
@@ -322,7 +324,7 @@ int main(int argc, char **argv)
 
 	connect_to_index_server(argv[1], atoi(argv[2]));
 
-	printf("Listening for download_file_request at: 0.0.0.0:%u\n", dataPort);
+//	printf("Listening for download_file_request at: 0.0.0.0:%u\n", dataPort);
 
 	pthread_t tid;
 	thr = pthread_create(&tid, NULL, &update_file_list, STORAGE);
@@ -331,6 +333,7 @@ int main(int argc, char **argv)
 		print_error("New thread to update file list to the index server");
 		exit(1);
 	}
+
 	initscr();
 	noecho();
 	curs_set(0);
@@ -354,7 +357,7 @@ int main(int argc, char **argv)
 		{
 			wrefresh(win);
 			send_list_files_request();
-			initScreen(win, "List File Screen");
+			initScreen(win, " List File Screen ");
 		}
 		else if (menuitem == 1)
 		{
@@ -370,8 +373,8 @@ int main(int argc, char **argv)
 					// Condition to check regular file.
 					if (dir->d_type == DT_REG && dir->d_name[0] != '.')
 					{
-						mvwaddstr(win, 2 + (item * 2), 12, dir->d_name);
-						mvwaddstr(win, 2 + (item * 2), 6, itoa(item + 1));
+						mvwaddstr(win, 4 + (item * 2), 4, itoa(item + 1));
+						mvwaddstr(win, 4 + (item * 2), 10, dir->d_name);
 						wrefresh(win);
 						item++;
 						h_f = 1;
@@ -379,172 +382,23 @@ int main(int argc, char **argv)
 				}
 				closedir(d);
 			}
-			if (!h_f)
-				mvwaddstr(win, 2, 4, "No files in database");
-			initScreen(win, "Availabel file screen");
+			if (!h_f) mvwaddstr(win, 2, 4, "No files in database");
+			else {
+				mvwaddstr(win, 2, 4, "No");
+				mvwaddstr(win, 2, 10, "Filename");
+			}
+			initScreen(win, " Available file screen ");
 		}
 		else if (menuitem == 2)
 		{
-			initRemoveScreen(win, "Remove file screen", "");
+			initRemoveScreen(win, " Remove file screen ", "");
 		}
 		else if (menuitem == 3)
 		{
-			initDownloadScreen(win, "Download file screen", "");
+			initDownloadScreen(win, " Download file screen ", "");
 		}
 	}
 	echo(); // re-enable echo
 	endwin();
-	// return 0;
-	char path[100];
-	mkdir(tmp_dir, 0700);
-	while (1)
-	{
-		char input[400];
-		fgets(input, sizeof(input), stdin);
-
-		char *command = strtok(input, " \n\t");
-
-		if (command == NULL)
-		{
-			continue;
-		}
-		if (strcmp(command, "/ls") == 0)
-		{
-			send_list_files_request();
-		}
-		else if (strcmp(command, "/avail") == 0)
-		{
-			// printf("You have: ");
-			int h_f = 0;
-			DIR *d;
-			struct dirent *dir;
-			d = opendir(STORAGE);
-			if (d)
-			{
-				while ((dir = readdir(d)) != NULL)
-				{
-					// Condition to check regular file.
-					if (dir->d_type == DT_REG && dir->d_name[0] != '.')
-					{
-						printf("\'%s\' ", dir->d_name);
-						h_f = 1;
-					}
-				}
-				closedir(d);
-			}
-			if (!h_f)
-				printf("no files in database.\n");
-			else
-				printf("\n");
-		}
-		else if (strcmp(command, "/rm") == 0)
-		{
-			char *filename = strtok(NULL, " \n\t");
-			if (filename)
-			{
-				strcpy(path, STORAGE);
-				strcat(path, "/");
-				strcat(path, filename);
-				int ret = remove(path);
-				if (ret != 0)
-				{
-					print_error("remove file");
-				}
-				else
-				{
-					printf("Delete %s successfully\n", filename);
-				}
-			}
-			else
-			{
-				printf("help: /rm <filename>\n");
-			}
-			fflush(stdout);
-		}
-		else if (strcmp(command, "/get") == 0)
-		{
-			char *filename = strtok(NULL, " \n\t");
-			if (filename)
-			{
-				strcpy(path, STORAGE);
-				strcat(path, "/");
-				strcat(path, filename);
-				if (access(path, F_OK) != -1)
-				{
-					fprintf(stdout, "\'%s\' existed\n", filename);
-				}
-				else
-				{
-					pthread_mutex_lock(&lock_the_file);
-					the_file = malloc(sizeof(struct FileOwner));
-					the_file->host_list = newLinkedList();
-					strcpy(the_file->filename, filename);
-					the_file->filesize = 0;
-					pthread_mutex_unlock(&lock_the_file);
-
-					pthread_mutex_lock(&lock_segment_list);
-					segment_list = newLinkedList();
-					pthread_mutex_unlock(&lock_segment_list);
-
-					pthread_mutex_lock(&lock_n_threads);
-					n_threads = 0;
-					pthread_mutex_unlock(&lock_n_threads);
-
-					struct timespec begin, end;
-					clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
-
-					send_list_hosts_request(filename);
-
-					download_done();
-
-					clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-
-					long duration = (end.tv_sec - begin.tv_sec) * 1e3 + (end.tv_nsec - begin.tv_nsec) / 1e6;
-					printf("Elapsed time: %ld miliseconds\n", duration);
-				}
-			}
-			else
-			{
-				printf("help: /get <filename>\n");
-			}
-			fflush(stdout);
-		}
-		else if (strcmp(command, "/help") == 0)
-		{
-			print_help();
-			fflush(stdout);
-		}
-		else if (strcmp(command, EXIT_CMD) == 0)
-		{
-			return 0;
-		}
-		else
-		{
-			print_help();
-			fflush(stdout);
-		}
-	}
 	return 0;
-}
-
-void print_help()
-{
-	prettyprint("Command", 0, NULL);
-	prettyprint("Feature", 0, NULL);
-	printf("\n");
-	prettyprint("/ls", 0, "Command");
-	prettyprint("list files", 0, "Feature");
-	printf("\n");
-	prettyprint("/avail", 0, "Command");
-	prettyprint("has files", 0, "Feature");
-	printf("\n");
-	prettyprint("/rm <file>", 0, "Command");
-	prettyprint("remove file", 0, "Feature");
-	printf("\n");
-	prettyprint("/get <file>", 0, "Command");
-	prettyprint("download file", 0, "Feature");
-	printf("\n");
-	prettyprint("/exit", 0, "Command");
-	prettyprint("exit program", 0, "Feature");
-	printf("\n");
 }

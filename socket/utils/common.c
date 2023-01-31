@@ -97,3 +97,32 @@ int prettyprint(char *x, int dist, void *col){
     print_center(x, space1, space2);
     return padding;
 }
+
+void *reverse(char *s)
+{
+    int i, j;
+    char c;
+    for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
+        c = s[i];
+        s[i] = s[j];
+        s[j] = c;
+    }
+    return s;
+} 
+
+char *itoa(int n){
+    int i, sign;
+    char *s = NULL;
+    if ((sign = n) < 0)  /* record sign */
+        n = -n;          /* make n positive */
+    i = 0;
+    do {       /* generate digits in reverse order */
+        s = realloc(s, sizeof(char));
+        s[i++] = n % 10 + '0';   /* get next digit */
+    } while ((n /= 10) > 0);     /* delete it */
+    if (sign < 0)
+        s[i++] = '-';
+    s[i] = '\0';
+    s = reverse(s);
+    return s;
+}

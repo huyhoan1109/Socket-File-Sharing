@@ -19,8 +19,8 @@ OBJ = $(LIB:$(LIBDIR)/%.c=$(OBJDIR)/%.o)
 # Compile executor
 all: $(OBJ)
 $(OBJDIR)/%.o:$(LIBDIR)/%.c
-	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO)
+	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO)-lncurses
 
-# # Clean old compilation
-# clean:
-# 	$(RM) $(OBJ)
+# Clean old compilation
+clean:
+	$(RM) $(OBJ)

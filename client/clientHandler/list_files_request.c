@@ -20,33 +20,6 @@ void send_list_files_request()
 	}
 	pthread_mutex_unlock(&lock_servsock);
 }
-void *reverse(char *s)
-{
-    int i, j;
-    char c;
-    for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
-        c = s[i];
-        s[i] = s[j];
-        s[j] = c;
-    }
-    return s;
-} 
-char *itoa(int n){
-    int i, sign;
-    char *s = NULL;
-    if ((sign = n) < 0)  /* record sign */
-        n = -n;          /* make n positive */
-    i = 0;
-    do {       /* generate digits in reverse order */
-        s = realloc(s, sizeof(char));
-        s[i++] = n % 10 + '0';   /* get next digit */
-    } while ((n /= 10) > 0);     /* delete it */
-    if (sign < 0)
-        s[i++] = '-';
-    s[i] = '\0';
-    s = reverse(s);
-    return s;
-}
 
 void process_list_files_response()
 {
@@ -65,9 +38,13 @@ void process_list_files_response()
 	char delim[30];
 	memset(delim, '-', 30);
 	delim[29] = 0;
-	// printf("%s\n", delim);
-	// printf("%-4s | %-25s\n", "No", "Filename");
 	uint8_t i = 0;
+	if (n_files > 0){
+		mvwaddstr(win, 2, 4, "No");
+		mvwaddstr(win, 2, 10, "Filename");
+	} else {
+		mvwaddstr(win, 2, 4, "No files available");
+	}
 	for (; i < n_files; i++)
 	{
 		// filename length
@@ -88,10 +65,8 @@ void process_list_files_response()
 			exit(1);
 		}
 		fprintf(stream, "Index server > filename: %s\n", filename);
-		mvwaddstr(win, 2 + (i * 2), 12, filename);
-		mvwaddstr(win, 2 + (i * 2), 6, itoa(i+1));
+		mvwaddstr(win, 4 + (i * 2), 4, itoa(i+1));
+		mvwaddstr(win, 4 + (i * 2), 10, filename);
 		wrefresh(win);
-		// printf("%-4u | %-25s\n", i + 1, filename);
 	}
-	// printf("%s\n", delim);
 }

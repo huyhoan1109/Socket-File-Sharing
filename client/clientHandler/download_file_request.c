@@ -11,12 +11,14 @@
 #include <fcntl.h>
 #include <time.h>
 #include <ncurses.h>
+#include <unistd.h>
 
 #include "../../socket/utils/common.h"
 #include "../../socket/utils/sockio.h"
 #include "list_hosts_request.h"
 #include "download_file_request.h"
 #include "connect_index_server.h"
+#include "../../socket/utils/progressbar.h"
 
 struct LinkedList *segment_list = NULL;
 pthread_mutex_t lock_segment_list = PTHREAD_MUTEX_INITIALIZER;
@@ -281,7 +283,6 @@ void *download_file(void *arg)
 					close(filefd);
 					// fclose(file);
 					// fclose(bak);
-					// print_error("[download_file] Read data");
 					pthread_mutex_lock(&segment->lock_seg);
 					segment->downloading = 0;
 					pthread_mutex_unlock(&segment->lock_seg);
@@ -293,6 +294,16 @@ void *download_file(void *arg)
 				n_write = write(filefd, buff, n_bytes);
 				// fwrite(buff, 1, n_bytes, bak);
 				segment->n_bytes += n_write;
+				float f_percent = (float)(segment->n_bytes) * 100.0 / (float)(segment->seg_size);
+				int percentage = (int)f_percent;
+				char show_percent[4] = {0};
+				strcpy(show_percent, itoa(percentage));
+				strcat(show_percent, "%");
+				mvwaddstr(win, 6, 4, show_percent);
+				mvwaddstr(win, 6, 9, "[");
+        		mvwaddstr(win, 6, 9 + win->_maxx - 13, "]");
+				mvwhline(win, 6, 9 + 1, ACS_CKBOARD, (win->_maxx - 14) * percentage / 100);
+				wrefresh(win);
 				if (n_write < 0)
 				{
 					/* error */
@@ -306,14 +317,19 @@ void *download_file(void *arg)
 					/* got enough data */
 					close(filefd);
 					segment->downloading = 0;
-					uint32_t left_size = segment->n_bytes - i * MAX_BUFF_SIZE;
-					// fprintf(stdout, YELLOW "%s > segment offset %d, byte=%u" COLOR_RESET "\n", addr_str, i, left_size);
 					pthread_mutex_unlock(&segment->lock_seg);
 					break;
 				}
 				else
 				{
-					// fprintf(stdout, YELLOW "%s > segment offset %d, byte=%u" COLOR_RESET "\n", addr_str, i, MAX_BUFF_SIZE);
+					// if(percentage % 10){
+					// 	progress[temp] = '=';
+					// 	temp ++;
+					// }
+					// continue downloading
+					// mvwaddstr(win, 6, 9, "[");
+        			// mvwaddstr(win, 6, 9 + win->_maxx/5 - 11, "]");
+					// mvwhline(win, 6, 9 + 1, ACS_CKBOARD, (win->_maxx - 10) * percentage / 100);
 				}
 				i += 1;
 				pthread_mutex_unlock(&segment->lock_seg);
@@ -376,7 +392,7 @@ int download_done()
 		strcat(notiNotFound, "Index server > ");
 		strcat(notiNotFound, the_file->filename);
 		strcat(notiNotFound, " not found");
-		mvwaddstr(win, 6, 4, notiNotFound);
+		mvwaddstr(win, 8, 4, notiNotFound);
 	}
 	else
 	{
@@ -385,7 +401,7 @@ int download_done()
 		strcat(notiSuccess, "Received ");
 		strcat(notiSuccess, the_file->filename);
 		strcat(notiSuccess, " successfully");
-		mvwaddstr(win, 6, 4, notiSuccess);
+		mvwaddstr(win, 8, 4, notiSuccess);
 	}
 	pthread_mutex_unlock(&lock_the_file);
 

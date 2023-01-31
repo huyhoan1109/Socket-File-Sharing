@@ -50,4 +50,6 @@ char *multicopy(int time, char* str);
 
 int prettyprint(char *x, int dist, void *col);
 
+char *itoa(int n);
+
 #endif

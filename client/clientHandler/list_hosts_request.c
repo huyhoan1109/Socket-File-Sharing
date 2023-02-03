@@ -16,98 +16,42 @@ pthread_mutex_t lock_the_file = PTHREAD_MUTEX_INITIALIZER;
 
 void send_list_hosts_request(char *filename){
 	pthread_mutex_lock(&lock_servsock);
-	fprintf(stream, "[send_list_hosts_request] filename: \'%s\'\n", filename);
 
-	int n_bytes = writeBytes(servsock, (void*)&LIST_HOSTS_REQUEST, sizeof(LIST_HOSTS_REQUEST));
-	if (n_bytes <= 0){
-		print_error("Send LIST_HOSTS_REQUEST to index server");
-		exit(1);
-	}
+	// LIST_HOST_REQUEST :=: seq_no :=: filename
 
+	char *message = malloc(MAX_BUFF_SIZE);;
+	strcpy(message, itoa(LIST_HOSTS_REQUEST));
+	strcat(message, MESSAGE_DIVIDER);
 	pthread_mutex_lock(&lock_the_file);
-	n_bytes = writeBytes(servsock, &seq_no, sizeof(seq_no));
-	if (n_bytes <= 0){
-		print_error("[send_list_hosts_request] Send sequence number");
-		pthread_mutex_unlock(&lock_the_file);
-		exit(1);
-	}
+	strcat(message, itoa(seq_no)); 
+	strcat(message, MESSAGE_DIVIDER);
+	strcat(message, filename);
 	pthread_mutex_unlock(&lock_the_file);
-
-	uint16_t filename_length = strlen(filename);
-	if (filename_length != 0){
-		filename_length += 1;
-	}
-	filename_length = htons(filename_length);
-
-	n_bytes = writeBytes(servsock, &filename_length, sizeof(filename_length));
-	if (n_bytes <= 0){
-		print_error("list_hosts_request > Send filename_length");
-		exit(1);
-	}
-
-	if (filename_length > 0){
-		n_bytes = writeBytes(servsock, filename, ntohs(filename_length));
-		if (n_bytes <= 0){
-			print_error("list_hosts_request > Send filename");
-			exit(1);
-		}
-	}
+	writeBytes(servsock, message, MAX_BUFF_SIZE);
 	pthread_mutex_unlock(&lock_servsock);
 }
 
-static void display_host_list(){
-	// printf("%-3s | %-22s\n", "No", "Host (ip:data_port)");
-	char delim[29];
-	memset(delim, '.', 28);
-	delim[28] = 0;
-	struct Node *it = the_file->host_list->head;
-	int i = 0;
-	for(; it != NULL; it = it->next){
-		i++;
-		struct DataHost *dthost = (struct DataHost*)(it->data);
-		struct in_addr addr;
-		addr.s_addr = htonl(dthost->ip_addr);
-		char *ip_addr = inet_ntoa(addr);
-		char addr_full[22];
-		// sprintf(addr_full, "%s:%u", ip_addr, dthost->port);
-		// printf("%s\n", delim);
-		// printf("%-3d | %-22s\n", i, addr_full);
-	}
-}
-
-void process_list_hosts_response(){
-	fprintf(stream, "Exec process_list_hosts_response\n");
-
-	long n_bytes;
-
-	uint8_t sequence;
-	n_bytes = readBytes(servsock, &sequence, sizeof(sequence));
-	if (n_bytes <= 0){
-		print_error("[process_list_hosts_response] Read sequence number");
-		exit(1);
-	}
-	fprintf(stream, "[process_list_hosts_response] Received seq_no: %u\n", sequence);
+void process_list_hosts_response(char* message){
+	printf("%s\n", message);
+	char *subtext = malloc(MAX_BUFF_SIZE);
+	strcpy(subtext, message);
+	char *token;
+	token = strtok(subtext, MESSAGE_DIVIDER);
 	
-	uint32_t filesize;
-	n_bytes = readBytes(servsock, &filesize, sizeof(filesize));
-	if (n_bytes <= 0){
-		print_error("process_list_hosts_response > Read filesize");
-		exit(1);
-	}
-	filesize = ntohl(filesize);
+	fprintf(stream, "Exec process_list_hosts_response\n");
+	token = strtok(NULL, MESSAGE_DIVIDER);
+	uint8_t sequence = atol(token);
+	fprintf(stream, "[process_list_hosts_response] Received seq_no: %u\n", sequence);
+	token = strtok(NULL, MESSAGE_DIVIDER);
+	
+	uint32_t filesize = ntohl(atoll(token));
 	fprintf(stream, "[process_list_hosts_response] filesize: %u\n", filesize);
 
 	pthread_mutex_lock(&lock_the_file);
-	if (sequence == seq_no)
-		the_file->filesize = filesize;
+	if (sequence == seq_no) the_file->filesize = filesize;
 	
-	uint8_t n_hosts;
-	n_bytes = readBytes(servsock, &n_hosts, sizeof(n_hosts));
-	if (n_bytes <= 0){
-		print_error("[process_list_hosts_response] Read n_hosts");
-		pthread_mutex_unlock(&lock_the_file);
-		exit(1);
-	}
+	token = strtok(NULL, MESSAGE_DIVIDER);
+	uint32_t n_hosts = atol(token);
 	fprintf(stream, "[process_list_hosts_response] n_hosts: %u\n", n_hosts);
 
 	if (n_hosts == 0 && sequence == seq_no){
@@ -121,30 +65,16 @@ void process_list_hosts_response(){
 
 	uint8_t i = 0;
 	for (; i < n_hosts; i++){
-		uint8_t status;
-		n_bytes = readBytes(servsock, &status, sizeof(status));
-		if (n_bytes <= 0){
-			print_error("process_list_hosts_response > Read status");
-			exit(1);
-		}
+		token = strtok(NULL, MESSAGE_DIVIDER);
+		uint8_t status = atol(token);
 		fprintf(stream, "[process_list_hosts_response] Status: %u\n", status);
 		
-		uint32_t ip_addr;
-		n_bytes = readBytes(servsock, &ip_addr, sizeof(ip_addr));
-		if (n_bytes <= 0){
-			print_error("process_list_hosts_response > Read ip address");
-			exit(1);
-		}
-		ip_addr = ntohl(ip_addr);
+		token = strtok(NULL, MESSAGE_DIVIDER);
+		uint32_t ip_addr = ntohl(atoll(token));
 		fprintf(stream, "[process_list_hosts_response] IP: %u\n", ip_addr);
-		
-		uint16_t data_port;
-		n_bytes = readBytes(servsock, &data_port, sizeof(data_port));
-		if (n_bytes <= 0){
-			print_error("process_list_hosts_response > Read data port");
-			exit(1);
-		}
-		data_port = ntohs(data_port);
+		printf("%d", ip_addr);
+		token = strtok(NULL, MESSAGE_DIVIDER);
+		uint16_t data_port = ntohs(atoll(token));	
 		fprintf(stream, "[process_list_hosts_response] Port: %u\n", data_port);
 		
 		if (sequence == seq_no){
@@ -187,7 +117,4 @@ void process_list_hosts_response(){
 		}
 	}
 	pthread_mutex_unlock(&lock_the_file);
-
-	if (sequence == seq_no)
-		display_host_list();
 }

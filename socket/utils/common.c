@@ -5,20 +5,17 @@
 #include <pthread.h>
 #include "common.h"
 
+#define MAX_BUFF_SIZE 8192
 #define _FILE_OFFSET_BITS 64
 
-const uint8_t DATA_PORT_ANNOUNCEMENT = 0;
-const uint8_t FILE_LIST_UPDATE = 1;
-const uint8_t LIST_FILES_REQUEST = 2;
-const uint8_t LIST_FILES_RESPONSE = 3;
-const uint8_t LIST_HOSTS_REQUEST = 4;
-const uint8_t LIST_HOSTS_RESPONSE = 5;
-
-const uint8_t READY_TO_SEND_DATA = 0;
-const uint8_t FILE_NOT_FOUND = 1;
-const uint8_t OPENING_FILE_ERROR = 2;
-
 FILE *stream = NULL;
+
+uint8_t protocolType(char *message){
+    char subtext[MAX_BUFF_SIZE], *token;
+    strcpy(subtext, message);
+    token = strtok(subtext, MESSAGE_DIVIDER);
+    return (uint8_t) atoi(token);
+}
 
 uint32_t getFileSize(char* dir, char *filename){
 	char *path = calloc(100, sizeof(char));
@@ -44,12 +41,11 @@ int print_error(char *mess){
 	int errnum = errno;
 	strerror_r(errnum, err_mess, sizeof(err_mess));
 	fprintf(stderr, "%s [ERROR]: %s\n", mess, err_mess);
-	return errnum;
+    return errnum;
 }
 
 void free_mem(void *arg){
-	if (arg)
-		free(arg);
+	if (arg) free(arg);
 }
 
 void mutex_unlock(void *arg){
@@ -110,8 +106,8 @@ void *reverse(char *s)
     return s;
 } 
 
-char *itoa(int n){
-    int i, sign;
+char *itoa(uint32_t n){
+    uint32_t i, sign;
     char *s = NULL;
     if ((sign = n) < 0)  /* record sign */
         n = -n;          /* make n positive */

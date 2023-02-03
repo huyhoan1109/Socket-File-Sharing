@@ -18,7 +18,6 @@
 #include "list_hosts_request.h"
 #include "download_file_request.h"
 #include "connect_index_server.h"
-#include "../../socket/utils/progressbar.h"
 
 struct LinkedList *segment_list = NULL;
 pthread_mutex_t lock_segment_list = PTHREAD_MUTEX_INITIALIZER;
@@ -113,8 +112,7 @@ static struct Segment *create_segment(uint8_t sequence)
 			}
 			pthread_mutex_unlock(&seg2->lock_seg);
 			pthread_mutex_unlock(&seg1->lock_seg);
-			if (interval >= 2 * MINIMUM_SEGMENT_SIZE)
-			{
+			if (interval >= 2 * MINIMUM_SEGMENT_SIZE){
 				break;
 			}
 		}
@@ -145,9 +143,7 @@ static void terminate_thread(struct Segment *seg)
 
 static void handle_error(struct Segment *seg, char *addr_str, char *mess)
 {
-	char err_mess[256];
-	sprintf(err_mess, "%s > %s", addr_str, mess);
-	print_error(err_mess);
+	fprintf(stream, "%s > %s", addr_str, mess);
 	terminate_thread(seg);
 }
 
@@ -215,34 +211,19 @@ void *download_file(void *arg)
 		{
 			handle_error(segment, addr_str, "Connect to download");
 		}
-		// fprintf(stdout, YELLOW "%s > segment offset: %u" COLOR_RESET "\n", addr_str, segment->offset);
 
 		/* send download file request */
-		uint32_t n_bytes = 0;
-		uint16_t filename_length = strlen(the_file->filename) + 1;
-		filename_length = htons(filename_length);
-		n_bytes = writeBytes(sockfd, &filename_length, sizeof(filename_length));
-		if (n_bytes <= 0)
-		{
-			handle_error(segment, addr_str, "Send filename_length");
-		}
-
-		n_bytes = writeBytes(sockfd, the_file->filename, ntohs(filename_length));
-		if (n_bytes <= 0)
-		{
-			handle_error(segment, addr_str, "Send filename");
-		}
-
-		uint32_t offset = htonl(segment->offset);
-		n_bytes = writeBytes(sockfd, &offset, sizeof(offset));
-		if (n_bytes <= 0)
-		{
-			handle_error(segment, addr_str, "Send offset");
-		}
+		char *message = malloc(MAX_BUFF_SIZE);
+		strcpy(message, itoa(GET_FILE_REQUEST));
+		strcat(message, MESSAGE_DIVIDER);
+		strcat(message, the_file->filename);
+		strcat(message, MESSAGE_DIVIDER);
+		strcat(message, itoa(htonl(segment->offset)));
+		writeBytes(sockfd, message, MAX_BUFF_SIZE);
 
 		/* receive file status message */
 		uint8_t file_status;
-		n_bytes = readBytes(sockfd, &file_status, sizeof(file_status));
+		int n_bytes = readBytes(sockfd, &file_status, MAX_BUFF_SIZE);
 		if (n_bytes <= 0)
 		{
 			handle_error(segment, addr_str, "Read file status");
@@ -269,7 +250,6 @@ void *download_file(void *arg)
 			int filefd = open(full_name, O_WRONLY | O_CREAT, 0664);
 			if (filefd < 0)
 			{
-				print_error("[download_file] Open file to save data");
 				terminate_thread(segment);
 			}
 
@@ -277,7 +257,7 @@ void *download_file(void *arg)
 			int i = 0;
 			while (1)
 			{
-				n_bytes = read(sockfd, buff, sizeof(buff));
+				n_bytes = read(sockfd, buff, MAX_BUFF_SIZE);
 				if (n_bytes <= 0)
 				{
 					close(filefd);
@@ -299,10 +279,10 @@ void *download_file(void *arg)
 				char show_percent[4] = {0};
 				strcpy(show_percent, itoa(percentage));
 				strcat(show_percent, "%");
-				mvwaddstr(win, 6, 4, show_percent);
-				mvwaddstr(win, 6, 9, "[");
-        		mvwaddstr(win, 6, 9 + win->_maxx - 13, "]");
-				mvwhline(win, 6, 9 + 1, ACS_CKBOARD, (win->_maxx - 14) * percentage / 100);
+				mvwaddstr(win, 4, 4, show_percent);
+				mvwaddstr(win, 4, 9, "[");
+        		mvwaddstr(win, 4, 9 + win->_maxx - 13, "]");
+				mvwhline(win, 4, 9 + 1, ACS_CKBOARD, (win->_maxx - 14) * percentage / 100);
 				wrefresh(win);
 				if (n_write < 0)
 				{
@@ -319,17 +299,6 @@ void *download_file(void *arg)
 					segment->downloading = 0;
 					pthread_mutex_unlock(&segment->lock_seg);
 					break;
-				}
-				else
-				{
-					// if(percentage % 10){
-					// 	progress[temp] = '=';
-					// 	temp ++;
-					// }
-					// continue downloading
-					// mvwaddstr(win, 6, 9, "[");
-        			// mvwaddstr(win, 6, 9 + win->_maxx/5 - 11, "]");
-					// mvwhline(win, 6, 9 + 1, ACS_CKBOARD, (win->_maxx - 10) * percentage / 100);
 				}
 				i += 1;
 				pthread_mutex_unlock(&segment->lock_seg);
@@ -389,10 +358,10 @@ int download_done()
 	{
 		// fprintf(stdout, "Index server > \'%s\' not found\n", the_file->filename);
 		char notiNotFound[100] = {0};
-		strcat(notiNotFound, "Index server > ");
 		strcat(notiNotFound, the_file->filename);
 		strcat(notiNotFound, " not found");
-		mvwaddstr(win, 8, 4, notiNotFound);
+		mvwaddstr(win, 4, 4, notiNotFound);
+		return 0;
 	}
 	else
 	{
@@ -401,7 +370,7 @@ int download_done()
 		strcat(notiSuccess, "Received ");
 		strcat(notiSuccess, the_file->filename);
 		strcat(notiSuccess, " successfully");
-		mvwaddstr(win, 8, 4, notiSuccess);
+		mvwaddstr(win, 6, 4, notiSuccess);
 	}
 	pthread_mutex_unlock(&lock_the_file);
 

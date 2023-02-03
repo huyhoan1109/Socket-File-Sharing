@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "sha.h": "c"
+        "sha.h": "c",
+        "pthread.h": "c",
+        "stdio.h": "c"
     }
 }

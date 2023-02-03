@@ -50,3 +50,37 @@ filename: 'game.apk'
 filesize: 131129310
 Exec monitor_directory
 Index server > n_files: 0
+update_file_list.c > socket = 47265
+Directory DB is empty
+Exec monitor_directory
+Index server > n_files: 0
+update_file_list.c > socket = 55453
+Directory DB is empty
+Exec monitor_directory
+update_file_list.c > socket = 47433
+Directory DB is empty
+Exec monitor_directory
+list_hosts_response
+Exec process_list_hosts_response
+[process_list_hosts_response] Received seq_no: 0
+[process_list_hosts_response] filesize: 0
+[process_list_hosts_response] n_hosts: 0
+The file game.apk was created.
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 0
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 37339
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Index server > n_files: 0
+Index server > n_files: 0
+Index server > n_files: 0

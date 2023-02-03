@@ -163,15 +163,15 @@ void update_file_list(struct net_info cli_info, char *message){
 	uint8_t n_files = (uint8_t) atoll(token);
 	int changed = 0;
 	for (int i=0; n_files>i; i++){
-		printf("%s\n", token);
 		token = strtok(NULL, MESSAGE_DIVIDER);
-		// printf("%s\n", token);
 		status = (uint8_t) atol(token);
+		
 		token = strtok(NULL, MESSAGE_DIVIDER);
 		strcpy(filename, token);
+		
 		token = strtok(NULL, MESSAGE_DIVIDER);
 		filesize = (uint32_t) atoll(token);
-		// printf("\n%s\n", filesize);
+		
 		struct DataHost host;
 		host.ip_addr = ntohl(inet_addr(cli_info.ip_add));
 		host.port = cli_info.data_port;
@@ -248,7 +248,6 @@ void process_list_files_request(struct net_info cli_info){
 		n_files = file_list->n_nodes;
 	} 
 	strcat(message, itoa(n_files));
-	printf("%s\n", message);
 	if (n_files == 0){
 		n_bytes = writeBytes(cli_info.sockfd, message, MAX_BUFF_SIZE);
 		if (n_bytes <= 0) {
@@ -259,7 +258,6 @@ void process_list_files_request(struct net_info cli_info){
 		pthread_mutex_unlock(cli_info.lock_sockfd);
 		return;
 	}
-	printf("%s\n", message);
 	struct Node *it = file_list->head;
 	for (; it != NULL; it = it->next){
 		struct FileOwner *file = (struct FileOwner*)it->data;
@@ -268,7 +266,6 @@ void process_list_files_request(struct net_info cli_info){
 		strcat(message, MESSAGE_DIVIDER);
 		strcat(message, itoa(file->filesize));
 	}
-	printf("%s\n", message);
 	writeBytes(cli_info.sockfd, message, MAX_BUFF_SIZE);
 	pthread_mutex_unlock(&lock_file_list);
 	pthread_mutex_unlock(cli_info.lock_sockfd);
@@ -316,7 +313,6 @@ static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hos
 		strcat(message, MESSAGE_DIVIDER);
 		strcat(message, itoa(host->port));
 	}
-	printf("%s\n", message);
 	n_bytes = writeBytes(thrdt->cli_info.sockfd, message, MAX_BUFF_SIZE);
 	if (n_bytes <= 0){
 		handleSocketError(thrdt->cli_info, "Send host response");

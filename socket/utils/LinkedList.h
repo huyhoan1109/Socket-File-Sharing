@@ -13,6 +13,8 @@
 #define REMOVE_NODE_EMPTY_LL -2
 #define REMOVE_NODE_SUCCESS 1
 
+#define INIT_STATE 0
+
 #define SEGMENT_TYPE	0
 #define INT_TYPE		1 
 #define FILE_OWNER_TYPE 2
@@ -46,6 +48,7 @@ struct DataHost{
 struct Node{
 	void *data;
 	uint8_t type;			//data type
+	int status;
 	struct Node *next;
 	struct Node *prev;
 };

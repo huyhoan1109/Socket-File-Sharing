@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 
 #include "../../socket/utils/common.h"
 #include "../../socket/utils/sockio.h"
@@ -25,7 +26,13 @@ int main(int argc, char **argv){
 		printf("Usage: ./server <port>");
 		exit(1);
 	}
-	stream = fopen("history.log", "a+");
+	struct stat filestat;
+	char history[20] = "history.log";
+	stat(history, &filestat);
+	time_t curr = time(NULL);
+	if(curr - filestat.st_mtim.tv_sec < 4000) stream = fopen(history, "a+");
+	else stream = fopen(history, "w");
+
 	int servsock = socket(AF_INET, SOCK_STREAM, 0);
 	if (servsock < 0){
 		perror("socket");
@@ -108,81 +115,68 @@ void *serveClient(void *arg){
 	sprintf(cli_addr, "%s:%u", cli_info.ip_add, cli_info.port);
 
 	printf("Connection from client: %s\n", cli_addr);
+	
 	uint8_t packet_type;
-
 	struct thread_data thrdt;	//use for process_list_hosts_request
 	thrdt.cli_info = cli_info;
 
 	/* receive request from clients,
 	 * then response accordingly */
-	//read packet type first
-	while(readBytes(cli_info.sockfd, &packet_type, sizeof(packet_type)) > 0){
-		if (packet_type == DATA_PORT_ANNOUNCEMENT){
-			if (cli_info.data_port != 0){
-				/* only accept DATA_PORT_ANNOUNCEMENT packet once */
-				fprintf(stderr, "%s > only accept DATA_PORT_ANNOUNCEMENT packet once\n", cli_addr);
-				fprintf(stderr, "Removing %s from the file list due to data port violation\n", cli_addr);
-				struct DataHost host;
-				host.ip_addr = inet_addr(cli_info.ip_add);
-				host.port = cli_info.data_port;
-				removeHost(host);
-				close(cli_info.sockfd);
-				int ret = 100;
-				pthread_exit(&ret);
-			}
-			uint16_t data_port;
-			int n_bytes = readBytes(cli_info.sockfd, &data_port, sizeof(data_port));
-			if (n_bytes <= 0) handleSocketError(cli_info, "Read from socket");
-			fprintf(stream, "%s > data_port: %u\n", cli_addr, ntohs(data_port));
-			cli_info.data_port = ntohs(data_port);
-		} else if (packet_type == FILE_LIST_UPDATE){
-			if (cli_info.data_port == 0){
-				//DATA_PORT_ANNOUNCEMENT must be sent first
-				fprintf(stderr, "%s:%u > DATA_PORT_ANNOUNCEMENT must be sent first\n", cli_info.ip_add, cli_info.port);
-				fprintf(stderr, "Closing connection from %s:%u\n", cli_info.ip_add, cli_info.port);
-				close(cli_info.sockfd);
-				fprintf(stderr, "Connection from %s:%u closed\n", cli_info.ip_add, cli_info.port);
-				int ret = 100;
-				pthread_exit(&ret);
-			}
-			update_file_list(cli_info);
+	char *message = malloc(MAX_BUFF_SIZE);
+	char *subtext = malloc(MAX_BUFF_SIZE);
+	while(readBytes(cli_info.sockfd, message, MAX_BUFF_SIZE)>0){
+		printf("%s\n", message);
+		packet_type = protocolType(message);
+		char *token;
+		switch (packet_type){
+			case DATA_PORT_ANNOUNCEMENT:
+				strcpy(subtext, message);
+				token = strtok(subtext, MESSAGE_DIVIDER);
+				token = strtok(NULL, MESSAGE_DIVIDER);
+				if (cli_info.data_port != 0){
+					/* only accept DATA_PORT_ANNOUNCEMENT packet once */
+					struct DataHost host;
+					host.ip_addr = inet_addr(cli_info.ip_add);
+					host.port = cli_info.data_port;
+					removeHost(host);
+					close(cli_info.sockfd);
+					int ret = 100;
+					pthread_exit(&ret);
+				}
+				uint16_t data_port = (uint16_t) atoll(token);
+				cli_info.data_port = ntohs(data_port);
+				break;
+			case FILE_LIST_UPDATE:
+				if (cli_info.data_port == 0){
+					//DATA_PORT_ANNOUNCEMENT must be sent first
+					close(cli_info.sockfd);
+					int ret = 100;
+					pthread_exit(&ret);
+				}
+				update_file_list(cli_info, message);
+				break;
+			case LIST_FILES_REQUEST:
+				process_list_files_request(cli_info);
+				break;
+			case LIST_HOSTS_REQUEST:
+				strcpy(subtext, message);
+				token = strtok(subtext, MESSAGE_DIVIDER);
+				token = strtok(NULL, MESSAGE_DIVIDER);
+			
+				thrdt.seq_no = (uint8_t)atoi(token);
+				
+				token = strtok(NULL, MESSAGE_DIVIDER);
+				strcpy(thrdt.filename, token);
 
-		} else if (packet_type == LIST_FILES_REQUEST){
-			/* process list_files_request, then reponse */
-			process_list_files_request(cli_info);
-		} else if (packet_type == LIST_HOSTS_REQUEST){
-			fprintf(stream, "list_hosts_request\n");
-			uint8_t sequence;
-			long n_bytes;
-			n_bytes = readBytes(thrdt.cli_info.sockfd, &sequence, sizeof(sequence));
-			if (n_bytes <= 0){
-				handleSocketError(thrdt.cli_info, "[LIST_HOSTS_REQUEST] Read sequence number");
-			}
-			thrdt.seq_no = sequence;
-			uint16_t filename_length;
-			n_bytes = readBytes(thrdt.cli_info.sockfd, &filename_length, sizeof(filename_length));
-			if (n_bytes <= 0){
-				handleSocketError(thrdt.cli_info, "[LIST_HOSTS_REQUEST] Read filename_length");
-			}
-			filename_length = ntohs(filename_length);
-			fprintf(stream, "filename_length: %u\n", filename_length);
-			if (filename_length <= 0){
-				fprintf(stream, "[LIST_HOSTS_REQUEST] filename_length = 0\n");
-				thrdt.filename[0] = 0;
-				continue;
-			}
-
-			n_bytes = readBytes(thrdt.cli_info.sockfd, thrdt.filename, filename_length);
-			if (n_bytes <= 0){
-				handleSocketError(thrdt.cli_info, "Read filename");
-			}
-			fprintf(stream, "filename: %s\n", thrdt.filename);
-			pthread_t tid;
-			fprintf(stream, "Create new thread to process list_hosts_request\n");
-			int thr = pthread_create(&tid, NULL, &process_list_hosts_request, &thrdt);
-			if (thr != 0){
-				handleSocketError(cli_info, "Create new thread to process list_hosts_request");
-			}
+				pthread_t tid;
+				fprintf(stream, "Create new thread to process list_hosts_request\n");
+				int thr = pthread_create(&tid, NULL, &process_list_hosts_request, &thrdt);
+				if (thr != 0){
+					handleSocketError(cli_info, "Create new thread to process list_hosts_request");
+				}
+				break;
+			default:
+				break;
 		}
 	}
 	handleSocketError(cli_info, "Read from socket");

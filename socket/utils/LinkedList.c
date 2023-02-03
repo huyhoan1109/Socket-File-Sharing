@@ -6,6 +6,7 @@
 
 struct Node* newNode(void *data, int data_type){
 	struct Node* newN = malloc(sizeof(struct Node));
+	newN->status = INIT_STATE;
 	switch (data_type){
 		case SEGMENT_TYPE:
 		{

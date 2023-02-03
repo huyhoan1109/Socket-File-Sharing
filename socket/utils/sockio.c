@@ -8,8 +8,7 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <stdlib.h>
-#include <openssl/ssl.h>
-#include <openssl/err.h>
+
 #include "sockio.h"
 
 /** readBytes - read a number of bytes from the socket buffer.

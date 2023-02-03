@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define FILE_NEW 0
-#define FILE_DELETED 1
+#define FILE_LOCK 0 // = INIT_STATE
+#define FILE_NEW 1
+#define FILE_DELETED 2
 #define PACKET_TYPE_SIZE 1
 
 #define GREEN			"\x1b[32m"
@@ -19,22 +20,29 @@
 #define RED				"\x1b[91"
 #define STORAGE "DB"
 #define print_center(x, space1, space2) printf("|%s %s %s|", space1, x, space2);
+
+#define MESSAGE_DIVIDER "[:]"
+#define PRESS_ESC_BACK "Press esc to go back menu"
+#define PRESS_ENTER "Enter to select"
+
 // header
 /* request types */
-extern const uint8_t DATA_PORT_ANNOUNCEMENT;
-extern const uint8_t FILE_LIST_UPDATE;
-extern const uint8_t LIST_FILES_REQUEST;
-extern const uint8_t LIST_FILES_RESPONSE;
-extern const uint8_t LIST_HOSTS_REQUEST;
-extern const uint8_t LIST_HOSTS_RESPONSE;
+#define DATA_PORT_ANNOUNCEMENT 100
+#define FILE_LIST_UPDATE 101
+#define LIST_FILES_REQUEST 102
+#define LIST_FILES_RESPONSE 103
+#define LIST_HOSTS_REQUEST 104
+#define LIST_HOSTS_RESPONSE 105
+#define GET_FILE_REQUEST 106
 
-/* request status types */
-extern const uint8_t READY_TO_SEND_DATA;
-extern const uint8_t FILE_NOT_FOUND;
-extern const uint8_t OPENING_FILE_ERROR;
+#define READY_TO_SEND_DATA 0
+#define FILE_NOT_FOUND 1
+#define OPENING_FILE_ERROR 2
 
 // history log file stream
 extern FILE *stream;
+
+uint8_t protocolType(char *message);
 
 uint32_t getFileSize(char* dir, char *filename);
 
@@ -50,6 +58,6 @@ char *multicopy(int time, char* str);
 
 int prettyprint(char *x, int dist, void *col);
 
-char *itoa(int n);
+char *itoa(uint32_t n);
 
 #endif

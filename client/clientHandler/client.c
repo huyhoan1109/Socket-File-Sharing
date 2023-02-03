@@ -21,28 +21,32 @@
 #include "download_file_request.h"
 #include "handle_download_file_request.h"
 
-#define MENUMAX 6
+#define MENUMAX 7
 
 const char EXIT_CMD[] = "/exit";
 int menuitem = 0;
 
-void drawmenu(WINDOW *win, int item)
+void drawmenu(WINDOW *win, int item, int start, int end)
 {
+	wclear(win);
+	box(win, 0, 0);
+	mvwaddstr(win, 0, 2, " Main Menu ");
 	int c;
-	char menu[MENUMAX][40] = {
+	char MenuList[MENUMAX][40] = {
 		"1. List file",
 		"2. Available file",
 		"3. Remove file from server",
 		"4. Download file",
 		"5. Share file",
-		"6. Exit Program"
+		"6. Something",
+		"7. Exit Program"
 	};
 	clear();
-	for (c = 0; c < MENUMAX; c++)
+	for (c = start; c <= end; c++)
 	{
 		if (c == item)
 			wattron(win, A_REVERSE); // highlight selection
-		mvwaddstr(win, 2 + (c * 2), 12, menu[c]);
+		mvwaddstr(win, 2 + ((c-start) * 2), 12, MenuList[c]);
 		wattroff(win, A_REVERSE); // remove highlight
 	}
 	mvwaddstr(win, 15, 12, PRESS_ENTER);
@@ -50,13 +54,14 @@ void drawmenu(WINDOW *win, int item)
 }
 void initMenu(WINDOW *win)
 {
-	mvwaddstr(win, 0, 2, " Main Menu ");
 	int key;
 	menuitem = 0;
-	drawmenu(win, menuitem);
+	int itemnum = 5;
+	int start = 0;
+	int end = start + itemnum;
+	drawmenu(win, menuitem, start, end);
 	keypad(stdscr, TRUE);
 	noecho(); // disable echo
-	// wgetch(win);
 	do
 	{
 		key = wgetch(win);
@@ -65,14 +70,28 @@ void initMenu(WINDOW *win)
 		case 65:
 		case 'w':
 			menuitem--;
-			if (menuitem < 0)
+			if (menuitem < 0) {
 				menuitem = MENUMAX - 1;
+				end = MENUMAX - 1;
+				start = end - itemnum;
+			}
+			if (menuitem < start) {
+                start--;
+                end--;
+            }
 			break;
 		case 66:
 		case 's':
 			menuitem++;
-			if (menuitem > MENUMAX - 1)
+			if (menuitem > MENUMAX - 1) {
 				menuitem = 0;
+				start = 0;
+				end = start + itemnum;
+			}
+			if (menuitem > end) {
+                start++;
+                end++;
+            }
 			break;
 		case '\n':
 			wclear(win);
@@ -82,7 +101,7 @@ void initMenu(WINDOW *win)
 		default:
 			break;
 		}
-		drawmenu(win, menuitem);
+		drawmenu(win, menuitem, start, end);
 	} while (key != '1');
 }
 void initScreen(WINDOW *win, char title[])
@@ -435,7 +454,7 @@ int main(int argc, char **argv)
 		close(servsock);
 		exit(1);
 	}
-	while (menuitem != 5)
+	while (menuitem != MENUMAX - 1)
 	{
 		
 		initMenu(win);
@@ -486,6 +505,10 @@ int main(int argc, char **argv)
 		else if (menuitem == 4)
 		{
 			initShareScreen(win, " Share file screen ", "");
+		}
+		else if (menuitem == 5)
+		{
+			initShareScreen(win, " Some screen ", "");
 		}
 	}
 	echo(); // re-enable echo

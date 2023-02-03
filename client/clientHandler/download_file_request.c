@@ -173,7 +173,7 @@ static int connect_peer(struct DataHost dthost, char *addr_str)
 void *download_file(void *arg)
 {
 	fprintf(stream, "function download_file\n");
-	// pthread_detach(pthread_self());
+	pthread_detach(pthread_self());
 	struct DownloadInfo dinfo = *(struct DownloadInfo *)arg;
 	free(arg);
 
@@ -211,8 +211,9 @@ void *download_file(void *arg)
 		{
 			handle_error(segment, addr_str, "Connect to download");
 		}
-
+		
 		/* send download file request */
+		printf("curr::%d\n", segment->offset);
 		char *message = malloc(MAX_BUFF_SIZE);
 		strcpy(message, itoa(GET_FILE_REQUEST));
 		strcat(message, MESSAGE_DIVIDER);
@@ -223,12 +224,11 @@ void *download_file(void *arg)
 
 		/* receive file status message */
 		uint8_t file_status;
-		int n_bytes = readBytes(sockfd, &file_status, MAX_BUFF_SIZE);
+		int n_bytes = readBytes(sockfd, &file_status, sizeof(file_status));
 		if (n_bytes <= 0)
 		{
 			handle_error(segment, addr_str, "Read file status");
 		}
-
 		if (file_status == FILE_NOT_FOUND)
 		{
 			fprintf(stdout, "%s > File not found\n", addr_str);
@@ -252,12 +252,11 @@ void *download_file(void *arg)
 			{
 				terminate_thread(segment);
 			}
-
 			lseek(filefd, segment->offset, SEEK_SET);
 			int i = 0;
 			while (1)
 			{
-				n_bytes = read(sockfd, buff, MAX_BUFF_SIZE);
+				n_bytes = read(sockfd, buff, sizeof(buff));
 				if (n_bytes <= 0)
 				{
 					close(filefd);
@@ -375,7 +374,7 @@ int download_done()
 	pthread_mutex_unlock(&lock_the_file);
 
 	/* send "done" message to index server */
-	send_list_hosts_request("");
+	// send_list_hosts_request("");
 
 	pthread_mutex_lock(&lock_the_file);
 	/* increase sequence number */

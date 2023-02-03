@@ -32,21 +32,22 @@ void send_list_hosts_request(char *filename){
 }
 
 void process_list_hosts_response(char* message){
-	printf("%s\n", message);
 	char *subtext = malloc(MAX_BUFF_SIZE);
 	strcpy(subtext, message);
+	
 	char *token;
 	token = strtok(subtext, MESSAGE_DIVIDER);
 	
 	fprintf(stream, "Exec process_list_hosts_response\n");
-	token = strtok(NULL, MESSAGE_DIVIDER);
+	
+	token = strtok(NULL, MESSAGE_DIVIDER);	
 	uint8_t sequence = atol(token);
+	
 	fprintf(stream, "[process_list_hosts_response] Received seq_no: %u\n", sequence);
 	token = strtok(NULL, MESSAGE_DIVIDER);
 	
-	uint32_t filesize = ntohl(atoll(token));
+	uint32_t filesize = atoll(token);
 	fprintf(stream, "[process_list_hosts_response] filesize: %u\n", filesize);
-
 	pthread_mutex_lock(&lock_the_file);
 	if (sequence == seq_no) the_file->filesize = filesize;
 	
@@ -70,11 +71,11 @@ void process_list_hosts_response(char* message){
 		fprintf(stream, "[process_list_hosts_response] Status: %u\n", status);
 		
 		token = strtok(NULL, MESSAGE_DIVIDER);
-		uint32_t ip_addr = ntohl(atoll(token));
+		uint32_t ip_addr = atoll(token);
 		fprintf(stream, "[process_list_hosts_response] IP: %u\n", ip_addr);
-		printf("%d", ip_addr);
+		
 		token = strtok(NULL, MESSAGE_DIVIDER);
-		uint16_t data_port = ntohs(atoll(token));	
+		uint16_t data_port = atoll(token);	
 		fprintf(stream, "[process_list_hosts_response] Port: %u\n", data_port);
 		
 		if (sequence == seq_no){

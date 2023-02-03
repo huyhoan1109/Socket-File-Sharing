@@ -223,3 +223,448 @@ Status: 0
 filename: 'game.apk'
 filesize: 131129310
 Exec monitor_directory
+update_file_list.c > socket = 32899
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 52703
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 51129
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 34421
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 60323
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 39177
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 58061
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 50095
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Index server > n_files: 0
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 58747
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 55617
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 51867
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 43651
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Index server > n_files: 0
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 56473
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 45809
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 38661
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 33467
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Index server > n_files: 0
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 49839
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 53089
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 56155
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+Index server > n_files: 1
+Index server > filename: game.apk
+Index server > n_files: 1
+Index server > filename: game.apk
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 45003
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 45289
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 42003
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 36517
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 57465
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 35193
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 39535
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 56853
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+update_file_list.c > socket = 53171
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 34013
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+update_file_list.c > socket = 35999
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+update_file_list.c > socket = 57517
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+127.0.0.1:34404 > Sending 'game.apk' done
+update_file_list.c > socket = 59595
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 1
+filename: 'game.apk'
+filesize: 131129310
+Index server > n_files: 1
+Index server > filename: game.apk
+127.0.0.1:41018 > Sending 'game.apk' done
+127.0.0.1:60280 > Sending 'game.apk' done
+update_file_list.c > socket = 51361
+Status: 0
+filename: 'data.zip'
+filesize: 11673
+Status: 0
+filename: 'game.apk'
+filesize: 131129310
+Exec monitor_directory

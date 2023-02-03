@@ -20,7 +20,7 @@ static void close_connection(struct NetInfo cli_info){
 }
 
 static void* handleDownloadFileReq(void *arg){
-	printf("A lot of information");
+	// printf("A lot of information");
 	pthread_detach(pthread_self());
 	struct NetInfo cli_info = *((struct NetInfo*) arg);
 	free(arg);
@@ -39,7 +39,7 @@ static void* handleDownloadFileReq(void *arg){
 	strcpy(subtext, recv_msg);
 	token = strtok(subtext, MESSAGE_DIVIDER);
 	uint8_t packet_type = (uint8_t) atoi(token);
-	printf("%u\n", GET_FILE_REQUEST);
+	// printf("%u\n", GET_FILE_REQUEST);
 	if (packet_type == GET_FILE_REQUEST){
 		token = strtok(NULL, MESSAGE_DIVIDER);
 		strcpy(filename, token);
@@ -63,24 +63,25 @@ static void* handleDownloadFileReq(void *arg){
 			} else {
 				state = OPENING_FILE_ERROR;
 			}
+			printf("state: %d\n", state);
 			n_bytes = writeBytes(cli_info.sockfd, (void*)&state, MAX_BUFF_SIZE);
 			if (n_bytes <= 0){
 				close_connection(cli_info);
 				return NULL;
 			}
+			return NULL;
 		}
-		int ready = READY_TO_SEND_DATA;
+		uint8_t ready = READY_TO_SEND_DATA;
 		n_bytes = writeBytes(cli_info.sockfd, (void*)&ready, MAX_BUFF_SIZE);
 		if (n_bytes <= 0){
 			close_connection(cli_info);
 			return NULL;
 		}
-		
+		// printf("Ready\n");
 		fseeko(file, offset, SEEK_SET);
 		char buff[MAX_BUFF_SIZE];
 		int buf_len = 0;
 		int done = 0;
-
 		while (1){
 			buf_len = fread(buff, 1, MAX_BUFF_SIZE, file);
 			/* error when reading file or EOF */
@@ -96,6 +97,7 @@ static void* handleDownloadFileReq(void *arg){
 			n_bytes = writeBytes(cli_info.sockfd, buff, buf_len);
 			if (n_bytes <= 0) break;
 		}
+		// printf("End\n");
 		fclose(file);
 		if (n_bytes <= 0){
 			sprintf(err_mess, "%s > Send content of \'%s\'", cli_addr, filename);

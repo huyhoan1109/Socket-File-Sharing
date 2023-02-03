@@ -115,7 +115,6 @@ void delete_from_server(void *arg){
 		fs[n_fs].status = it->status;
 		strcpy(fs[n_fs].filename, name);
 		n_fs ++;	
-		printf("%d\n", n_fs);
 	}
 	lockNode(monitor_files, filename);
 	send_file_list(servsock, fs, n_fs);

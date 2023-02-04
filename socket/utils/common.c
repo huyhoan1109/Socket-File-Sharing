@@ -11,10 +11,12 @@
 FILE *stream = NULL;
 
 uint8_t protocolType(char *message){
-    char subtext[MAX_BUFF_SIZE], *token;
+    char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
+    int code;
     strcpy(subtext, message);
-    token = strtok(subtext, MESSAGE_DIVIDER);
-    return (uint8_t) atoi(token);
+    code = (uint8_t) atoi(strtok(subtext, MESSAGE_DIVIDER));
+    free(subtext);
+    return code;
 }
 
 uint32_t getFileSize(char* dir, char *filename){
@@ -56,42 +58,6 @@ void mutex_unlock(void *arg){
 void cancel_thread(void *arg){
 	pthread_t tid = *(pthread_t*)arg;
 	pthread_cancel(tid);
-}
-
-char *multicopy(int time, char* str){
-    char *after = malloc(sizeof(str) * time);
-    int i = 0;
-    while(i < time){
-        char *now = after + i * strlen(str);
-        strcpy(now, str);
-        i += 1;
-        now = now + 1;
-    }
-    return after;
-}
-
-int prettyprint(char *x, int dist, void *col){
-    col = (char*) col;
-    char *space1, *space2;
-    int padding, sp1, sp2;
-    if(col == NULL){
-        space1 = multicopy((int)( ( dist - strlen(x) ) / 2 + strlen(x) ), " ");
-        space2 = multicopy((int)( ( dist - strlen(x) ) / 2 + strlen(x) ), " ");
-        sp1 = strlen(space1);
-        sp2 = strlen(space2);
-        padding = strlen(x) + sp1 + sp2 + 4;;
-    } else{
-        int diff = strlen(col) - strlen(x);
-        int col_sp = (int)(( dist - strlen(col) ) / 2) + strlen(col);
-        int k = diff % 2;
-        sp1 = col_sp + diff/2 + k;
-        sp2 = col_sp + diff/2;
-        space1 = multicopy(sp1, " ");
-        space2 = multicopy(sp2, " ");
-        padding = strlen(x) + sp1 + sp2;
-    }
-    print_center(x, space1, space2);
-    return padding;
 }
 
 void *reverse(char *s)

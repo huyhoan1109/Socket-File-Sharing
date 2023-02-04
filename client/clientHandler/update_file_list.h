@@ -11,13 +11,12 @@ struct FileStatus{
 
 extern uint16_t dataPort;
 
-extern struct LinkedList *monitor_files;
+extern struct LinkedList *monitorFiles;
 
 void announceDataPort(int sockfd);
 void *update_file_list(void *arg);
 void monitor_directory(char *dir, int socketfd);
 void share_file(void *arg);
 void delete_from_server(void *arg);
-void re_run();
-
+void refreshListFile();
 #endif

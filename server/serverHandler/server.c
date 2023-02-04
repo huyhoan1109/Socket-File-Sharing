@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 		printf("Listening to port %d\n", port);
 	}
 
-	struct net_info *cli_info = malloc(sizeof(struct net_info));
+	struct net_info *cli_info = calloc(1, sizeof(struct net_info));
 	cli_info->data_port = 0;
 	struct sockaddr_in clisin;
 	unsigned int sin_len = sizeof(clisin);
@@ -83,14 +83,10 @@ int main(int argc, char **argv){
 		pthread_t tid;
 		int thr = pthread_create(&tid, NULL, &serveClient, (void*)cli_info);
 		if (thr != 0){
-			char err_mess[255];
-			strerror_r(errno, err_mess, sizeof(err_mess));
-			fprintf(stream, "Create thread to handle %s:%u: %s\n", 
-					cli_info->ip_add, cli_info->port, err_mess);
 			close(cli_info->sockfd);
 			continue;
 		}
-		cli_info = malloc(sizeof(struct net_info));
+		cli_info = calloc(1, sizeof(struct net_info));
 		cli_info->data_port = 0;
 	}
 	close(servsock);
@@ -106,7 +102,7 @@ void *serveClient(void *arg){
 	struct net_info cli_info = *((struct net_info*) arg);
 	free(arg);
 
-	cli_info.lock_sockfd = malloc(sizeof(pthread_mutex_t));
+	cli_info.lock_sockfd = calloc(1, sizeof(pthread_mutex_t));
 	pthread_cleanup_push(free_mem, cli_info.lock_sockfd);
 
 	*(cli_info.lock_sockfd) = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
@@ -122,8 +118,8 @@ void *serveClient(void *arg){
 
 	/* receive request from clients,
 	 * then response accordingly */
-	char *message = malloc(MAX_BUFF_SIZE);
-	char *subtext = malloc(MAX_BUFF_SIZE);
+	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
+	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
 	while(readBytes(cli_info.sockfd, message, MAX_BUFF_SIZE)>0){
 		printf("%s\n", message);
 		packet_type = protocolType(message);
@@ -169,7 +165,6 @@ void *serveClient(void *arg){
 				strcpy(thrdt.filename, token);
 
 				pthread_t tid;
-				fprintf(stream, "Create new thread to process list_hosts_request\n");
 				int thr = pthread_create(&tid, NULL, &process_list_hosts_request, &thrdt);
 				if (thr != 0){
 					handleSocketError(cli_info, "Create new thread to process list_hosts_request");

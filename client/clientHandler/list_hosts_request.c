@@ -19,7 +19,7 @@ void send_list_hosts_request(char *filename){
 
 	// LIST_HOST_REQUEST :=: seq_no :=: filename
 
-	char *message = malloc(MAX_BUFF_SIZE);;
+	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
 	strcpy(message, itoa(LIST_HOSTS_REQUEST));
 	strcat(message, MESSAGE_DIVIDER);
 	pthread_mutex_lock(&lock_the_file);
@@ -32,28 +32,23 @@ void send_list_hosts_request(char *filename){
 }
 
 void process_list_hosts_response(char* message){
-	char *subtext = malloc(MAX_BUFF_SIZE);
+	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
 	strcpy(subtext, message);
 	
 	char *token;
 	token = strtok(subtext, MESSAGE_DIVIDER);
-	
-	fprintf(stream, "Exec process_list_hosts_response\n");
-	
 	token = strtok(NULL, MESSAGE_DIVIDER);	
 	uint8_t sequence = atol(token);
 	
-	fprintf(stream, "[process_list_hosts_response] Received seq_no: %u\n", sequence);
 	token = strtok(NULL, MESSAGE_DIVIDER);
-	
 	uint32_t filesize = atoll(token);
-	fprintf(stream, "[process_list_hosts_response] filesize: %u\n", filesize);
+
 	pthread_mutex_lock(&lock_the_file);
+
 	if (sequence == seq_no) the_file->filesize = filesize;
 	
 	token = strtok(NULL, MESSAGE_DIVIDER);
 	uint32_t n_hosts = atol(token);
-	fprintf(stream, "[process_list_hosts_response] n_hosts: %u\n", n_hosts);
 
 	if (n_hosts == 0 && sequence == seq_no){
 		/* file not found */
@@ -68,25 +63,21 @@ void process_list_hosts_response(char* message){
 	for (; i < n_hosts; i++){
 		token = strtok(NULL, MESSAGE_DIVIDER);
 		uint8_t status = atol(token);
-		fprintf(stream, "[process_list_hosts_response] Status: %u\n", status);
 		
 		token = strtok(NULL, MESSAGE_DIVIDER);
 		uint32_t ip_addr = atoll(token);
-		fprintf(stream, "[process_list_hosts_response] IP: %u\n", ip_addr);
 		
 		token = strtok(NULL, MESSAGE_DIVIDER);
 		uint16_t data_port = atoll(token);	
-		fprintf(stream, "[process_list_hosts_response] Port: %u\n", data_port);
 		
 		if (sequence == seq_no){
-			struct DownloadInfo *dinfo = malloc(sizeof(struct DownloadInfo));
+			struct DownloadInfo *dinfo = calloc(1, sizeof(struct DownloadInfo));
 			dinfo->dthost.ip_addr = ip_addr;
 			dinfo->dthost.port = data_port;
 			dinfo->seq_no = sequence;
 			if (status == FILE_NEW){
 				struct Node *host_node = getNodeByHost(the_file->host_list, dinfo->dthost);
 				if (!host_node){
-					fprintf(stream, "[process_list_hosts_response] New host, add to the list\n");
 					host_node = newNode(&dinfo->dthost, DATA_HOST_TYPE);
 					push(the_file->host_list, host_node);
 					/* create new thread to download file */
@@ -95,13 +86,11 @@ void process_list_hosts_response(char* message){
 						pthread_t tid;
 						int thr = pthread_create(&tid, NULL, &download_file, dinfo);
 						if (thr != 0){
-							fprintf(stream, "Cannot create new thread to download file\n");
 							free(dinfo);
 							pthread_mutex_unlock(&lock_n_threads);
 							continue;
 						}
 						n_threads ++;
-						fprintf(stream, "[process_list_hosts_response] Created new thread to download file\n");
 					}
 					pthread_mutex_unlock(&lock_n_threads);
 				}
@@ -110,10 +99,7 @@ void process_list_hosts_response(char* message){
 				free(dinfo);
 				if (host_node){
 					removeNode(the_file->host_list, host_node);
-					fprintf(stream, "[process_list_hosts_response] Host removed\n");
-				} else {
-					fprintf(stream, "[process_list_hosts_response] Host is not existed\n");
-				}
+				} 
 			}
 		}
 	}

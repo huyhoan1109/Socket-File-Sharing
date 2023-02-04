@@ -14,6 +14,7 @@
 #include <time.h>
 
 #include "../../socket/utils/common.h"
+
 #include "connect_index_server.h"
 #include "update_file_list.h"
 #include "list_files_request.h"
@@ -23,8 +24,17 @@
 
 #define MENUMAX 7
 
-const char EXIT_CMD[] = "/exit";
-int menuitem = 0;
+int menuitem = -1;
+
+char MenuList[MENUMAX][40] = {
+	"1. List file",
+	"2. Available file",
+	"3. Remove file from server",
+	"4. Download file",
+	"5. Share file",
+	"6. Something",
+	"7. Exit Program"
+};
 
 void drawmenu(WINDOW *win, int item, int start, int end)
 {
@@ -32,15 +42,6 @@ void drawmenu(WINDOW *win, int item, int start, int end)
 	box(win, 0, 0);
 	mvwaddstr(win, 0, 2, " Main Menu ");
 	int c;
-	char MenuList[MENUMAX][40] = {
-		"1. List file",
-		"2. Available file",
-		"3. Remove file from server",
-		"4. Download file",
-		"5. Share file",
-		"6. Something",
-		"7. Exit Program"
-	};
 	clear();
 	for (c = start; c <= end; c++)
 	{
@@ -52,8 +53,9 @@ void drawmenu(WINDOW *win, int item, int start, int end)
 	mvwaddstr(win, 15, 12, PRESS_ENTER);
 	wrefresh(win);
 }
+
 void initMenu(WINDOW *win)
-{
+{	
 	int key;
 	menuitem = 0;
 	int itemnum = 5;
@@ -76,9 +78,9 @@ void initMenu(WINDOW *win)
 				start = end - itemnum;
 			}
 			if (menuitem < start) {
-                start--;
-                end--;
-            }
+				start--;
+				end--;
+			}
 			break;
 		case 66:
 		case 's':
@@ -89,9 +91,9 @@ void initMenu(WINDOW *win)
 				end = start + itemnum;
 			}
 			if (menuitem > end) {
-                start++;
-                end++;
-            }
+				start++;
+				end++;
+			}
 			break;
 		case '\n':
 			wclear(win);
@@ -104,11 +106,11 @@ void initMenu(WINDOW *win)
 		drawmenu(win, menuitem, start, end);
 	} while (key != '1');
 }
-void initScreen(WINDOW *win, char title[])
+void initScreen(WINDOW *win, char *title)
 {
 	mvwaddstr(win, 0, 2, title);
 	int key;
-	menuitem = 0;
+	menuitem = -1;
 	mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 	keypad(stdscr, TRUE);
 	noecho(); // disable echo
@@ -124,17 +126,16 @@ void initScreen(WINDOW *win, char title[])
 	} while (key != '1');
 }
 
-void initShareScreen(WINDOW *win, char *title, char noti[]){
+void initShareScreen(WINDOW *win){
 	wclear(win);
 	box(win, 0, 0);
-	mvwaddstr(win, 0, 2, title);
+	mvwaddstr(win, 0, 2, " Share File Screen ");
 	int key;
-	char fileName[30] = {0};
-	menuitem = 0;
-	char path[100];
+	menuitem = -1;	
+	char *fileName = calloc(30, sizeof(char));
+	char *path = calloc(100, sizeof(char));
 	mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 	mvwaddstr(win, 2, 4, "File name to share:");
-	mvwaddstr(win, 6, 4, noti);
 	keypad(stdscr, TRUE);
 	int temp = 0;
 	do
@@ -154,7 +155,7 @@ void initShareScreen(WINDOW *win, char *title, char noti[]){
 				if (temp > 0) temp --; 
 				wclear(win);
 				box(win, 0, 0);
-				mvwaddstr(win, 0, 2, title);
+				mvwaddstr(win, 0, 2, " Share File Screen ");
 				mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 				mvwaddstr(win, 2, 4, "File name to share:");
 				mvwaddstr(win, 2, 25, fileName);
@@ -172,35 +173,32 @@ void initShareScreen(WINDOW *win, char *title, char noti[]){
 			strcpy(path, STORAGE);
 			strcat(path, "/");
 			strcat(path, fileName);
-			char notify[30] = {0};
 			if (access(path, F_OK) != -1)
 			{
 				if (strlen(fileName) == 0) {
-					strcpy(notify, "No input available");
-					mvwaddstr(win, 4, 4, notify);
+					mvwaddstr(win, 4, 4, "No input available");
 				} else {
 					share_file(fileName);
 				}
 			} else {
-				strcpy(notify, "File not available");
-				mvwaddstr(win, 4, 4, notify);
+				mvwaddstr(win, 4, 4, "File not available");
 			}
 		}
 	} while (1);
+	free(fileName);
 }
 
-void initRemoveScreen(WINDOW *win, char *title, char noti[])
+void initRemoveScreen(WINDOW *win)
 {
 	wclear(win);
 	box(win, 0, 0);
-	mvwaddstr(win, 0, 2, title);
+	mvwaddstr(win, 0, 2, " Remove Screen ");
 	int key;
-	char fileName[30] = {0};
-	menuitem = 0;
-	char path[100];
+	char *fileName = calloc(30, sizeof(char));
+	menuitem = -1;
+	char *path = calloc(100, sizeof(char));
 	mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 	mvwaddstr(win, 2, 4, "File name to remove:");
-	mvwaddstr(win, 6, 4, noti);
 	keypad(stdscr, TRUE);
 	int temp = 0;
 	do
@@ -210,6 +208,7 @@ void initRemoveScreen(WINDOW *win, char *title, char noti[])
 		{
 			wclear(win);
 			box(win, 0, 0);
+			free(fileName);
 			return;
 		}
 		if (key == 127 || key == 8)
@@ -220,7 +219,7 @@ void initRemoveScreen(WINDOW *win, char *title, char noti[])
 				if (temp > 0) temp --; 
 				wclear(win);
 				box(win, 0, 0);
-				mvwaddstr(win, 0, 2, title);
+				mvwaddstr(win, 0, 2, " Remove Screen ");
 				mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 				mvwaddstr(win, 2, 4, "File name to remove:");
 				mvwaddstr(win, 2, 27, fileName);
@@ -236,7 +235,7 @@ void initRemoveScreen(WINDOW *win, char *title, char noti[])
 		else if (key == '\n')
 		{
 			int mod_key;
-			char del_mod[30] = {0};
+			char *del_mod = calloc(100, sizeof(char));
 			int mod_i=0;
 			mvwaddstr(win, 4, 4, "Delete from your device too (Y/N): ");
 			do {
@@ -245,6 +244,7 @@ void initRemoveScreen(WINDOW *win, char *title, char noti[])
 				{
 					wclear(win);
 					box(win, 0, 0);
+					free(fileName);
 					return;
 				}
 				if (mod_key == 127 || mod_key == 8)
@@ -255,7 +255,7 @@ void initRemoveScreen(WINDOW *win, char *title, char noti[])
 						if (mod_i > 0) mod_i --; 
 						wclear(win);
 						box(win, 0, 0);
-						mvwaddstr(win, 0, 2, title);
+						mvwaddstr(win, 0, 2, " Remove Screen ");
 						mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 						mvwaddstr(win, 2, 4, "File name to remove:");
 						mvwaddstr(win, 2, 27, fileName);
@@ -274,44 +274,35 @@ void initRemoveScreen(WINDOW *win, char *title, char noti[])
 			strcpy(path, STORAGE);
 			strcat(path, "/");
 			strcat(path, fileName);
-			char removeNoti[100] = {0};
 			if (access(path, F_OK) == -1){
-				strcpy(removeNoti, "File not available!");
-				mvwaddstr(win, 6, 4, removeNoti);
+				mvwaddstr(win, 6, 4, "File not available!");
 			} else {
 				if (strcasecmp(del_mod, "n")==0){
 					delete_from_server(fileName);
 				} else if (strcasecmp(del_mod, "y")==0){
 					remove(path);
-					char removeNoti[100] = {0};
-					strcat(removeNoti, "Delete");
-					strcat(removeNoti, " ");
-					strcat(removeNoti, fileName);
-					strcat(removeNoti, " ");
-					strcat(removeNoti, "successfully");
-					mvwaddstr(win, 6, 4, removeNoti);
+					mvwprintw(win, 6, 4, "Delete %s successfully", fileName);
 				} else {
-					strcpy(removeNoti, "Please press Y/N to process!");
-					mvwaddstr(win, 6, 4, removeNoti);
+					mvwaddstr(win, 6, 4, "Please press Y/N to process!");
 				}
 			}
 		}
 	} while (1);
+	free(fileName);
 }
-void initDownloadScreen(WINDOW *win, char *title, char noti[])
+void initDownloadScreen(WINDOW *win)
 {
 	wclear(win);
 	box(win, 0, 0);
-	mvwaddstr(win, 0, 2, title);
+	mvwaddstr(win, 0, 2, " Download Screen ");
 	mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 	mvwaddstr(win, 2, 4, "File name to download:");
-	mvwaddstr(win, 6, 4, noti);
 	keypad(stdscr, TRUE);
 	int temp = 0;
 	int key;
-	char fileName[30] = {0};
-	menuitem = 0;
-	char path[100];
+	char *fileName = calloc(30, sizeof(char));
+	menuitem = -1;
+	char *path = calloc(100, sizeof(char));
 	do
 	{
 		key = wgetch(win);
@@ -319,6 +310,7 @@ void initDownloadScreen(WINDOW *win, char *title, char noti[])
 		{
 			wclear(win);
 			box(win, 0, 0);
+			free(fileName);
 			return;
 		}
 		if (key == 127 || key == 8)
@@ -329,7 +321,7 @@ void initDownloadScreen(WINDOW *win, char *title, char noti[])
 				if (temp > 0) temp--;
 				wclear(win);
 				box(win, 0, 0);
-				mvwaddstr(win, 0, 2, title);
+				mvwaddstr(win, 0, 2, " Download Screen ");
 				mvwaddstr(win, 14, 4, PRESS_ESC_BACK);
 				mvwaddstr(win, 2, 4, "File name to download:");
 				mvwaddstr(win, 2, 27, fileName);
@@ -350,15 +342,11 @@ void initDownloadScreen(WINDOW *win, char *title, char noti[])
 			strcat(path, fileName);
 			if (access(path, F_OK) != -1)
 			{
-				char notify[30] = {0};
-				strcat(notify, fileName);
-				strcat(notify, " ");
-				strcat(notify, "existed");
-				if (strlen(fileName) == 0) strcpy(notify, "No input available");
-				mvwaddstr(win, 4, 4, notify);
+				if (strlen(fileName) == 0) mvwprintw(win, 4, 4, "No input available");
+				else mvwprintw(win, 4, 4, "%s existed", fileName); 
 			} else {
 				pthread_mutex_lock(&lock_the_file);
-				the_file = malloc(sizeof(struct FileOwner));
+				the_file = calloc(1, sizeof(struct FileOwner));
 				the_file->host_list = newLinkedList();
 				strcpy(the_file->filename, fileName);
 				the_file->filesize = 0;
@@ -376,11 +364,7 @@ void initDownloadScreen(WINDOW *win, char *title, char noti[])
 				clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 				long duration = (end.tv_sec - begin.tv_sec) * 1e3 + (end.tv_nsec - begin.tv_nsec) / 1e6;
 				if (rev) {
-					char notiTime[100] = {0};
-					strcat(notiTime, "Elapsed time: ");
-					strcat(notiTime, itoa(duration));
-					strcat(notiTime, " miliseconds");
-					mvwaddstr(win, 8, 4, notiTime);
+					mvwprintw(win, 8, 4, "Elapsed time: %s miliseconds", itoa(duration));
 				}
 			}
 		}
@@ -393,13 +377,6 @@ int main(int argc, char **argv)
 		printf("Usage: ./peer <host> <port>\n");
 		exit(1);
 	}
-
-	struct stat filestat;
-	char history[20] = "history.log";
-	stat(history, &filestat);
-	time_t curr = time(NULL);
-	if(curr - filestat.st_mtim.tv_sec < 4000) stream = fopen(history, "a+");
-	else stream = fopen(history, "w");
 
 	/* ignore EPIPE to avoid crashing when writing to a closed socket */
 	signal(SIGPIPE, SIG_IGN);
@@ -457,7 +434,9 @@ int main(int argc, char **argv)
 	while (menuitem != MENUMAX - 1)
 	{
 		
-		initMenu(win);
+		if (menuitem == -1){
+			initMenu(win);
+		}
 		if (menuitem == 0)
 		{
 			wrefresh(win);
@@ -466,6 +445,8 @@ int main(int argc, char **argv)
 		}
 		else if (menuitem == 1)
 		{
+			wclear(win);
+			box(win, 0, 0);
 			int h_f = 0;
 			DIR *d;
 			struct dirent *dir;
@@ -496,19 +477,20 @@ int main(int argc, char **argv)
 		}
 		else if (menuitem == 2)
 		{
-			initRemoveScreen(win, " Remove file screen ", "");
+			initRemoveScreen(win);
 		}
 		else if (menuitem == 3)
 		{
-			initDownloadScreen(win, " Download file screen ", "");
+			initDownloadScreen(win);
+			refreshListFile();
 		}
 		else if (menuitem == 4)
 		{
-			initShareScreen(win, " Share file screen ", "");
+			initShareScreen(win);
 		}
 		else if (menuitem == 5)
 		{
-			initShareScreen(win, " Some screen ", "");
+			initScreen(win, " Something ");
 		}
 	}
 	echo(); // re-enable echo

@@ -3,7 +3,7 @@
 #include "LinkedListUtils.h"
 
 struct Node* llContainFile(const struct LinkedList *ll, char *filename){
-        if (ll == NULL) return NULL;
+    if (ll == NULL) return NULL;
 	struct Node *it = ll->head;
 	for (; it != NULL; it = it->next){
 		struct FileOwner *file = (struct FileOwner*)it->data;
@@ -15,7 +15,7 @@ struct Node* llContainFile(const struct LinkedList *ll, char *filename){
 }
 
 struct Node* llContainHost(const struct LinkedList *ll, struct DataHost host){
-        if (ll == NULL) return NULL;
+    if (ll == NULL) return NULL;
 	struct Node *it = ll->head;
 	for (; it != NULL; it = it->next){
 		struct DataHost *data_host = (struct DataHost*)it->data;

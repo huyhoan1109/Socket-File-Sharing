@@ -6,14 +6,18 @@
 
 #define MINIMUM_SEGMENT_SIZE	81920	//80KB
 
+extern int n_threads;
+extern int download_file_done;
+
 extern const char tmp_dir[];
 extern struct LinkedList *segment_list;
-extern int download_file_done;
+
 extern pthread_mutex_t lock_segment_list;
 extern pthread_cond_t cond_segment_list;
-extern int n_threads;
 extern pthread_mutex_t lock_n_threads;
 extern pthread_cond_t cond_n_threads;
+extern pthread_mutex_t lock_user;
+extern pthread_cond_t cond_user;
 
 struct DownloadInfo{
 	struct DataHost dthost;

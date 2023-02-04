@@ -5,12 +5,12 @@
 #include "LinkedList.h"
 
 struct Node* newNode(void *data, int data_type){
-	struct Node* newN = malloc(sizeof(struct Node));
+	struct Node* newN = calloc(1, sizeof(struct Node));
 	newN->status = INIT_STATE;
 	switch (data_type){
 		case SEGMENT_TYPE:
 		{
-			struct Segment *tmp = malloc(sizeof(struct Segment));
+			struct Segment *tmp = calloc(1, sizeof(struct Segment));
 			*tmp = *((struct Segment*)data);
 			newN->data = tmp;
 			newN->type = SEGMENT_TYPE;
@@ -18,7 +18,7 @@ struct Node* newNode(void *data, int data_type){
 		}
 		case INT_TYPE:
 		{
-			int *tmp = malloc(sizeof(int));
+			int *tmp = calloc(1, sizeof(int));
 			*tmp = *((int*) data);
 			newN->data = tmp;
 			newN->type = INT_TYPE;
@@ -26,7 +26,7 @@ struct Node* newNode(void *data, int data_type){
 		}
 		case FILE_OWNER_TYPE:
 		{
-			struct FileOwner *tmp = malloc(sizeof(struct FileOwner));
+			struct FileOwner *tmp = calloc(1, sizeof(struct FileOwner));
 			*tmp = *((struct FileOwner*)data);
 			newN->data = tmp;
 			newN->type = FILE_OWNER_TYPE;
@@ -34,7 +34,7 @@ struct Node* newNode(void *data, int data_type){
 		}
 		case DATA_HOST_TYPE:
 		{
-			struct DataHost *tmp = malloc(sizeof(struct DataHost));
+			struct DataHost *tmp = calloc(1, sizeof(struct DataHost));
 			*tmp = *((struct DataHost*)data);
 			newN->data = tmp;
 			newN->type = DATA_HOST_TYPE;
@@ -42,7 +42,7 @@ struct Node* newNode(void *data, int data_type){
 		}
 		case PTHREAD_T_TYPE:
 		{
-			pthread_t *tmp = malloc(sizeof(pthread_t));
+			pthread_t *tmp = calloc(1, sizeof(pthread_t));
 			*tmp = *((pthread_t*)data);
 			newN->data = tmp;
 			newN->type = PTHREAD_T_TYPE;
@@ -51,7 +51,7 @@ struct Node* newNode(void *data, int data_type){
 		case STRING_TYPE:
 		{
 			char *input = (char*)data;
-			char *tmp = malloc(strlen(input) + 1);
+			char *tmp = calloc(strlen(input) + 1, sizeof(char));
 			strcpy(tmp, input);
 			newN->data = tmp;
 			newN->type = STRING_TYPE;
@@ -67,7 +67,7 @@ struct Node* newNode(void *data, int data_type){
 }
 
 struct LinkedList* newLinkedList(){
-	struct LinkedList *ll = malloc(sizeof(struct LinkedList));
+	struct LinkedList *ll = calloc(1, sizeof(struct LinkedList));
 	ll->head = NULL;
 	ll->tail = NULL;
 	ll->n_nodes = 0;

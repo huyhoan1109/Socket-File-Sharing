@@ -59,10 +59,7 @@ static void displayFileList(){
 	int k = 0;
 	for (; it != NULL; it = it->next){
 		struct FileOwner *fo = (struct FileOwner*)it->data;
-		if (fo->host_list == NULL){
-			fprintf(stream, "\'%s\' has fo->host_list == NULL\n", fo->filename);
-			continue;
-		}
+		if (fo->host_list == NULL){continue;}
 		struct Node *it2 = fo->host_list->head;
 		for (; it2 != NULL; it2 = it2->next){
 			k++;
@@ -103,7 +100,6 @@ void handleSocketError(struct net_info cli_info, char *mess){
 }
 
 void removeHost(struct DataHost host){
-	fprintf(stream, "function: removeHost\n");
 	pthread_mutex_lock(&lock_file_list);
 	pthread_cleanup_push(mutex_unlock, &lock_file_list);
 	struct Node *it = file_list->head;
@@ -111,9 +107,7 @@ void removeHost(struct DataHost host){
 	for (; it != NULL; it = it->next){
 		struct FileOwner *tmp = (struct FileOwner*)it->data;
 		struct Node *host_node = getNodeByHost(tmp->host_list, host);
-		//printf("host_node: %p\n", host_node);
 		if (host_node){
-			fprintf(stream, "function: removeNode/host\n");
 			removeNode(tmp->host_list, host_node);
 			/* if the host_list is empty, also remove the file from file_list */
 			if (tmp->host_list->n_nodes <= 0){
@@ -122,9 +116,7 @@ void removeHost(struct DataHost host){
 					continue;
 				}
 				it = it->prev;		//if (it == head) => it->prev == NULL
-				fprintf(stream, "function: removeNode/file\n");
 				removeNode(file_list, it->next);
-				//fprintf(stream, "removeNode/file done\n");
 			}
 		}
 	}
@@ -150,16 +142,15 @@ void update_file_list(struct net_info cli_info, char *message){
 
 	sprintf(cli_addr, "%s:%u", cli_info.ip_add, cli_info.port);
 
-	fprintf(stream, "%s > file_list_update\n", cli_addr);
 	char *token;
-	char *subtext = malloc(MAX_BUFF_SIZE);
+	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
 	strcpy(subtext, message);
 	token = strtok(subtext, MESSAGE_DIVIDER);
 	token = strtok(NULL, MESSAGE_DIVIDER);
 
 	uint8_t status;
 	uint32_t filesize;
-	char *filename = malloc(sizeof(char) * 100);
+	char *filename = calloc(100, sizeof(char));
 	uint8_t n_files = (uint8_t) atoll(token);
 	int changed = 0;
 	for (int i=0; n_files>i; i++){
@@ -218,7 +209,6 @@ void update_file_list(struct net_info cli_info, char *message){
 				if (file->host_list->n_nodes <= 0){
 					removeNode(file_list, file_node);
 				}
-				fprintf(stream, "%s > Deleted a file: %s\n", cli_addr, filename);
 			}
 		}
 		pthread_cond_broadcast(&cond_file_list);
@@ -238,7 +228,7 @@ void process_list_files_request(struct net_info cli_info){
 	long n_bytes;
 	pthread_mutex_lock(cli_info.lock_sockfd);
 	pthread_mutex_lock(&lock_file_list);
-	char *message = malloc(MAX_BUFF_SIZE);
+	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
 	strcpy(message, itoa(LIST_FILES_RESPONSE));
 	strcat(message, MESSAGE_DIVIDER);
 
@@ -276,7 +266,7 @@ static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hos
 	pthread_mutex_lock(thrdt->cli_info.lock_sockfd);
 	long n_bytes;
 	//add header
-	char *message = malloc(MAX_BUFF_SIZE);
+	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
 	strcpy(message, itoa(LIST_HOSTS_RESPONSE));
 	strcat(message, MESSAGE_DIVIDER);
 	strcat(message, itoa(thrdt->seq_no));
@@ -321,7 +311,6 @@ static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hos
 }
 
 void* process_list_hosts_request(void *arg){
-	fprintf(stream, "Execute process_list_hosts_request\n");
 	pthread_detach(pthread_self());
 	struct thread_data *thrdt = (struct thread_data*)arg;
 	char filename[256];
@@ -352,7 +341,6 @@ void* process_list_hosts_request(void *arg){
 			pthread_mutex_unlock(&lock_file_list);
 			destructLinkedList(old_ll);
 			/* terminate this thread */
-			fprintf(stream, "[process_list_hosts_request] Terminate thread due to the difference of sequence number\n");
 			int ret = 100;
 			pthread_exit(&ret);
 		}
@@ -362,30 +350,22 @@ void* process_list_hosts_request(void *arg){
 			chg_hosts = newLinkedList();
 			struct FileOwner *file = (struct FileOwner*)(file_node->data);
 			thrdt->filesize = file->filesize;
-			fprintf(stream, "[process_list_hosts_request] filesize: %u\n", file->filesize);
 
 			/* check if the i-th host of the file->host_list is the new host:
 			 * check[i]: the number of comparison performed with the i-th host,
 			 * if check[i] is equal to the number of hosts in the old_ll,
 			 * => the i-th host is the new host */
-			uint8_t *check = malloc(file->host_list->n_nodes);
-			fprintf(stream, "initialize check\n");
+			uint8_t *check = calloc(file->host_list->n_nodes, sizeof(uint8_t));
 			bzero(check, file->host_list->n_nodes);
 
-			fprintf(stream, "[process_list_hosts_request] Detect new/deleted hosts\n");
-
 			struct Node *it1 = old_ll->head;
-			fprintf(stream, "[process_list_hosts_request] Check for deleted hosts\n");
 			for (; it1 != NULL; it1 = it1->next){
 				struct DataHost *host1 = (struct DataHost*)(it1->data);
-				fprintf(stream, "[process_list_hosts_request] \'%s\' compare host (%u:%u) with\n", 
-						filename, host1->ip_addr, host1->port);
 				struct Node *it2 = file->host_list->head;
 				int same = 0;
 				uint8_t i = 0;
 				for (; it2 != NULL; it2 = it2->next){
 					struct DataHost *host2 = (struct DataHost*)(it2->data);
-					fprintf(stream, "[process_list_hosts_request] Host (%u:%u)\n", host2->ip_addr, host2->port);
 					if(host1->ip_addr == host2->ip_addr && host1->port == host2->port){
 						same = 1;
 						break;
@@ -406,7 +386,6 @@ void* process_list_hosts_request(void *arg){
 			}
 			uint8_t i = 0;
 			struct Node *it = file->host_list->head;
-			fprintf(stream, "[process_list_hosts_request] Check for new hosts\n");
 			for (; it != NULL; it = it->next){
 				/* new host */
 				if (check[i] == old_ll->n_nodes){
@@ -417,11 +396,8 @@ void* process_list_hosts_request(void *arg){
 				}
 				i++;
 			}
-			fprintf(stream, "[process_list_hosts_request] Free(check)\n");
 			free(check);
-			fprintf(stream, "[process_list_hosts_request] Destruct old_ll\n");
 			destructLinkedList(old_ll);
-			fprintf(stream, "[process_list_hosts_request] Copy to old_ll\n");
 			old_ll = copyLinkedList(file->host_list);
 		} else {
 			/* there is no host that own the file */
@@ -437,11 +413,7 @@ void* process_list_hosts_request(void *arg){
 
 		pthread_mutex_unlock(&lock_file_list);
 
-		if (chg_hosts->n_nodes == 0){
-			fprintf(stream, "[process_list_hosts_request] \'%s\' no update\n", filename);
-		} else {
-			send_host_list(thrdt, chg_hosts);
-		}
+		if (chg_hosts->n_nodes != 0){send_host_list(thrdt, chg_hosts);}
 
 		destructLinkedList(chg_hosts);
 		chg_hosts = NULL;

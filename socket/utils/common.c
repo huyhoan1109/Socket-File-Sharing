@@ -8,8 +8,6 @@
 #define MAX_BUFF_SIZE 8192
 #define _FILE_OFFSET_BITS 64
 
-FILE *stream = NULL;
-
 uint8_t protocolType(char *message){
     char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
     int code;

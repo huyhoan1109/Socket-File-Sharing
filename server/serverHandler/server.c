@@ -26,12 +26,6 @@ int main(int argc, char **argv){
 		printf("Usage: ./server <port>");
 		exit(1);
 	}
-	struct stat filestat;
-	char history[20] = "history.log";
-	stat(history, &filestat);
-	time_t curr = time(NULL);
-	if(curr - filestat.st_mtim.tv_sec < 4000) stream = fopen(history, "a+");
-	else stream = fopen(history, "w");
 
 	int servsock = socket(AF_INET, SOCK_STREAM, 0);
 	if (servsock < 0){

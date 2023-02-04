@@ -39,9 +39,6 @@
 #define FILE_NOT_FOUND 1
 #define OPENING_FILE_ERROR 2
 
-// history log file stream
-extern FILE *stream;
-
 uint8_t protocolType(char *message);
 
 uint32_t getFileSize(char* dir, char *filename);

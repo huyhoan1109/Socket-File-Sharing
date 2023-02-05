@@ -409,9 +409,9 @@ int main(int argc, char **argv)
 	if (thr != 0) exit(1);
 
 	/* connect to server */
-	connect_to_index_server(argv[1], atoi(argv[2]));
+	connect_to_index_server(argv[1], atoi(argv[2]), STORAGE);
 	pthread_t tid;
-	thr = pthread_create(&tid, NULL, &init_file_list, STORAGE);
+	thr = pthread_create(&tid, NULL, &init_file_list, NULL);
 	if (thr != 0) exit(1);
 
 	initscr();

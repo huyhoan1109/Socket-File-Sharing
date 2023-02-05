@@ -24,15 +24,12 @@ uint16_t old_port;
 struct LinkedList *monitorFiles;
 char dirName[30];
 
-void connect_to_index_server(char *servip, uint16_t index_port){
+void connect_to_index_server(char *servip, uint16_t index_port, char *storage_dir){
 	/* connect to index server */
 	struct sockaddr_in servsin;
 	bzero(&servsin, sizeof(servsin));
 
 	servsin.sin_family = AF_INET;
-
-	strcpy(old_server_ip, servip);
-	old_port = index_port;
 
 	/* parse the buf to get ip address and port */
 	servsin.sin_addr.s_addr = inet_addr(servip);
@@ -42,6 +39,7 @@ void connect_to_index_server(char *servip, uint16_t index_port){
 	if (servsocket < 0) exit(1);
 	if (connect(servsocket, (struct sockaddr*) &servsin, sizeof(servsin)) < 0) exit(1);
 	servsock = servsocket;
+	strcpy(dirName, storage_dir);
 }
 
 void* process_response(void *arg){

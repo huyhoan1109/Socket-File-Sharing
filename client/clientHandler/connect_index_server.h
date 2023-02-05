@@ -11,7 +11,7 @@ extern struct LinkedList *monitorFiles;
 extern char dirName[30];
 
 void drawProgress(WINDOW *win, int y, int x, uint64_t current, uint64_t max);
-void connect_to_index_server(char *servip, uint16_t index_port);
+void connect_to_index_server(char *servip, uint16_t index_port, char *storage_dir);
 void* process_response(void *arg);
 
 struct LinkedList *refreshListFile(struct LinkedList *ll, char *dir_name);

@@ -126,7 +126,6 @@ void share_file(void *arg){
 }
 
 void* init_file_list(void *arg){
-	strcpy(dirName, (char*)arg);
 	//data_port_announcement must be sent first
 	announceDataPort(servsock);
 	/* list files in a directory */

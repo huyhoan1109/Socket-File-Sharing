@@ -36,14 +36,6 @@ uint32_t getFileSize(char* dir, char *filename){
 	return sz;
 }
 
-int print_error(char *mess){
-	char err_mess[256];
-	int errnum = errno;
-	strerror_r(errnum, err_mess, sizeof(err_mess));
-	fprintf(stderr, "%s [ERROR]: %s\n", mess, err_mess);
-    return errnum;
-}
-
 void free_mem(void *arg){
 	if (arg) free(arg);
 }

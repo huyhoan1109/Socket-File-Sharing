@@ -38,6 +38,7 @@
 #define READY_TO_SEND_DATA 0
 #define FILE_NOT_FOUND 1
 #define OPENING_FILE_ERROR 2
+#define FILE_IS_BLOCK 3
 
 uint8_t protocolType(char *message);
 

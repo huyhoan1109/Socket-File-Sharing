@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <errno.h>
 
 #include "handle_request.h"
 
@@ -79,9 +80,11 @@ static void displayFileList(){
 void handleSocketError(struct net_info cli_info, char *mess){
 	//print error message
 	char err_mess[256];
-	sprintf(err_mess, "%s:%u > %s", cli_info.ip_add, cli_info.port, mess);
-	print_error(err_mess);
-	
+	int errnum = errno;
+	sprintf(err_mess, "%s:%u > %s", cli_info.ip_add, cli_info.port, mess);	
+	strerror_r(errnum, err_mess, sizeof(err_mess));
+	fprintf(stderr, "%s [ERROR]: %s\n", mess, err_mess);
+
 	/* remove the host from the file_list */
 	struct DataHost host;
 	host.ip_addr = ntohl(inet_addr(cli_info.ip_add));

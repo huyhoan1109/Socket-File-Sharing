@@ -171,7 +171,6 @@ void initShareScreen(WINDOW *win){
 		else if (key == '\n')
 		{
 			strcpy(path, STORAGE);
-			strcat(path, "/");
 			strcat(path, fileName);
 			if (access(path, F_OK) != -1)
 			{
@@ -272,7 +271,6 @@ void initRemoveScreen(WINDOW *win)
 				else if (mod_key == '\n') break;
 			} while(1);
 			strcpy(path, STORAGE);
-			strcat(path, "/");
 			strcat(path, fileName);
 			if (access(path, F_OK) == -1){
 				mvwaddstr(win, 6, 4, "File not available!");
@@ -338,7 +336,6 @@ void initDownloadScreen(WINDOW *win)
 		{
 
 			strcpy(path, STORAGE);
-			strcat(path, "/");
 			strcat(path, fileName);
 			if (access(path, F_OK) != -1)
 			{

@@ -320,8 +320,7 @@ int download_done()
 	strcat(full_name, the_file->filename);
 	
 	char *path = calloc(100, sizeof(char));
-	strcpy(path, STORAGE);
-	strcat(path, "/");
+	strcpy(path, dirName);
 	strcat(path, the_file->filename);
 	rename(full_name, path);
 

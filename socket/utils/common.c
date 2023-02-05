@@ -20,7 +20,6 @@ uint8_t protocolType(char *message){
 uint32_t getFileSize(char* dir, char *filename){
 	char *path = calloc(100, sizeof(char));
 	strcpy(path, dir);
-	strcat(path, "/");
 	strcat(path, filename);
 	FILE *file = fopen(path, "rb");
 	free(path);

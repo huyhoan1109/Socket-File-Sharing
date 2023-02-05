@@ -18,7 +18,7 @@
 #define YELLOW			"\x1b[33m"
 #define BLUE			"\x1b[94m"
 #define RED				"\x1b[91"
-#define STORAGE "DB"
+#define STORAGE "DB/"
 #define print_center(x, space1, space2) printf("|%s %s %s|", space1, x, space2);
 
 #define MESSAGE_DIVIDER "[:]"

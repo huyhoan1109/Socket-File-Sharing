@@ -49,7 +49,6 @@ static void* handleDownloadFileReq(void *arg){
 			if (file_info->status == FILE_LOCK) state = FILE_IS_BLOCK;
 			else {
 				strcpy(path, dirName);
-				strcat(path, "/");
 				strcat(path, filename);
 				file = fopen(path, "rb");
 				free(path);

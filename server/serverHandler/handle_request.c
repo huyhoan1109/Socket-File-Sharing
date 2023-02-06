@@ -1,19 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <errno.h>
-
 #include "handle_request.h"
 
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
-#include "../../socket/utils/LinkedList.h"
-#include "../../socket/utils/LinkedListUtils.h"
-
 struct LinkedList *file_list = NULL;
+struct LinkedList *user_list = NULL;
+
+pthread_mutex_t lock_host = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t lock_file_list = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_file_list = PTHREAD_COND_INITIALIZER;
 
@@ -38,7 +28,7 @@ static void displayFileListFromHost(uint32_t ip_addr, uint16_t port){
 				addr.s_addr = htonl(dh->ip_addr);
 				sprintf(host, "%s:%u", inet_ntoa(addr), dh->port);
 				k++;
-				printf("%-4d | %-21s | %-25s | %-10u\n", k, host, fo->filename, fo->filesize);
+				printf("%-4d | %-21s | %-25s | %-10u\n", k, host, fo->filename, dh->filesize);
 				break;
 			}
 		}
@@ -69,7 +59,7 @@ static void displayFileList(){
 			struct in_addr addr;
 			addr.s_addr = htonl(dh->ip_addr);
 			sprintf(host, "%s:%u", inet_ntoa(addr), dh->port);
-			printf("%-4d | %-21s | %-25s | %-10u\n", k, host, fo->filename, fo->filesize);
+			printf("%-4d | %-21s | %-25s | %-10u\n", k, host, fo->filename, dh->filesize);
 		}
 	}
 	pthread_cleanup_pop(0);
@@ -81,7 +71,7 @@ void handleSocketError(struct net_info cli_info, char *mess){
 	//print error message
 	char err_mess[256];
 	int errnum = errno;
-	sprintf(err_mess, "%s:%u > %s", cli_info.ip_add, cli_info.port, mess);	
+	sprintf(err_mess, "(%s:%u) > %s", cli_info.ip_add, cli_info.port, mess);	
 	strerror_r(errnum, err_mess, sizeof(err_mess));
 	fprintf(stderr, "%s [ERROR]: %s\n", mess, err_mess);
 
@@ -90,9 +80,9 @@ void handleSocketError(struct net_info cli_info, char *mess){
 	host.ip_addr = ntohl(inet_addr(cli_info.ip_add));
 	host.port = cli_info.data_port;
 	removeHost(host);
-	fprintf(stderr, "Closing connection from %s:%u\n", cli_info.ip_add, cli_info.port);
+	fprintf(stderr, "Closing connection from (%s:%u)\n", cli_info.ip_add, cli_info.port);
 	close(cli_info.sockfd);
-	fprintf(stderr, "Connection from %s:%u closed\n", cli_info.ip_add, cli_info.port);
+	fprintf(stderr, "Connection from (%s:%u) closed\n", cli_info.ip_add, cli_info.port);
 
 	/* display file list */
 	fprintf(stdout, "Full file list after removing the host: \n");
@@ -131,192 +121,168 @@ void removeHost(struct DataHost host){
 	pthread_mutex_unlock(&lock_file_list);
 }
 
-void update_file_list(struct net_info cli_info, char *message){
-
+void update_file_list(struct net_info cli_info, char *info){
 	// FILE_LIST_UPDATE :=: file_num :=: (trang thai :=: ten :=: do lon ...)
-
 	pthread_mutex_lock(&lock_file_list);
 	if (!file_list){
 		file_list = newLinkedList();
 	}
 	pthread_mutex_unlock(&lock_file_list);
-
-	char cli_addr[22];
-
-	sprintf(cli_addr, "%s:%u", cli_info.ip_add, cli_info.port);
-
-	char *token;
-	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(subtext, message);
-	token = strtok(subtext, MESSAGE_DIVIDER);
-	token = strtok(NULL, MESSAGE_DIVIDER);
-
+		
+	int n_files = atoi(nextInfo(info, IS_FIRST));
+	int changed = 0;
 	uint8_t status;
 	uint32_t filesize;
-	char *filename = calloc(100, sizeof(char));
-	uint8_t n_files = (uint8_t) atoll(token);
-	int changed = 0;
-	for (int i=0; n_files>i; i++){
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		status = (uint8_t) atol(token);
-		
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		strcpy(filename, token);
-		
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		filesize = (uint32_t) atoll(token);
-		
+	char *filename = calloc(30, sizeof(char));
+	for (int i=0; n_files > i; i++){
+		status = (uint8_t) atoi(nextInfo(info, IS_AFTER));		
+		filename = nextInfo(info, IS_AFTER);
+		filesize = (uint32_t) atoll(nextInfo(info, IS_AFTER));
+
+		pthread_mutex_lock(&lock_file_list);
 		struct DataHost host;
 		host.ip_addr = ntohl(inet_addr(cli_info.ip_add));
 		host.port = cli_info.data_port;
-
-		pthread_mutex_lock(&lock_file_list);
+		host.filesize = filesize;
 		pthread_cleanup_push(mutex_unlock, &lock_file_list);
-		if (status == FILE_NEW){
-			changed = 1;
-			/* add the host to the list */
-			struct Node *host_node = newNode(&host, DATA_HOST_TYPE);
-
-			//check if the file has already been in the list
-			struct Node *file_node = getNodeByFilename(file_list, filename);
-			if (file_node){
-				/* insert the host into the host_list of the file*/
-
-				//get the node which contains the file in the file_list
-				struct FileOwner *file = (struct FileOwner*)file_node->data;
-
-				/* need to check if the host already existed */
-				if (!llContainHost(file->host_list, host)) push(file->host_list, host_node);
-			} else {
-				//create a new node to store file's info
-				struct FileOwner new_file;
-				strcpy(new_file.filename, filename);
-				new_file.filesize = filesize;
-				new_file.host_list = newLinkedList();
-				push(new_file.host_list, host_node);
-				file_node = newNode(&new_file, FILE_OWNER_TYPE);
-				push(file_list, file_node);
-			}
-		} else if (status == FILE_DELETED){
-			changed = 1;
-			/* remove the host from the list */
-			/* need to check if the file really exist in the file_list */
-			struct Node *file_node = getNodeByFilename(file_list, filename);
-			if (file_node){
-				struct FileOwner *file = (struct FileOwner*)(file_node->data);
-				struct Node *host_node = getNodeByHost(file->host_list, host);
-				if (host_node){
-					removeNode(file->host_list, host_node);
+		struct Node *host_node;
+		struct Node *file_node;
+		switch (status) {
+			case FILE_NEW:
+				host_node = newNode(&host, DATA_HOST_TYPE);
+				file_node = getNodeByFilename(file_list, filename);
+				if (file_node){
+					struct FileOwner *file = (struct FileOwner*)file_node->data;
+					struct Node *curr_host = llContainHost(file->host_list, host);
+					// auto update value in curr_host
+					if (curr_host) removeNode(file->host_list, curr_host);
+					push(file->host_list, host_node);
+				} else {
+					struct FileOwner new_file;
+					strcpy(new_file.filename, filename);
+					new_file.host_list = newLinkedList();
+					push(new_file.host_list, host_node);
+					file_node = newNode(&new_file, FILE_OWNER_TYPE);
+					push(file_list, file_node);
 				}
-				/* if the host_list is empty, also remove the file from file_list */
-				if (file->host_list->n_nodes <= 0){
-					removeNode(file_list, file_node);
+				changed = 1;
+				break;
+			case FILE_DELETED:
+				changed = 1;
+				struct Node *it = file_list->head;
+				for (; it != NULL; it = it->next){
+					struct FileOwner *curr_file = (struct FileOwner*)(file_node->data);
+					if(strcmp(curr_file->filename, filename) == 0){
+						printf("Hello");
+						host_node = getNodeByHost(curr_file->host_list, host);
+						if (host_node){
+							removeNode(curr_file->host_list, host_node);
+						}
+					}
+					if (curr_file->host_list->n_nodes <= 0){
+						removeNode(file_list, file_node);
+					}
 				}
-			}
+				// gia su o 
+				changed = 1;
+				break;
+			default:
+				break;
 		}
 		pthread_cond_broadcast(&cond_file_list);
 		pthread_cleanup_pop(0);
 		pthread_mutex_unlock(&lock_file_list);
 	}
 	if (changed){
-		fprintf(stdout, "%s > file list from this host:\n", cli_addr);
+		fprintf(stdout, "(%s:%u) > file list from this host:\n", cli_info.ip_add, cli_info.port);
 		displayFileListFromHost(ntohl(inet_addr(cli_info.ip_add)), cli_info.data_port);
 		fprintf(stdout, "Full file list:\n");
 		displayFileList();
 	}
+	free(filename);
 }
 
 void process_list_files_request(struct net_info cli_info){
-	uint8_t n_files = 0;
-	long n_bytes;
 	pthread_mutex_lock(cli_info.lock_sockfd);
 	pthread_mutex_lock(&lock_file_list);
-	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(message, itoa(LIST_FILES_RESPONSE));
-	strcat(message, MESSAGE_DIVIDER);
-
+	uint8_t n_files = 0;
+	long n_bytes;
 	if (file_list == NULL){
 		n_files = 0;
 	} else {
 		n_files = file_list->n_nodes;
 	} 
-	strcat(message, itoa(n_files));
-	if (n_files == 0){
-		n_bytes = writeBytes(cli_info.sockfd, message, MAX_BUFF_SIZE);
-		if (n_bytes <= 0) {
-			handleSocketError(cli_info, "Send list response");
-		};
-		free(message);
-		pthread_mutex_unlock(&lock_file_list);
-		pthread_mutex_unlock(cli_info.lock_sockfd);
-		return;
+
+	char *info = appendInfo(NULL, itoa(n_files));
+	if (n_files > 0){
+		struct Node *it = file_list->head;
+		for (; it != NULL; it = it->next){
+			struct FileOwner *file = (struct FileOwner*)it->data;
+			int n_host = file->host_list->n_nodes;
+			info = appendInfo(info, file->filename);
+			info = appendInfo(info, itoa(n_host));
+			struct Node *h_list = file->host_list->head;
+			for (; h_list != NULL; h_list = h_list->next){
+				struct DataHost *h_info = (struct DataHost*)h_list->data;
+				info = appendInfo(info, itoa(h_info->filesize));
+				struct in_addr addr = {h_info->ip_addr};
+				info = appendInfo(info, inet_ntoa(addr));
+			}
+		}
 	}
-	struct Node *it = file_list->head;
-	for (; it != NULL; it = it->next){
-		struct FileOwner *file = (struct FileOwner*)it->data;
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, file->filename);
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(file->filesize));
+	char *message = addHeader(info, LIST_FILES_RESPONSE);
+	n_bytes = writeBytes(cli_info.sockfd, message, MAX_BUFF_SIZE);
+	if (n_bytes <= 0) {
+		handleSocketError(cli_info, "Send list response");
 	}
-	writeBytes(cli_info.sockfd, message, MAX_BUFF_SIZE);
+	free(message);
+	free(info);
 	pthread_mutex_unlock(&lock_file_list);
 	pthread_mutex_unlock(cli_info.lock_sockfd);
-	free(message);
 }
 
 static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hosts){
 	pthread_mutex_lock(thrdt->cli_info.lock_sockfd);
 	long n_bytes;
-	//add header
-	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(message, itoa(LIST_HOSTS_RESPONSE));
-	strcat(message, MESSAGE_DIVIDER);
-	strcat(message, itoa(thrdt->seq_no));
-	strcat(message, MESSAGE_DIVIDER);
-	strcat(message, itoa(thrdt->filesize));
+	
+	//add seq_no and filesize;
+	char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
+	
+	info = appendInfo(NULL, itoa(thrdt->seq_no));
+	info = appendInfo(info, itoa(thrdt->filesize));
 
-	//send n_hosts
+	//add n_hosts
 	if (chg_hosts == NULL){
-		uint8_t n_nodes = 0;
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(n_nodes));
-		n_bytes = writeBytes(thrdt->cli_info.sockfd, message, MAX_BUFF_SIZE);
-		if (n_bytes <= 0){
-			handleSocketError(thrdt->cli_info, "Send host response");
+		info = appendInfo(info, itoa(0));
+	} else {
+		info = appendInfo(info, itoa(chg_hosts->n_nodes));
+		struct Node *it = chg_hosts->head;
+		for (; it != NULL; it = it->next){
+			struct DataHost *host = (struct DataHost*)(it->data);
+			//send status
+			info = appendInfo(info, itoa(host->status));
+			//send ip
+			info = appendInfo(info, itoa(host->ip_addr));
+			//send data port
+			info = appendInfo(info, itoa(host->port));
 		}
-		pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
-		return;
 	}
-	strcat(message, MESSAGE_DIVIDER);
-	strcat(message, itoa(chg_hosts->n_nodes));
-
-	struct Node *it = chg_hosts->head;
-	for (; it != NULL; it = it->next){
-		struct DataHost *host = (struct DataHost*)(it->data);
-		//send status
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(host->status));
-
-		//send ip
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(host->ip_addr));
-
-		//send data port
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(host->port));
-	}
+	char *message = addHeader(info, LIST_HOSTS_RESPONSE);
 	n_bytes = writeBytes(thrdt->cli_info.sockfd, message, MAX_BUFF_SIZE);
 	if (n_bytes <= 0){
 		handleSocketError(thrdt->cli_info, "Send host response");
 	}
+	free(info);
+	free(message);
 	pthread_mutex_unlock(thrdt->cli_info.lock_sockfd);
+	return;
 }
 
 void* process_list_hosts_request(void *arg){
 	pthread_detach(pthread_self());
 	struct thread_data *thrdt = (struct thread_data*)arg;
 	char filename[256];
+	
 	strcpy(filename, thrdt->filename);
 	uint8_t sequence = thrdt->seq_no;
 
@@ -352,12 +318,14 @@ void* process_list_hosts_request(void *arg){
 			/* there is at least 1 host that contains the file */
 			chg_hosts = newLinkedList();
 			struct FileOwner *file = (struct FileOwner*)(file_node->data);
-			thrdt->filesize = file->filesize;
+			struct DataHost *take_first = (struct DataHost*) file->host_list->head->data;
+			thrdt->filesize = take_first->filesize; 
 
 			/* check if the i-th host of the file->host_list is the new host:
 			 * check[i]: the number of comparison performed with the i-th host,
 			 * if check[i] is equal to the number of hosts in the old_ll,
 			 * => the i-th host is the new host */
+			
 			uint8_t *check = calloc(file->host_list->n_nodes, sizeof(uint8_t));
 			bzero(check, file->host_list->n_nodes);
 
@@ -416,7 +384,7 @@ void* process_list_hosts_request(void *arg){
 
 		pthread_mutex_unlock(&lock_file_list);
 
-		if (chg_hosts->n_nodes != 0){send_host_list(thrdt, chg_hosts);}
+		if (chg_hosts->n_nodes != 0) send_host_list(thrdt, chg_hosts);
 
 		destructLinkedList(chg_hosts);
 		chg_hosts = NULL;

@@ -1,54 +1,41 @@
-#include <stdio.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-
 #include "list_hosts_request.h"
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
-#include "../../socket/utils/LinkedListUtils.h"
 #include "connect_index_server.h"
 #include "download_file_request.h"
 
-struct FileOwner *the_file = NULL;
 uint8_t seq_no = 0;
+struct FileOwner *the_file = NULL;
 pthread_mutex_t lock_the_file = PTHREAD_MUTEX_INITIALIZER;
 
 void send_list_hosts_request(char *filename){
 	pthread_mutex_lock(&lock_servsock);
-
 	// LIST_HOST_REQUEST :=: seq_no :=: filename
 
-	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(message, itoa(LIST_HOSTS_REQUEST));
-	strcat(message, MESSAGE_DIVIDER);
+	char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
+	
 	pthread_mutex_lock(&lock_the_file);
-	strcat(message, itoa(seq_no)); 
-	strcat(message, MESSAGE_DIVIDER);
-	strcat(message, filename);
+	
+	info = appendInfo(NULL, itoa(seq_no));
+	info = appendInfo(info, filename);
+	
 	pthread_mutex_unlock(&lock_the_file);
+
+	char *message = addHeader(info, LIST_HOSTS_REQUEST);
+
 	writeBytes(servsock, message, MAX_BUFF_SIZE);
+	free(message);
+	free(info);
 	pthread_mutex_unlock(&lock_servsock);
 }
 
 void process_list_hosts_response(char* message){
-	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(subtext, message);
-	
-	char *token;
-	token = strtok(subtext, MESSAGE_DIVIDER);
-	token = strtok(NULL, MESSAGE_DIVIDER);	
-	uint8_t sequence = atol(token);
-	
-	token = strtok(NULL, MESSAGE_DIVIDER);
-	uint32_t filesize = atoll(token);
+	char *info = getInfo(message);
+	uint8_t sequence = atol(nextInfo(info, IS_FIRST));
+	uint32_t filesize = atoll(nextInfo(info, IS_AFTER));
 
 	pthread_mutex_lock(&lock_the_file);
-
-	if (sequence == seq_no) the_file->filesize = filesize;
+	if (sequence == seq_no) totalsize = filesize;
 	
-	token = strtok(NULL, MESSAGE_DIVIDER);
-	uint32_t n_hosts = atol(token);
+	uint32_t n_hosts = atol(nextInfo(info, IS_AFTER));
 
 	if (n_hosts == 0 && sequence == seq_no){
 		/* file not found */
@@ -61,14 +48,9 @@ void process_list_hosts_response(char* message){
 
 	uint8_t i = 0;
 	for (; i < n_hosts; i++){
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		uint8_t status = atol(token);
-		
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		uint32_t ip_addr = atoll(token);
-		
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		uint16_t data_port = atoll(token);	
+		uint8_t status = atol(nextInfo(info, IS_AFTER));
+		uint32_t ip_addr = atoll(nextInfo(info, IS_AFTER));
+		uint16_t data_port = atoll(nextInfo(info, IS_AFTER));	
 		
 		if (sequence == seq_no){
 			struct DownloadInfo *dinfo = calloc(1, sizeof(struct DownloadInfo));
@@ -104,4 +86,5 @@ void process_list_hosts_response(char* message){
 		}
 	}
 	pthread_mutex_unlock(&lock_the_file);
+	free(info);
 }

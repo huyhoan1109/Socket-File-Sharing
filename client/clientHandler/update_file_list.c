@@ -1,39 +1,23 @@
-#include <stdlib.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <stdio.h>
-#include <dirent.h>
-#include <sys/inotify.h>
-#include <unistd.h>
-#include <sys/stat.h>
-
 #include "update_file_list.h"
 #include "connect_index_server.h"
 
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
-#include "../../socket/utils/LinkedList.h"
-
-#define EVENT_SIZE  ( sizeof (struct inotify_event) )
-#define BUF_LEN     ( 1024 * ( EVENT_SIZE + 16 ) )
-
-pthread_mutex_t lock_notify = PTHREAD_MUTEX_INITIALIZER;
 uint16_t dataPort = 0;
+pthread_mutex_t lock_notify = PTHREAD_MUTEX_INITIALIZER;
 
 void announceDataPort(int sockfd){
 	/* mutex lock the socket to avoid intersection of multiple messages 
 	 * from different types */
 	pthread_mutex_lock(&lock_servsock);
 
-	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
-	
-	strcpy(message, itoa(DATA_PORT_ANNOUNCEMENT));
-	strcat(message, MESSAGE_DIVIDER);
-	strcat(message, itoa(dataPort));
+	char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
 
-	int n_bytes = writeBytes(sockfd, message, MAX_BUFF_SIZE);
-	if (n_bytes <= 0){exit(1);}
-	
+	info = appendInfo(info, itoa(dataPort));
+
+	char *message = addHeader(info, DATA_PORT_ANNOUNCEMENT);
+
+	writeBytes(sockfd, message, MAX_BUFF_SIZE);
+	free(message);
+	free(info);	
 	pthread_mutex_unlock(&lock_servsock);
 }
 
@@ -41,21 +25,19 @@ static void send_file_list(int sockfd, struct FileStatus *fs, uint8_t n_fs){
 	/* mutex lock the socket to avoid intersection of multiple messages from different types */
 	pthread_mutex_lock(&lock_servsock);
 
-	//send header
-	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(message, itoa(FILE_LIST_UPDATE));
-	strcat(message, MESSAGE_DIVIDER);
-	strcat(message, itoa(n_fs));
+	char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
+	info = appendInfo(NULL, itoa(n_fs));
 	for (int i = 0;i < n_fs; i++){
 		//file_status file_name file size
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(fs[i].status));
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, fs[i].filename);
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(fs[i].filesize));
+		info = appendInfo(info, itoa(fs[i].status));
+		info = appendInfo(info, fs[i].filename);
+		info = appendInfo(info, itoa(fs[i].filesize));
 	}
+	char *message = addHeader(info, FILE_LIST_UPDATE);
 	writeBytes(servsock, message, MAX_BUFF_SIZE);
+	free(message);
+	free(info);
+	
 	pthread_mutex_unlock(&lock_servsock);
 	return;
 }
@@ -178,27 +160,19 @@ void monitor_directory(char *dir, int socketfd){
 			struct inotify_event *event = (struct inotify_event*) &buffer[i];
 			if (event->len){
 				if (!(event->mask & IN_ISDIR)){
-					if (event->mask & IN_CREATE){
+					if (event->mask & IN_CREATE || event->mask & IN_MOVED_TO){
 						struct Node *file_node = newNode(event->name, STRING_TYPE);
 						push(monitorFiles, file_node);
-					} else if (event->mask & IN_MOVED_TO){
-						fs[n_fs].status = FILE_LOCK;
-						strcpy(fs[n_fs].filename, event->name);
-						uint32_t sz = getFileSize(dir, event->name);
-						if (sz < 0) continue;
-						fs[n_fs].filesize = sz;
-						n_fs ++;
 					} else if (event->mask & IN_CLOSE_WRITE){
 						struct Node *file_node = getFilesNode(monitorFiles, event->name);
 						if (file_node){
-							if (file_node->status == FILE_LOCK) fs[n_fs].status = FILE_LOCK;
-							else if (file_node->status == FILE_NEW) fs[n_fs].status = FILE_NEW;
-							strcpy(fs[n_fs].filename, event->name);
-							uint32_t sz = getFileSize(dir, event->name);
-							if (sz < 0) continue;
-							fs[n_fs].filesize = sz;
-							n_fs ++;
-						} 
+							if (file_node->status == FILE_NEW) {
+								fs[n_fs].status = FILE_NEW;
+								strcpy(fs[n_fs].filename, event->name);
+								fs[n_fs].filesize = getFileSize(dir, event->name);
+								n_fs ++;
+							}
+						}
 					} else if (event->mask & IN_DELETE || event->mask & IN_MOVED_FROM){
 						fs[n_fs].status = FILE_DELETED;
 						strcpy(fs[n_fs].filename, event->name);

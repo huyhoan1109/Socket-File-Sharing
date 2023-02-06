@@ -1,26 +1,28 @@
+#include <time.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <unistd.h>
 #include <signal.h>
 #include <pthread.h>
+#include <ncurses.h>
+
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <dirent.h>
-#include <ncurses.h>
-#include <time.h>
 
-#include "../../socket/utils/common.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 #include "connect_index_server.h"
+
 #include "update_file_list.h"
 #include "list_files_request.h"
 #include "list_hosts_request.h"
 #include "download_file_request.h"
 #include "handle_download_file_request.h"
+
+#include "../../socket/utils/common.h"
 
 #define MENUMAX 7
 
@@ -334,7 +336,6 @@ void initDownloadScreen(WINDOW *win)
 		}
 		else if (key == '\n')
 		{
-
 			strcpy(path, STORAGE);
 			strcat(path, fileName);
 			if (access(path, F_OK) != -1)
@@ -346,7 +347,7 @@ void initDownloadScreen(WINDOW *win)
 				the_file = calloc(1, sizeof(struct FileOwner));
 				the_file->host_list = newLinkedList();
 				strcpy(the_file->filename, fileName);
-				the_file->filesize = 0;
+				totalsize = 0;
 				pthread_mutex_unlock(&lock_the_file);
 				pthread_mutex_lock(&lock_segment_list);
 				segment_list = newLinkedList();
@@ -419,7 +420,7 @@ int main(int argc, char **argv)
 	curs_set(0);
 	int yMax, xMax;
 	getmaxyx(stdscr, yMax, xMax);
-	win = newwin(17, 55, yMax / 5, xMax / 5);
+	win = newwin(20, 60, yMax / 5, xMax / 5);
 	box(win, 0, 0);
 	/* listen for and process responses from the index server */
 	pthread_t process_response_tid;

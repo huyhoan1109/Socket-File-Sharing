@@ -1,17 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <arpa/inet.h>
-#include <string.h>
-
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
 #include "list_files_request.h"
 #include "connect_index_server.h"
 
 void send_list_files_request()
 {
 	pthread_mutex_lock(&lock_servsock);
-	// send header to server
 	int n_bytes = writeBytes(servsock, itoa(LIST_FILES_REQUEST), MAX_BUFF_SIZE);
 	if (n_bytes <= 0){
 		exit(1);
@@ -20,30 +12,33 @@ void send_list_files_request()
 }
 
 void process_list_files_response(char *message){
-	uint8_t n_files = 0;
-	char *token;
-	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
-	strcpy(subtext, message);
-	token = strtok(subtext, MESSAGE_DIVIDER);
-	token = strtok(NULL, MESSAGE_DIVIDER);
-	n_files = atol(token);
-	uint8_t i = 0;
+	int n_files = 0;
+	char *info = getInfo(message);
+	n_files = atoi(nextInfo(info, IS_FIRST));
 	if (n_files == 0){
 		mvwaddstr(win, 2, 4, "No files available");
 		wrefresh(win);
 		return;
-	} 
+	}
 	mvwaddstr(win, 2, 4, "No");
 	mvwaddstr(win, 2, 10, "Filename");
-	mvwaddstr(win, 2, 30, "Size");
+	mvwaddstr(win, 2, 25, "Size (Byte)");
+	mvwaddstr(win, 2, 45, "Address");
 	wrefresh(win);
-	for (; i < n_files; i++)
+	int n_host;
+	char *filename;
+	int counter = 0;
+	for (int i=0; i < n_files; i++)
 	{
-		token = strtok(NULL, MESSAGE_DIVIDER);	
-		mvwaddstr(win, 4 + (i * 2), 4, itoa(i+1));
-		mvwaddstr(win, 4 + (i * 2), 10, token);
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		mvwaddstr(win, 4 + (i * 2), 30, token);
+		filename = nextInfo(info, IS_AFTER);
+		n_host = atoll(nextInfo(info, IS_AFTER));
+		for (int j = 0; n_host > j; j++){
+			mvwaddstr(win, 4 + (counter * 2), 4, itoa(counter+1));
+			mvwaddstr(win, 4 + (counter * 2), 10, filename);
+			mvwaddstr(win, 4 + (counter * 2), 25, nextInfo(info, IS_AFTER));
+			mvwaddstr(win, 4 + (counter * 2), 45, nextInfo(info, IS_AFTER));
+			counter ++;
+		}
 		wrefresh(win);
 	}
 }

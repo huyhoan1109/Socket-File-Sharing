@@ -1,16 +1,18 @@
 #ifndef _SOCK_IO_H
 #define _SOCK_IO_H
 
-#define MAX_BUFF_SIZE 8192
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 
-typedef struct {
-    uint8_t header;
-    char payload[MAX_BUFF_SIZE];
-} message;
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 
 int readBytes(int sock, void* buf, unsigned int nbytes);
 int writeBytes(int sock, void* buf, unsigned int nbytes);
-
-// HEADER:-:MESSAGE 
 
 #endif

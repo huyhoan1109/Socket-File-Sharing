@@ -1,44 +1,33 @@
 #define _FILE_OFFSET_BITS 64
-#include <stdio.h>
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <errno.h>
-#include <unistd.h>
 
 #include "connect_index_server.h"
 #include "handle_download_file_request.h"
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
-#include "../../socket/utils/LinkedList.h"
 
 static void* handleDownloadFileReq(void *arg){
 	pthread_detach(pthread_self());
+	
 	struct NetInfo cli_info = *((struct NetInfo*) arg);
 	free(arg);
+	
 	long n_bytes;
-	char filename[200];
 	uint32_t offset = 0;
-	char *token;
-	char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
-	char *recv_msg = calloc(MAX_BUFF_SIZE, sizeof(char));
-	n_bytes = readBytes(cli_info.sockfd, recv_msg, MAX_BUFF_SIZE);
+	
+	char *filename = calloc(100, sizeof(char));
+	char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
+	char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
+	
+	n_bytes = readBytes(cli_info.sockfd, message, MAX_BUFF_SIZE);
 	if (n_bytes <= 0){
 		close(cli_info.sockfd);
 		return NULL;
 	} 
-	strcpy(subtext, recv_msg);
-	token = strtok(subtext, MESSAGE_DIVIDER);
-	uint8_t packet_type = (uint8_t) atoi(token);
+
+	uint8_t packet_type = protocolType(message);
+	info = getInfo(message);
 	
 	if (packet_type == GET_FILE_REQUEST){
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		strcpy(filename, token);
-		token = strtok(NULL, MESSAGE_DIVIDER);
-		offset = ntohl((uint32_t) atoll(token));
+		filename = nextInfo(info, IS_FIRST);
+		offset = ntohl((uint32_t) atoll(nextInfo(info, IS_AFTER)));
 
 		uint8_t state;
 		char *path = calloc(100, sizeof(char));
@@ -88,6 +77,9 @@ static void* handleDownloadFileReq(void *arg){
 				break;
 		}
 	}
+	free(filename);
+	free(info);
+	free(message);
 	close(cli_info.sockfd);
 	return NULL;
 }

@@ -1,14 +1,3 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <strings.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <stdlib.h>
-
 #include "sockio.h"
 
 /** readBytes - read a number of bytes from the socket buffer.

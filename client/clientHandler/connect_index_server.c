@@ -1,28 +1,13 @@
-#include <stdio.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <dirent.h>
-
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
-#include "connect_index_server.h"
+#include "update_file_list.h"
 #include "list_files_request.h"
 #include "list_hosts_request.h"
-#include "update_file_list.h"
+#include "connect_index_server.h"
 
-pthread_mutex_t lock_servsock = PTHREAD_MUTEX_INITIALIZER;
-
-int servsock = 0;
 WINDOW *win;
-char old_server_ip[30];
-uint16_t old_port;
-struct LinkedList *monitorFiles;
+int servsock = 0;
 char dirName[30];
+struct LinkedList *monitorFiles;
+pthread_mutex_t lock_servsock = PTHREAD_MUTEX_INITIALIZER;
 
 void connect_to_index_server(char *servip, uint16_t index_port, char *storage_dir){
 	/* connect to index server */

@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <string.h>
 #include "LinkedListUtils.h"
 
-struct Node* llContainFile(const struct LinkedList *ll, char *filename){
+struct Node* llContainFile(struct LinkedList *ll, char *filename){
     if (ll == NULL) return NULL;
 	struct Node *it = ll->head;
 	for (; it != NULL; it = it->next){
@@ -14,7 +12,7 @@ struct Node* llContainFile(const struct LinkedList *ll, char *filename){
 	return NULL;
 }
 
-struct Node* llContainHost(const struct LinkedList *ll, struct DataHost host){
+struct Node* llContainHost(struct LinkedList *ll, struct DataHost host){
     if (ll == NULL) return NULL;
 	struct Node *it = ll->head;
 	for (; it != NULL; it = it->next){
@@ -26,10 +24,10 @@ struct Node* llContainHost(const struct LinkedList *ll, struct DataHost host){
 	return NULL;
 }
 
-struct Node* getNodeByFilename(const struct LinkedList *ll, char *filename){
+struct Node* getNodeByFilename(struct LinkedList *ll, char *filename){
 	return llContainFile(ll, filename);
 }
 
-struct Node* getNodeByHost(const struct LinkedList *ll, struct DataHost host){
+struct Node* getNodeByHost(struct LinkedList *ll, struct DataHost host){
 	return llContainHost(ll, host);
 }

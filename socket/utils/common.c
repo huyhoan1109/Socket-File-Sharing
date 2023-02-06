@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include <pthread.h>
 #include "common.h"
-
-#define MAX_BUFF_SIZE 8192
-#define _FILE_OFFSET_BITS 64
 
 uint8_t protocolType(char *message){
     char *subtext = calloc(MAX_BUFF_SIZE, sizeof(char));
@@ -32,6 +24,7 @@ uint32_t getFileSize(char* dir, char *filename){
 	fseeko(file, 0, SEEK_END);
 	uint32_t sz = ftello(file);
 	rewind(file);
+    fclose(file);
 	return sz;
 }
 
@@ -76,4 +69,52 @@ char *itoa(uint32_t n){
     s[i] = '\0';
     s = reverse(s);
     return s;
+}
+
+char *addHeader(char *info, int header){
+    char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
+    strcpy(message, itoa(header));
+    if (info != NULL) {
+        strcat(message, HEADER_DIVIDER);
+        strcat(message, info);
+        info = NULL;
+    }
+    return message;
+}
+
+char *appendInfo(char *current_info, char *new_info){
+    if (current_info == NULL || strlen(current_info) == 0) {
+        char *info = calloc(1+strlen(new_info), sizeof(char));
+        strcpy(info, new_info);
+        if (new_info != NULL) new_info = NULL;
+        return info;
+    } else {
+        char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
+        strcpy(message, current_info);
+        strcat(message, MESSAGE_DIVIDER);
+        strcat(message, new_info);
+        if (current_info != NULL) current_info = NULL;
+        if (new_info != NULL) new_info = NULL;
+        return message;
+    }
+}
+
+char *getInfo(char *message){
+    char *token;
+    char *tmp = calloc(MAX_BUFF_SIZE, sizeof(char));
+    char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
+    strcpy(tmp, message);
+    token = strtok(tmp, HEADER_DIVIDER);
+    strcpy(info, token + strlen(token) + strlen(HEADER_DIVIDER));
+    free(tmp);
+    return info;
+}
+
+char *nextInfo(char *info, int is_first){
+    char *token;
+    char *value = calloc(30, sizeof(char));
+    if (is_first) token = strtok(info, MESSAGE_DIVIDER);
+    else token = strtok(NULL, MESSAGE_DIVIDER);
+    strcpy(value, token);
+    return value;
 }

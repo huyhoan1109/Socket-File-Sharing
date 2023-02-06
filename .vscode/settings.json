@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "cerrno": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "ncurses.h": "c",
+        "unistd.h": "c",
+        "types.h": "c"
     }
 }

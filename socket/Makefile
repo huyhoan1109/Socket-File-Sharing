@@ -6,7 +6,9 @@ RM = rm -rf
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS  = -Wall -pthread
-CRYPTO = -lssl -lcrypto
+
+# include cryptograph in needed
+CRYPTO = -lssl -lcrypto 
 
 # Include library directories
 LIBDIR = utils
@@ -19,7 +21,7 @@ OBJ = $(LIB:$(LIBDIR)/%.c=$(OBJDIR)/%.o)
 # Compile executor
 all: $(OBJ)
 $(OBJDIR)/%.o:$(LIBDIR)/%.c
-	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO)-lncurses
+	$(CC) -c $(CFLAGS) -o $@ $< $(CRYPTO)
 
 # Clean old compilation
 clean:

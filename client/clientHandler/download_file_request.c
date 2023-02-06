@@ -1,34 +1,18 @@
 #define _FILE_OFFSET_BITS 64
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <time.h>
-#include <ncurses.h>
-#include <unistd.h>
 
-#include "../../socket/utils/common.h"
-#include "../../socket/utils/sockio.h"
 #include "list_hosts_request.h"
-#include "download_file_request.h"
 #include "connect_index_server.h"
+#include "download_file_request.h"
 
-struct LinkedList *segment_list = NULL;
-pthread_mutex_t lock_segment_list = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond_segment_list = PTHREAD_COND_INITIALIZER;
 int n_threads = 0;
-pthread_mutex_t lock_n_threads = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond_n_threads = PTHREAD_COND_INITIALIZER;
-pthread_mutex_t lock_user = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond_user = PTHREAD_COND_INITIALIZER;
-
+uint32_t totalsize = 0;
 const char tmp_dir[] = "./.temp/";
+struct LinkedList *segment_list = NULL;
+pthread_mutex_t lock_user = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond_n_threads = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t lock_n_threads = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond_segment_list = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t lock_segment_list = PTHREAD_MUTEX_INITIALIZER;
 
 static void prepare_segment(struct Segment *seg, uint32_t offset, uint32_t size, uint32_t n_bytes, uint32_t downloading)
 {
@@ -46,7 +30,7 @@ static struct Segment *create_segment(uint8_t sequence) {
 		pthread_mutex_unlock(&lock_the_file);
 		return NULL;
 	}
-	uint32_t filesize = the_file->filesize;
+	uint32_t filesize = totalsize;
 	pthread_mutex_unlock(&lock_the_file);
 	
 	struct Segment *segment = NULL;
@@ -143,7 +127,7 @@ static int connect_peer(struct DataHost dthost, char *addr_str)
 	sin.sin_addr.s_addr = htonl(dthost.ip_addr);
 	sin.sin_port = htons(dthost.port);
 
-	sprintf(addr_str, "%s:%u", inet_ntoa(sin.sin_addr), dthost.port);
+	sprintf(addr_str, "(%s:%u)", inet_ntoa(sin.sin_addr), dthost.port);
 
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0){
@@ -186,14 +170,13 @@ void *download_file(void *arg)
 		}
 		
 		/* send download file request */
-		char *message = calloc(MAX_BUFF_SIZE, sizeof(char));
-		strcpy(message, itoa(GET_FILE_REQUEST));
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, the_file->filename);
-		strcat(message, MESSAGE_DIVIDER);
-		strcat(message, itoa(segment->offset));
+		char *mess_info = calloc(MAX_BUFF_SIZE, sizeof(char));
+		mess_info = appendInfo(NULL, the_file->filename);
+		mess_info = appendInfo(mess_info, itoa(segment->offset));
+		char *message = addHeader(mess_info, GET_FILE_REQUEST);
 		writeBytes(sockfd, message, MAX_BUFF_SIZE);
 		free(message);
+		free(mess_info);
 
 		char full_name[100];
 		strcpy(full_name, tmp_dir);
@@ -300,15 +283,16 @@ int download_done()
 		pthread_mutex_unlock(&lock_n_threads);
 		nanosleep(&req, NULL);
 	}
-
+	int received;
 	pthread_mutex_lock(&lock_the_file);
 	if (file_not_found){
+		received = 0;
 		mvwprintw(win, 4, 4, "%s not found", the_file->filename);
 	} else {
+		received = 1;
 		mvwprintw(win, 6, 4, "Received %s successfully", the_file->filename);
 	}
 	pthread_mutex_unlock(&lock_the_file);
-
 
 	pthread_mutex_lock(&lock_the_file);
 	/* increase sequence number */
@@ -334,5 +318,5 @@ int download_done()
 	destructLinkedList(segment_list);
 	segment_list = NULL;
 	pthread_mutex_unlock(&lock_segment_list);
-	return 1;
+	return received;
 }

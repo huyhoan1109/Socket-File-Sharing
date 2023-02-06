@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string.h>
 #include "LinkedList.h"
 
 struct Node* newNode(void *data, int data_type){
@@ -58,7 +54,6 @@ struct Node* newNode(void *data, int data_type){
 			break;
 		}
 		default:
-			fprintf(stderr, "newNode: unknown data type\b");
 			free(newN);
 			newN = NULL;
 			break;
@@ -71,8 +66,6 @@ struct LinkedList* newLinkedList(){
 	ll->head = NULL;
 	ll->tail = NULL;
 	ll->n_nodes = 0;
-	//ll->lock_ll = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-	//ll->cond_ll = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 	return ll;
 }
 
@@ -136,10 +129,7 @@ int llistContain(struct LinkedList ll, struct Node *node){
 }
 
 int insertNode(struct LinkedList *ll, struct Node *node, struct Node *offset){
-	if (!ll || !node){
-		fprintf(stderr, "insertNode: both arguments 'll' and 'node' must not be NULL\n");
-		return INSERT_NODE_ARGS_NULL;
-	}
+	if (!ll || !node) return INSERT_NODE_ARGS_NULL;
 	
 	if (ll->n_nodes == 0){
 		ll->n_nodes ++;
@@ -150,10 +140,7 @@ int insertNode(struct LinkedList *ll, struct Node *node, struct Node *offset){
 		return INSERT_NODE_SUCCESS;
 	}
 
-	if (!llistContain(*ll, offset) && offset != NULL){
-		fprintf(stderr, "insertNode: offset is not a node in the linkedlist\n");
-		return INSERT_NODE_NOT_IN_LL;
-	}
+	if (!llistContain(*ll, offset) && offset != NULL) return INSERT_NODE_NOT_IN_LL;
 
 	if (offset == NULL){
 		//insert into the head
@@ -178,20 +165,12 @@ int insertNode(struct LinkedList *ll, struct Node *node, struct Node *offset){
 }
 
 int removeNode(struct LinkedList *ll, struct Node *node){
-	if (!ll || !node){
-		fprintf(stderr, "both arguments must not be NULL\n");
-		return REMOVE_NODE_ARGS_NULL;
-	}
+	if (!ll || !node) return REMOVE_NODE_ARGS_NULL;
 
-	if (ll->n_nodes <= 0){
-		fprintf(stderr, "the list is empty\n");
-		return REMOVE_NODE_EMPTY_LL;
-	}
+	if (ll->n_nodes <= 0) return REMOVE_NODE_EMPTY_LL;
 
 	struct Node *prev = node->prev;
 	struct Node *next = node->next;
-
-	//printf("process prev and next\n");
 
 	if (ll->n_nodes == 1){
 		ll->head = NULL;
@@ -224,12 +203,8 @@ int removeNode(struct LinkedList *ll, struct Node *node){
 		}
 	}
 
-	//printf("free node\n");
 	free(node);
-	//printf("decrease n_nodes\n");
 	ll->n_nodes --;
-	//prev->next = next;
-	//next->prev = prev;
 
 	return REMOVE_NODE_SUCCESS;
 }

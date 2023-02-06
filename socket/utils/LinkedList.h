@@ -1,8 +1,12 @@
 #ifndef _DATA_STRUCTURE_
 #define _DATA_STRUCTURE_
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <pthread.h>
+#include <netinet/in.h>
 
 // message body {message type, message content}
 #define INSERT_NODE_SUCCESS 1
@@ -24,7 +28,7 @@
 
 struct FileOwner{
 	char filename[200];
-	uint32_t filesize;
+	// uint32_t filesize;	// Fail
 	struct LinkedList *host_list;	// LinkedList with data type DataHost
 };
 
@@ -41,14 +45,15 @@ struct Segment{
 /* info for each peer that own the data */
 struct DataHost{
 	uint8_t status;
+	uint16_t port;
 	uint32_t ip_addr;
-	uint16_t port;			//equal to data_port from the struct net_info
+	uint32_t filesize;
 };
 
-struct Node{
+struct Node {
 	void *data;
-	uint8_t type;			//data type
 	int status;
+	uint8_t type;			//data type
 	struct Node *next;
 	struct Node *prev;
 };

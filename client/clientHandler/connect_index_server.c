@@ -7,6 +7,7 @@ WINDOW *win;
 int servsock = 0;
 char dirName[30];
 struct LinkedList *monitorFiles;
+pthread_mutex_t lock_key = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t lock_servsock = PTHREAD_MUTEX_INITIALIZER;
 
 void connect_to_index_server(char *servip, uint16_t index_port, char *storage_dir){

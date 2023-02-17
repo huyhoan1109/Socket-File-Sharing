@@ -56,7 +56,7 @@ void delete_from_server(void *arg){
 	for (;it != NULL; it = it->next){
 		char *name = (char*)it->data;
 		if(strcmp(name, filename) == 0){
-			if(it->status == FILE_NEW){
+			if(it->status == FILE_AVAIL){
 				it->status = FILE_DELETED;
 				mvwprintw(win, 6, 4, "File '%s' has been deleted from server!", filename);
 			} else {
@@ -84,12 +84,12 @@ void share_file(void *arg){
 		wrefresh(win);
 		return;
 	}
-	if (temp->status == FILE_NEW){
+	if (temp->status == FILE_AVAIL){
 		mvwaddstr(win, 4, 4,"You're already shared this file");
 		wrefresh(win);
 		return;
 	} else {
-		temp->status = FILE_NEW;
+		temp->status = FILE_AVAIL;
 	}
 	struct FileStatus fs[20];
 	int n_fs = 0;
@@ -110,6 +110,7 @@ void share_file(void *arg){
 void* init_file_list(void *arg){
 	//data_port_announcement must be sent first
 	announceDataPort(servsock);
+
 	/* list files in a directory */
 	monitorFiles = refreshListFile(NULL, dirName);
 	int counter = 0;
@@ -166,8 +167,8 @@ void monitor_directory(char *dir, int socketfd){
 					} else if (event->mask & IN_CLOSE_WRITE){
 						struct Node *file_node = getFilesNode(monitorFiles, event->name);
 						if (file_node){
-							if (file_node->status == FILE_NEW) {
-								fs[n_fs].status = FILE_NEW;
+							if (file_node->status == FILE_AVAIL) {
+								fs[n_fs].status = FILE_AVAIL;
 								strcpy(fs[n_fs].filename, event->name);
 								fs[n_fs].filesize = getFileSize(dir, event->name);
 								n_fs ++;

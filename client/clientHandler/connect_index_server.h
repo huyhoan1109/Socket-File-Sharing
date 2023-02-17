@@ -19,6 +19,7 @@
 extern WINDOW *win;
 extern int servsock;
 extern char dirName[30];
+extern pthread_mutex_t lock_key;
 extern pthread_mutex_t lock_servsock;		//mutex lock for the socket that faces the index server
 extern struct LinkedList *monitorFiles;
 

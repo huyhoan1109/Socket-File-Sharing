@@ -9,7 +9,7 @@
 #include <pthread.h>
 
 #define FILE_LOCK 0 // = INIT_STATE
-#define FILE_NEW 1
+#define FILE_AVAIL 1
 #define FILE_DELETED 2
 
 #define STORAGE "DB/"
@@ -21,17 +21,17 @@
 #define IS_AFTER 0
 
 #define PRESS_ENTER "Enter to select"
-#define PRESS_ESC_BACK "Press esc to go back menu"
+#define PRESS_BACK "Press F1 to go back menu"
 
-/* request types */
+/* header types */
 
-#define DATA_PORT_ANNOUNCEMENT 100
-#define FILE_LIST_UPDATE 101
-#define LIST_FILES_REQUEST 102
-#define LIST_FILES_RESPONSE 103
-#define LIST_HOSTS_REQUEST 104
-#define LIST_HOSTS_RESPONSE 105
-#define GET_FILE_REQUEST 106
+#define DATA_PORT_ANNOUNCEMENT 100 // | port_num 
+#define FILE_LIST_UPDATE 101  // files (status, filename , filesize)   
+#define LIST_FILES_REQUEST 102  // send header only
+#define LIST_FILES_RESPONSE 103 // files (status, filename , filesize)
+#define LIST_HOSTS_REQUEST 104  // sequence for segment, filename 
+#define LIST_HOSTS_RESPONSE 105 //  sequence, fizesize, n_host (status, )
+#define GET_FILE_REQUEST 106  // list hosts
 
 #define READY_TO_SEND_DATA 200
 #define FILE_NOT_FOUND 201
@@ -60,4 +60,6 @@ char *appendInfo(char *current_info, char *new_info);
 char *getInfo(char *message);
 
 char *nextInfo(char *info, int is_first);
+
+int checkInfo(char *info);
 #endif

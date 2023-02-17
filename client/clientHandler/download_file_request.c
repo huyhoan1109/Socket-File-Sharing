@@ -249,6 +249,7 @@ void *download_file(void *arg)
 
 int download_done()
 {
+	int received = 0;
 	/* check if the file has been downloaded successfully */
 	int file_not_found = 0;
 	while (1){
@@ -283,7 +284,6 @@ int download_done()
 		pthread_mutex_unlock(&lock_n_threads);
 		nanosleep(&req, NULL);
 	}
-	int received;
 	pthread_mutex_lock(&lock_the_file);
 	if (file_not_found){
 		received = 0;

@@ -118,3 +118,13 @@ char *nextInfo(char *info, int is_first){
     strcpy(value, token);
     return value;
 }
+
+int checkInfo(char *info){
+    char *ret_header;
+    char *ret_info;
+    ret_header = strstr(info, HEADER_DIVIDER);
+    ret_info = strstr(info, MESSAGE_DIVIDER);
+    if (ret_header != NULL) return 0;
+    if (ret_info != NULL) return 0;
+    return 1;
+}

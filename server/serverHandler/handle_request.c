@@ -44,27 +44,31 @@ static void displayFileList(){
 	delim[73] = 0;
 	pthread_mutex_lock(&lock_file_list);
 	pthread_cleanup_push(mutex_unlock, &lock_file_list);
-	printf("%s\n", delim);
-	printf("%-4s | %-21s | %-25s | %-10s\n", "No", "Host", "Filename", "Filesize (byte)");
-	struct Node *it = file_list->head;
-	int k = 0;
-	for (; it != NULL; it = it->next){
-		struct FileOwner *fo = (struct FileOwner*)it->data;
-		if (fo->host_list == NULL){continue;}
-		struct Node *it2 = fo->host_list->head;
-		for (; it2 != NULL; it2 = it2->next){
-			k++;
-			struct DataHost *dh = (struct DataHost*)it2->data;
-			char host[22];
-			struct in_addr addr;
-			addr.s_addr = htonl(dh->ip_addr);
-			sprintf(host, "%s:%u", inet_ntoa(addr), dh->port);
-			printf("%-4d | %-21s | %-25s | %-10u\n", k, host, fo->filename, dh->filesize);
+	if (file_list == NULL) {
+		printf("No file current in the list\n");
+	} else{
+		printf("%s\n", delim);
+		printf("%-4s | %-21s | %-25s | %-10s\n", "No", "Host", "Filename", "Filesize (byte)");
+		struct Node *it = file_list->head;
+		int k = 0;
+		for (; it != NULL; it = it->next){
+			struct FileOwner *fo = (struct FileOwner*)it->data;
+			if (fo->host_list == NULL){continue;}
+			struct Node *it2 = fo->host_list->head;
+			for (; it2 != NULL; it2 = it2->next){
+				k++;
+				struct DataHost *dh = (struct DataHost*)it2->data;
+				char host[22];
+				struct in_addr addr;
+				addr.s_addr = htonl(dh->ip_addr);
+				sprintf(host, "%s:%u", inet_ntoa(addr), dh->port);
+				printf("%-4d | %-21s | %-25s | %-10u\n", k, host, fo->filename, dh->filesize);
+			}
 		}
+		printf("%s\n", delim);
 	}
 	pthread_cleanup_pop(0);
 	pthread_mutex_unlock(&lock_file_list);
-	printf("%s\n", delim);
 }
 
 void handleSocketError(struct net_info cli_info, char *mess){
@@ -95,26 +99,28 @@ void handleSocketError(struct net_info cli_info, char *mess){
 void removeHost(struct DataHost host){
 	pthread_mutex_lock(&lock_file_list);
 	pthread_cleanup_push(mutex_unlock, &lock_file_list);
-	struct Node *it = file_list->head;
-	int need_to_remove_the_head = 0;
-	for (; it != NULL; it = it->next){
-		struct FileOwner *tmp = (struct FileOwner*)it->data;
-		struct Node *host_node = getNodeByHost(tmp->host_list, host);
-		if (host_node){
-			removeNode(tmp->host_list, host_node);
-			/* if the host_list is empty, also remove the file from file_list */
-			if (tmp->host_list->n_nodes <= 0){
-				if (it == file_list->head){
-					need_to_remove_the_head = 1;
-					continue;
+	if (file_list != NULL){
+		struct Node *it = file_list->head;
+		int need_to_remove_the_head = 0;
+		for (; it != NULL; it = it->next){
+			struct FileOwner *tmp = (struct FileOwner*)it->data;
+			struct Node *host_node = getNodeByHost(tmp->host_list, host);
+			if (host_node){
+				removeNode(tmp->host_list, host_node);
+				/* if the host_list is empty, also remove the file from file_list */
+				if (tmp->host_list->n_nodes <= 0){
+					if (it == file_list->head){
+						need_to_remove_the_head = 1;
+						continue;
+					}
+					it = it->prev;		//if (it == head) => it->prev == NULL
+					removeNode(file_list, it->next);
 				}
-				it = it->prev;		//if (it == head) => it->prev == NULL
-				removeNode(file_list, it->next);
 			}
 		}
-	}
-	if (need_to_remove_the_head){
-		pop(file_list);
+		if (need_to_remove_the_head){
+			pop(file_list);
+		}
 	}
 	pthread_cond_broadcast(&cond_file_list);
 	pthread_cleanup_pop(0);
@@ -148,7 +154,7 @@ void update_file_list(struct net_info cli_info, char *info){
 		struct Node *host_node;
 		struct Node *file_node;
 		switch (status) {
-			case FILE_NEW:
+			case FILE_AVAIL:
 				host_node = newNode(&host, DATA_HOST_TYPE);
 				file_node = getNodeByFilename(file_list, filename);
 				if (file_node){
@@ -171,19 +177,17 @@ void update_file_list(struct net_info cli_info, char *info){
 				changed = 1;
 				struct Node *it = file_list->head;
 				for (; it != NULL; it = it->next){
-					struct FileOwner *curr_file = (struct FileOwner*)(file_node->data);
+					struct FileOwner *curr_file = (struct FileOwner*)(it->data);
 					if(strcmp(curr_file->filename, filename) == 0){
-						printf("Hello");
 						host_node = getNodeByHost(curr_file->host_list, host);
 						if (host_node){
 							removeNode(curr_file->host_list, host_node);
 						}
 					}
 					if (curr_file->host_list->n_nodes <= 0){
-						removeNode(file_list, file_node);
+						removeNode(file_list, it);
 					}
 				}
-				// gia su o 
 				changed = 1;
 				break;
 			default:
@@ -205,6 +209,7 @@ void update_file_list(struct net_info cli_info, char *info){
 void process_list_files_request(struct net_info cli_info){
 	pthread_mutex_lock(cli_info.lock_sockfd);
 	pthread_mutex_lock(&lock_file_list);
+	
 	uint8_t n_files = 0;
 	long n_bytes;
 	if (file_list == NULL){
@@ -249,7 +254,6 @@ static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hos
 	char *info = calloc(MAX_BUFF_SIZE, sizeof(char));
 	
 	info = appendInfo(NULL, itoa(thrdt->seq_no));
-	info = appendInfo(info, itoa(thrdt->filesize));
 
 	//add n_hosts
 	if (chg_hosts == NULL){
@@ -265,10 +269,12 @@ static void send_host_list(struct thread_data *thrdt, struct LinkedList *chg_hos
 			info = appendInfo(info, itoa(host->ip_addr));
 			//send data port
 			info = appendInfo(info, itoa(host->port));
+			//send file size 
+			info = appendInfo(info, itoa(host->filesize));
 		}
 	}
 	char *message = addHeader(info, LIST_HOSTS_RESPONSE);
-	n_bytes = writeBytes(thrdt->cli_info.sockfd, message, MAX_BUFF_SIZE);
+	n_bytes = write(thrdt->cli_info.sockfd, message, MAX_BUFF_SIZE);
 	if (n_bytes <= 0){
 		handleSocketError(thrdt->cli_info, "Send host response");
 	}
@@ -318,8 +324,6 @@ void* process_list_hosts_request(void *arg){
 			/* there is at least 1 host that contains the file */
 			chg_hosts = newLinkedList();
 			struct FileOwner *file = (struct FileOwner*)(file_node->data);
-			struct DataHost *take_first = (struct DataHost*) file->host_list->head->data;
-			thrdt->filesize = take_first->filesize; 
 
 			/* check if the i-th host of the file->host_list is the new host:
 			 * check[i]: the number of comparison performed with the i-th host,
@@ -361,7 +365,7 @@ void* process_list_hosts_request(void *arg){
 				/* new host */
 				if (check[i] == old_ll->n_nodes){
 					struct DataHost *host2 = (struct DataHost*)(it->data);
-					host2->status = FILE_NEW;
+					host2->status = FILE_AVAIL;
 					struct Node *new_node = newNode(host2, DATA_HOST_TYPE);
 					push(chg_hosts, new_node);
 				}

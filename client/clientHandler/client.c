@@ -24,21 +24,18 @@
 
 #include "../../socket/utils/common.h"
 
-#define MENUMAX 7
+#define MENUMAX 6
 
 int menuitem = -1;
 
 char MenuList[MENUMAX][40] = {
 	"1. List file",
 	"2. Available file",
-	"3. Remove file",
+	"3. Share file",
 	"4. Download file",
-	"5. Share file",
-	"6. Something",
-	"7. Exit Program"
+	"5. Remove file",
+	"6. Exit Program",
 };
-
-
 
 void drawmenu(WINDOW *win, int item, int start, int end)
 {
@@ -407,6 +404,15 @@ int main(int argc, char **argv)
 	/* port used to listen for download_file_request */
 	dataPort = real_sock_in.sin_port; // network byte order
 	
+	/* Initialize window */
+	initscr();
+	noecho();
+	curs_set(0);
+	int yMax, xMax;
+	getmaxyx(stdscr, yMax, xMax);
+	win = newwin(20, 60, yMax / 5, xMax / 5);
+	box(win, 0, 0);
+
 	/* create thread */
 	int thr;
 	
@@ -421,13 +427,6 @@ int main(int argc, char **argv)
 	thr = pthread_create(&tid, NULL, &init_file_list, NULL);
 	if (thr != 0) exit(1);
 
-	initscr();
-	noecho();
-	curs_set(0);
-	int yMax, xMax;
-	getmaxyx(stdscr, yMax, xMax);
-	win = newwin(20, 60, yMax / 5, xMax / 5);
-	box(win, 0, 0);
 	/* listen for and process responses from the index server */
 	pthread_t process_response_tid;
 	thr = pthread_create(&process_response_tid, NULL, &process_response, (void *)&servsock);
@@ -435,6 +434,7 @@ int main(int argc, char **argv)
 		close(servsock);
 		exit(1);
 	}
+
 	while (menuitem != MENUMAX - 1)
 	{
 		
@@ -483,7 +483,7 @@ int main(int argc, char **argv)
 		}
 		else if (menuitem == 2)
 		{
-			initRemoveScreen(win);
+			initShareScreen(win);
 		}
 		else if (menuitem == 3)
 		{
@@ -492,11 +492,7 @@ int main(int argc, char **argv)
 		}
 		else if (menuitem == 4)
 		{
-			initShareScreen(win);
-		}
-		else if (menuitem == 5)
-		{
-			initScreen(win, " Something ");
+			initRemoveScreen(win);
 		}
 	}
 	echo(); // re-enable echo

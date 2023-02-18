@@ -5,6 +5,7 @@
 uint8_t seq_no = 0;
 struct FileOwner *the_file = NULL;
 pthread_mutex_t lock_the_file = PTHREAD_MUTEX_INITIALIZER;
+
 void send_list_hosts_request(char *filename){
 	pthread_mutex_lock(&lock_servsock);
 	// LIST_HOST_REQUEST :=: seq_no :=: filename

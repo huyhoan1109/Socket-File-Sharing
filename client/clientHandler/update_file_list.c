@@ -54,21 +54,23 @@ void delete_from_server(void *arg){
 	}
 	struct Node *it = monitorFiles->head;
 	for (;it != NULL; it = it->next){
-		char *name = (char*)it->data;
-		if(strcmp(name, filename) == 0){
-			if(it->status == FILE_AVAIL){
-				it->status = FILE_DELETED;
-				mvwprintw(win, 6, 4, "File '%s' has been deleted from server!", filename);
-			} else {
-				mvwaddstr(win, 6, 4, "You haven't shared this file!");
+		if(it->status != FILE_LOCK){
+			char *name = (char*)it->data;
+			if(strcmp(name, filename) == 0){
+				if(it->status == FILE_AVAIL){
+					it->status = FILE_DELETED;
+					mvwprintw(win, 6, 4, "File '%s' has been deleted from server!", filename);
+				} else {
+					mvwaddstr(win, 6, 4, "You haven't shared this file!");
+				}
+				wrefresh(win);
 			}
-			wrefresh(win);
+			uint32_t sz = getFileSize(dirName, name);
+			fs[n_fs].filesize = sz;
+			fs[n_fs].status = it->status;
+			strcpy(fs[n_fs].filename, name);
+			n_fs ++;	
 		}
-		uint32_t sz = getFileSize(dirName, name);
-		fs[n_fs].filesize = sz;
-		fs[n_fs].status = it->status;
-		strcpy(fs[n_fs].filename, name);
-		n_fs ++;	
 	}
 	lockFilesNode(monitorFiles, filename);
 	send_file_list(servsock, fs, n_fs);
@@ -92,16 +94,19 @@ void share_file(void *arg){
 		temp->status = FILE_AVAIL;
 	}
 	struct FileStatus fs[20];
-	int n_fs = 0;
+	int n_fs = 0, counter = 0;
 	struct Node *it = monitorFiles->head;
 	for (;it != NULL; it = it->next){
-		drawProgress(win, 4, 4, n_fs+1, monitorFiles->n_nodes);
-		char *name = (char*)it->data;
-		uint32_t sz = getFileSize(dirName, (char*)name);
-		fs[n_fs].filesize = sz;
-		fs[n_fs].status = it->status;
-		strcpy(fs[n_fs].filename, name);
-		n_fs ++;	
+		drawProgress(win, 4, 4, counter+1, monitorFiles->n_nodes);
+		if (it->status != FILE_LOCK){
+			char *name = (char*)it->data;
+			uint32_t sz = getFileSize(dirName, (char*)name);
+			fs[n_fs].filesize = sz;
+			fs[n_fs].status = it->status;
+			strcpy(fs[n_fs].filename, name);
+			n_fs ++;	
+		}
+		counter ++;
 	}
 	send_file_list(servsock, fs, n_fs);
 	mvwprintw(win, 6, 4, "File '%s' has been shared!", filename);

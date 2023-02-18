@@ -21,7 +21,7 @@
 #define IS_AFTER 0
 
 #define PRESS_ENTER "Enter to select"
-#define PRESS_BACK "Press F1 to go back menu"
+#define PRESS_BACK "Press ESC to go back menu"
 
 /* header types */
 
@@ -32,6 +32,8 @@
 #define LIST_HOSTS_REQUEST 104  // sequence for segment, filename 
 #define LIST_HOSTS_RESPONSE 105 //  sequence, fizesize, n_host (status, )
 #define GET_FILE_REQUEST 106  // list hosts
+#define LIST_ALL_HOSTS_REQUEST //  Just header
+#define LIST_ALL_HOSTS_RESPONSE 107 // n_hosts (address)
 
 #define READY_TO_SEND_DATA 200
 #define FILE_NOT_FOUND 201

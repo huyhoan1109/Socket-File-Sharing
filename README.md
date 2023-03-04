@@ -22,7 +22,7 @@ ngrok tcp [port]
 
 Both client and server side must contain 'socket' directory 
 
-### Clean up '.log'
+### Clean up and set up socket
 ```
 ./setup.sh
 ```

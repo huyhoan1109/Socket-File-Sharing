@@ -20,19 +20,19 @@ ngrok tcp [port]
 
 ## Run
 
-Both client and server side must contain 'socket' directory 
+Both client and server side must contain 'socket' directory. Before running, make sure to set up socket first 
 
 ### Set up socket
 ```
-./setup.sh
+bash setup.sh
 ```
 
 ### Server side
 ```
-./run.sh [port]
+bash server.sh [port]
 ```
 
 ### Client side
 ```
-./run.sh [ip] [port]
+bash client.sh [ip] [port]
 ```

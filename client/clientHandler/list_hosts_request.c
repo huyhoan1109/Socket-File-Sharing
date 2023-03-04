@@ -127,7 +127,6 @@ void process_list_hosts_response(char* message){
 				show_option(choice, start, end, dlist);
 			}
 		} while (1);
-		int start_download = 0;
 		if (sequence == seq_no){
 			initDownload();
 			struct DownloadInfo *dinfo = calloc(1, sizeof(struct DownloadInfo));

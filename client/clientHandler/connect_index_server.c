@@ -47,8 +47,6 @@ void* process_response(void *arg){
 		case LIST_HOSTS_RESPONSE:
 			process_list_hosts_response(message);
 			break;
-		default:
-			break;
 		}
 		memset(message, 0, BUFSIZ);
 	}

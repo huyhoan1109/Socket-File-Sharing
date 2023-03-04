@@ -48,7 +48,7 @@ static void displayFileList(){
 		printf("No file current in the list\n");
 	} else{
 		printf("%s\n", delim);
-		printf("%-4s | %-21s | %-25s | %-10s\n", "No", "Host", "Filename", "Filesize (byte)");
+		printf("%-4s | %-21s | %-25s | %-10s\n", "No", "Host", "Filename", "Filesize (bytes)");
 		struct Node *it = file_list->head;
 		int k = 0;
 		for (; it != NULL; it = it->next){
@@ -217,22 +217,23 @@ void process_list_files_request(struct net_info cli_info){
 	} else {
 		n_files = file_list->n_nodes;
 	} 
-
 	char *info = appendInfo(NULL, itoa(n_files));
 	if (n_files > 0){
 		struct Node *it = file_list->head;
 		for (; it != NULL; it = it->next){
 			struct FileOwner *file = (struct FileOwner*)it->data;
 			int n_host = file->host_list->n_nodes;
-			info = appendInfo(info, file->filename);
+			info = appendInfo(info, file->filename);		
 			info = appendInfo(info, itoa(n_host));
 			struct Node *h_list = file->host_list->head;
+			uint32_t minSize= 0xFFFFFFFF, maxSize=0;
 			for (; h_list != NULL; h_list = h_list->next){
 				struct DataHost *h_info = (struct DataHost*)h_list->data;
-				info = appendInfo(info, itoa(h_info->filesize));
-				struct in_addr addr = {h_info->ip_addr};
-				info = appendInfo(info, inet_ntoa(addr));
+				if(h_info->filesize > maxSize) maxSize = h_info->filesize;
+				if(h_info->filesize < minSize) minSize = h_info->filesize;
 			}
+			info = appendInfo(info, itoa(minSize));
+			info = appendInfo(info, itoa(maxSize));
 		}
 	}
 	char *message = addHeader(info, LIST_FILES_RESPONSE);

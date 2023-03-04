@@ -20,25 +20,20 @@ void process_list_files_response(char *message){
 		wrefresh(win);
 		return;
 	}
+	// int counter = 0;
 	mvwaddstr(win, 2, 4, "No");
 	mvwaddstr(win, 2, 10, "Filename");
-	mvwaddstr(win, 2, 25, "Size (Byte)");
-	mvwaddstr(win, 2, 45, "Address");
+	mvwaddstr(win, 2, 26, "Hosts");
+	mvwaddstr(win, 2, 35, "Min (bytes)");
+	mvwaddstr(win, 2, 48, "Max (bytes)");
 	wrefresh(win);
-	int n_host;
-	char *filename;
-	int counter = 0;
 	for (int i=0; i < n_files; i++)
 	{
-		filename = nextInfo(info, IS_AFTER);
-		n_host = atoll(nextInfo(info, IS_AFTER));
-		for (int j = 0; n_host > j; j++){
-			mvwaddstr(win, 4 + (counter * 2), 4, itoa(counter+1));
-			mvwaddstr(win, 4 + (counter * 2), 10, filename);
-			mvwaddstr(win, 4 + (counter * 2), 25, nextInfo(info, IS_AFTER));
-			mvwaddstr(win, 4 + (counter * 2), 45, nextInfo(info, IS_AFTER));
-			counter ++;
-		}
+		mvwaddstr(win, 4 + (i * 2), 4, itoa(i+1));
+		mvwaddstr(win, 4 + (i * 2), 10, nextInfo(info, IS_AFTER));
+		mvwaddstr(win, 4 + (i * 2), 26, nextInfo(info, IS_AFTER));
+		mvwaddstr(win, 4 + (i * 2), 35, nextInfo(info, IS_AFTER));
+		mvwaddstr(win, 4 + (i * 2), 48, nextInfo(info, IS_AFTER));
 		wrefresh(win);
 	}
 }

@@ -64,4 +64,5 @@ char *getInfo(char *message);
 char *nextInfo(char *info, int is_first);
 
 int checkInfo(char *info);
+
 #endif

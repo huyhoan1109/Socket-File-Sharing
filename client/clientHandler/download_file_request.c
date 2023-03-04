@@ -188,7 +188,6 @@ void *download_file(void *arg)
 			terminate_thread(segment); // Error file descriptor
 		}
 
-
 		/* receive file status message */
 		char status_char[5];
 		int n_bytes = read(sockfd, status_char, sizeof(status_char));
@@ -297,7 +296,6 @@ int download_done()
 	pthread_mutex_lock(&lock_the_file);
 	/* increase sequence number */
 	seq_no++;
-
 	/* move the file to the current directory */
 	char full_name[400];
 	strcpy(full_name, tmp_dir);
@@ -307,11 +305,9 @@ int download_done()
 	strcpy(path, dirName);
 	strcat(path, the_file->filename);
 	rename(full_name, path);
-
 	destructLinkedList(the_file->host_list);
 	free(path);
-	free(the_file);
-	the_file = NULL;
+
 	pthread_mutex_unlock(&lock_the_file);
 
 	pthread_mutex_lock(&lock_segment_list);

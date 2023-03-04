@@ -60,17 +60,17 @@ void delete_from_server(void *arg){
 				if(it->status == FILE_AVAIL){
 					it->status = FILE_DELETED;
 					mvwprintw(win, 6, 4, "File '%s' has been deleted from server!", filename);
-				} else {
-					mvwaddstr(win, 6, 4, "You haven't shared this file!");
-				}
-				wrefresh(win);
+				} 
 			}
 			uint32_t sz = getFileSize(dirName, name);
 			fs[n_fs].filesize = sz;
 			fs[n_fs].status = it->status;
 			strcpy(fs[n_fs].filename, name);
 			n_fs ++;	
+		} else {
+			mvwaddstr(win, 6, 4, "You haven't shared this file!");
 		}
+		wrefresh(win);
 	}
 	lockFilesNode(monitorFiles, filename);
 	send_file_list(servsock, fs, n_fs);

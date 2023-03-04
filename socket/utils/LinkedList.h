@@ -28,7 +28,6 @@
 
 struct FileOwner{
 	char filename[200];
-	// uint32_t filesize;	// Fail
 	struct LinkedList *host_list;	// LinkedList with data type DataHost
 };
 

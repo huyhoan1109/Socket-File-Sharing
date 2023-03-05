@@ -10,7 +10,6 @@ int recv_host = 0;
 struct LinkedList *monitorFiles;
 pthread_mutex_t lock_key = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t lock_servsock = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t recv_all_host = PTHREAD_COND_INITIALIZER;
 
 void connect_to_index_server(char *servip, uint16_t index_port, char *storage_dir){
 	/* connect to index server */
@@ -24,8 +23,14 @@ void connect_to_index_server(char *servip, uint16_t index_port, char *storage_di
 	servsin.sin_port = htons(index_port);
 
 	int servsocket = socket(AF_INET, SOCK_STREAM, 0);
-	if (servsocket < 0) exit(1);
-	if (connect(servsocket, (struct sockaddr*) &servsin, sizeof(servsin)) < 0) exit(1);
+	if (servsocket < 0) {
+		printf("Server error\n");
+		exit(1);
+	}
+	if (connect(servsocket, (struct sockaddr*) &servsin, sizeof(servsin)) < 0) {
+		printf("Can't connect to server\n");
+		exit(1);
+	}
 	servsock = servsocket;
 	strcpy(dirName, storage_dir);
 }

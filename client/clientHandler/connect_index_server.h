@@ -22,7 +22,6 @@ extern int recv_host;
 extern char dirName[30];
 extern pthread_mutex_t lock_key;
 extern pthread_mutex_t lock_servsock;		//mutex lock for the socket that faces the index server
-extern pthread_cond_t recv_all_host;
 extern struct LinkedList *monitorFiles;
 
 void drawProgress(WINDOW *win, int y, int x, uint64_t current, uint64_t max);

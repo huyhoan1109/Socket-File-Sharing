@@ -102,11 +102,11 @@ void process_list_hosts_response(char* message){
 				free(dlist);
 				free(info);
 				recv_host = 0;
+				initDownload();
 				pthread_mutex_lock(&lock_segment_list);
 				pthread_cond_signal(&cond_segment_list);
 				pthread_mutex_unlock(&lock_segment_list);
 				pthread_mutex_unlock(&lock_the_file);
-				initDownload();
 				return;
 			}
 			if (key == 'w'){

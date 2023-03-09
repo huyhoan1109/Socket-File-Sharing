@@ -286,7 +286,6 @@ int download_done()
 	pthread_mutex_lock(&lock_the_file);
 	if (file_not_found){
 		received = 0;
-		mvwprintw(win, 4, 4, "%s not found", the_file->filename);
 	} else {
 		received = 1;
 		mvwprintw(win, 6, 4, "Received %s successfully", the_file->filename);

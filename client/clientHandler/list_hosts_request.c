@@ -70,6 +70,7 @@ void process_list_hosts_response(char* message){
 
 	if (n_hosts == 0 && sequence == seq_no){
 		/* file not found */
+		mvwprintw(win, 4, 4, "%s not found", the_file->filename);
 		pthread_mutex_lock(&lock_segment_list);
 		pthread_cond_signal(&cond_segment_list);
 		pthread_mutex_unlock(&lock_segment_list);
@@ -97,6 +98,17 @@ void process_list_hosts_response(char* message){
 		show_option(0, start, end, dlist);
 		do {
 			key = wgetch(win);
+			if (key == 27){
+				free(dlist);
+				free(info);
+				recv_host = 0;
+				pthread_mutex_lock(&lock_segment_list);
+				pthread_cond_signal(&cond_segment_list);
+				pthread_mutex_unlock(&lock_segment_list);
+				pthread_mutex_unlock(&lock_the_file);
+				initDownload();
+				return;
+			}
 			if (key == 'w'){
 				choice -= 1;
 				if(choice < 0) {

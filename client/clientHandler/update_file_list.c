@@ -62,6 +62,7 @@ void delete_from_server(void *arg){
 			} 
 			if (it->status == FILE_LOCK){
 				mvwprintw(win, 6, 4, "You haven't shared this file!", filename);
+				continue;
 			}
 			wrefresh(win);
 		}

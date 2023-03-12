@@ -66,11 +66,13 @@ void delete_from_server(void *arg){
 			}
 			wrefresh(win);
 		}
-		uint32_t sz = getFileSize(dirName, name);
-		fs[n_fs].filesize = sz;
-		fs[n_fs].status = it->status;
-		strcpy(fs[n_fs].filename, name);
-		n_fs ++;	
+		if (it->status != FILE_LOCK){
+			uint32_t sz = getFileSize(dirName, name);
+			fs[n_fs].filesize = sz;
+			fs[n_fs].status = it->status;
+			strcpy(fs[n_fs].filename, name);
+			n_fs ++;	
+		}
 	}
 	lockFilesNode(monitorFiles, filename);
 	send_file_list(servsock, fs, n_fs);

@@ -54,23 +54,22 @@ void delete_from_server(void *arg){
 	}
 	struct Node *it = monitorFiles->head;
 	for (;it != NULL; it = it->next){
-		if(it->status != FILE_LOCK){
-			char *name = (char*)it->data;
-			if(strcmp(name, filename) == 0){
-				if(it->status == FILE_AVAIL){
-					it->status = FILE_DELETED;
-					mvwprintw(win, 6, 4, "File '%s' has been deleted from server!", filename);
-				} 
+		char *name = (char*)it->data;
+		if(strcmp(name, filename) == 0){
+			if(it->status == FILE_AVAIL){
+				it->status = FILE_DELETED;
+				mvwprintw(win, 6, 4, "File '%s' has been deleted from server!", filename);
+			} 
+			if (it->status == FILE_LOCK){
+				mvwprintw(win, 6, 4, "You haven't shared this file!", filename);
 			}
-			uint32_t sz = getFileSize(dirName, name);
-			fs[n_fs].filesize = sz;
-			fs[n_fs].status = it->status;
-			strcpy(fs[n_fs].filename, name);
-			n_fs ++;	
-		} else {
-			mvwaddstr(win, 6, 4, "You haven't shared this file!");
+			wrefresh(win);
 		}
-		wrefresh(win);
+		uint32_t sz = getFileSize(dirName, name);
+		fs[n_fs].filesize = sz;
+		fs[n_fs].status = it->status;
+		strcpy(fs[n_fs].filename, name);
+		n_fs ++;	
 	}
 	lockFilesNode(monitorFiles, filename);
 	send_file_list(servsock, fs, n_fs);
